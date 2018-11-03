@@ -12,12 +12,13 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<junit.version>4.12</junit.version>
-		<spring-boot-starter-web.version>2.0.4.RELEASE</spring-boot-starter-web.version>
-		<spring-boot-starter-tomcat.version>2.0.4.RELEASE</spring-boot-starter-tomcat.version>
+		<spring-boot-starter-web.version>1.5.12.RELEASE</spring-boot-starter-web.version>
+		<spring-boot-starter-tomcat.version>1.5.12.RELEASE</spring-boot-starter-tomcat.version>
 		<jstl.version>1.2</jstl.version>
 		<tomcat-embed-jasper.version>9.0.12</tomcat-embed-jasper.version>
 		<bootstrap.version>4.1.3</bootstrap.version>
 		<ecj.version>4.6.1</ecj.version>
+        <spring-boot-starter-test.version>1.5.12.RELEASE</spring-boot-starter-test.version>
 	</properties>
 
 
@@ -76,7 +77,28 @@
 			<version>${bootstrap.version}</version>
 		</dependency>
 
-	</dependencies>
+
+		<!-- Test -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot-starter-test.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+            <version>4.5.6</version>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
+
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>1.5.12.RELEASE</version>
+        </dependency>
+
+    </dependencies>
 
   <build>
     <finalName>medical-records</finalName>
@@ -85,6 +107,7 @@
 		<plugin>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-maven-plugin</artifactId>
+            <version>1.5.12.RELEASE</version>
 		</plugin>
 	</plugins>
   </build>
