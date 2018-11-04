@@ -1,0 +1,5 @@
+# Copy this file to database.properties
+# and replace password by your mysql root password
+db.url=//localhost:3306/medrec
+db.username=root
+db.password=password
