@@ -24,3 +24,7 @@ hs_err_pid*
 
 medical-records/.idea/
 medical-records/target/
+.classpath
+.project
+medical-records/.settings
+medical-records/logs
