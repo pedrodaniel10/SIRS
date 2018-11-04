@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.sirs;
 
+import org.apache.log4j.Logger;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -19,7 +20,9 @@ public class SpringBootWebApplication extends SpringBootServletInitializer {
     private int httpPort;
     @Value("${server.port}")
     private int httpsPort;
-
+    
+    private static Logger log = Logger.getLogger(SpringBootWebApplication.class);
+    
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
         TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
@@ -54,7 +57,9 @@ public class SpringBootWebApplication extends SpringBootServletInitializer {
     }
 
 	public static void main(String[] args) throws Exception {
+        log.info("Logger enabled: Entering main \n\n");
 		SpringApplication.run(SpringBootWebApplication.class, args);
+        log.info("Exiting main");
 	}
 
 }
