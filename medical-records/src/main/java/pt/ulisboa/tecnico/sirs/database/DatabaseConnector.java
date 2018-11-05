@@ -1,4 +1,4 @@
-package pt.ulisboa.tecnico.sirs;
+package pt.ulisboa.tecnico.sirs.database;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,7 @@ import java.util.Properties;
 
 import org.springframework.core.io.ClassPathResource;
 
-import pt.ulisboa.tecnico.sirs.exception.DatabaseConnectionException;
+import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
  
 public class DatabaseConnector {
 	private Connection connection = null;
@@ -36,13 +36,17 @@ public class DatabaseConnector {
 		ClassPathResource resource = new ClassPathResource(configFilename);
 		InputStream is = resource.getInputStream();
 		props.load(is);
-		url = props.getProperty("db.url");
-		username = props.getProperty("db.username");
-		password = props.getProperty("db.password");
+		this.url = props.getProperty("db.url");
+		this.username = props.getProperty("db.username");
+		this.password = props.getProperty("db.password");
 	}
 	
 	public void createConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
-		connection = DriverManager.getConnection(url, username, password);
+		this.connection = DriverManager.getConnection(url, username, password);
+	}
+	
+	public Connection getConnection() {
+		return this.connection;
 	}
 }

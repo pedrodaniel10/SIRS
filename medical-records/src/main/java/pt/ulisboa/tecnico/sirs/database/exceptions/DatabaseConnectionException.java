@@ -1,4 +1,4 @@
-package pt.ulisboa.tecnico.sirs.exception;
+package pt.ulisboa.tecnico.sirs.database.exceptions;
 
 public class DatabaseConnectionException extends Exception {
 	private static final long serialVersionUID = 1L;
