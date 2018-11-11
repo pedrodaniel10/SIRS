@@ -28,3 +28,7 @@ medical-records/target/
 .project
 medical-records/.settings
 medical-records/logs
+
+medical-records/bin/
+
+medical-records/src/main/resources/database\.properties

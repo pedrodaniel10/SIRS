@@ -11,6 +11,8 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+    	<maven.compiler.source>1.8</maven.compiler.source>
+    	<maven.compiler.target>1.8</maven.compiler.target>
 		<junit.version>4.12</junit.version>
 		<spring-boot-starter-web.version>1.5.12.RELEASE</spring-boot-starter-web.version>
 		<spring-boot-starter-tomcat.version>1.5.12.RELEASE</spring-boot-starter-tomcat.version>
@@ -19,6 +21,7 @@
 		<bootstrap.version>4.1.3</bootstrap.version>
 		<ecj.version>4.6.1</ecj.version>
         <spring-boot-starter-test.version>1.5.12.RELEASE</spring-boot-starter-test.version>
+        <mysql-connector-java.version>5.1.6</mysql-connector-java.version>
 	</properties>
 
 
@@ -109,6 +112,13 @@
             <artifactId>spring-boot</artifactId>
             <version>1.5.12.RELEASE</version>
         </dependency>
+        
+        <!-- MySQL Connector/J -->
+		<dependency>
+    		<groupId>mysql</groupId>
+    		<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector-java.version}</version>
+		</dependency>
 
     </dependencies>
 
@@ -122,5 +132,12 @@
             <version>1.5.12.RELEASE</version>
 		</plugin>
 	</plugins>
+	<resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+        </resource>
+    </resources>
+	
   </build>
 </project>
