@@ -17,4 +17,18 @@ public class IndexPageController {
 		return "welcome";
 	}
 
+	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	public String getRequestProfile(Map<String, Object> model) {
+		return "profile";
+	}
+
+	@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
+	public String getRequestEditProfile(Map<String, Object> model) {
+		return "editProfile";
+	}
+
+	@RequestMapping(value = "/editProfile", method = RequestMethod.POST)
+	public String postRequestEditProfile(Map<String, Object> model) {
+		return "profile";
+	}
 }

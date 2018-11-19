@@ -1,17 +1,9 @@
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
 <!DOCTYPE html>
-<html lang="en" class="no-js">
-<head>
-	<!-- Mobile Specific Meta -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<!-- meta character set -->
-	<meta charset="UTF-8">
-	<!-- Site Title -->
-	<title>MedRec | Welcome</title>
 
+<html lang="en">
+<tags:header title="Welcome">
 	<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
-	<!--
-    CSS
-    ============================================= -->
 	<link rel="stylesheet" href="welcome/css/linearicons.css">
 	<link rel="stylesheet" href="welcome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="welcome/css/magnific-popup.css">
@@ -20,8 +12,8 @@
 	<link rel='stylesheet' href='welcome/css/simplelightbox.min.css' >
 	<link rel="stylesheet" href="welcome/css/bootstrap.css">
 	<link rel="stylesheet" href="welcome/css/main.css">
+</tags:header>
 
-</head>
 <body>
 <!-- Start Header Area -->
 <header class="default-header">
@@ -45,7 +37,8 @@
 				<div class="carousel-caption d-md-block">
 					<h2 class="text-uppercase">Medical Records</h2>
 					<p>
-						The need for continuity of care for the patient is the main reason to <br> maintain medical records. We keep them safe.
+						The need for continuity of care for the patient is the main reason to <br> maintain medical records.
+						The life you had matters the most <br> for who you are now. So keep it safe.
 					</p>
 					<a href="/login" class="genric-btn info circle arrow">Login<span class="lnr lnr-arrow-right"></span></a>
 				</div>
@@ -55,7 +48,8 @@
 				<div class="carousel-caption d-md-block">
 					<h2 class="text-uppercase">Medical Records</h2>
 					<p>
-						The need for continuity of care for the patient is the main reason <br> to maintain medical records. We keep them safe.
+						The need for continuity of care for the patient is the main reason to <br> maintain medical records.
+						The life you had matters the most <br> for who you are now. So keep it safe.
 					</p>
 					<a href="/login" class="genric-btn info circle arrow">Login<span class="lnr lnr-arrow-right"></span></a>
 				</div>
@@ -65,7 +59,8 @@
 				<div class="carousel-caption d-md-block">
 					<h2 class="text-uppercase">Medical Records</h2>
 					<p>
-						The need for continuity of care for the patient is the main reason <br> to maintain medical records. We keep them safe.
+						The need for continuity of care for the patient is the main reason to <br> maintain medical records.
+						The life you had matters the most <br> for who you are now. So keep it safe.
 					</p>
 					<a href="/login" class="genric-btn info circle arrow">Login<span class="lnr lnr-arrow-right"></span></a>
 				</div>

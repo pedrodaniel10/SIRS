@@ -1,20 +1,8 @@
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>HealthRec | Register</title>
-
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link href="/css/plugins/iCheck/custom.css" rel="stylesheet">
-    <link href="/css/animate.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">
-
-</head>
+<tags:header title="Register"/>
 
 <body class="gray-bg">
 
@@ -22,10 +10,10 @@
     <div>
         <div>
 
-            <h1 class="logo-name">HR+</h1>
+            <h1 class="logo-name">MR+</h1>
 
         </div>
-        <h3>Register to HealthRec</h3>
+        <h3>Register to MedRec</h3>
         <p>Create account.</p>
         <form class="m-t" role="form" style="text-align: left" action="/login">
             <div class="form-group">
