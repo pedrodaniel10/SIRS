@@ -1,0 +1,56 @@
+namespace hospital.attributes {
+	
+	namespace user {
+		
+		attribute identifier{
+			id = "pt.ulisboa.tecnico.sirs.user.identifier"
+			category = subjectCat
+			type = string
+		}
+		
+		attribute role {
+        	id = "pt.ulisboa.tecnico.sirs.user.role"
+        	type = string
+        	category = subjectCat
+	    }
+	}
+	
+	namespace record {
+		
+		attribute institution {
+        	id = "pt.ulisboa.tecnico.sirs.record.institution"
+        	type = string
+        	category = resourceCat
+	    }
+	    
+	    attribute doctor {
+        	id = "pt.ulisboa.tecnico.sirs.record.doctor"
+        	type = string
+        	category = resourceCat
+	    }
+	    
+	    attribute patient {
+        	id = "pt.ulisboa.tecnico.sirs.record.patient"
+        	type = string
+        	category = resourceCat
+	    }
+	}
+	
+	attribute actionId{
+		id = "pt.ulisboa.tecnico.sirs.actionId"
+		type = string
+		category = actionCat
+	}
+	
+	attribute objectType{
+		id = "pt.ulisboa.tecnico.sirs.objectType"
+		type = string
+		category = resourceCat
+	}
+	
+	attribute isEmergency{
+		id = "pt.ulisboa.tecnico.sirs.isEmergency"
+		type = boolean
+		category = environmentCat
+	}
+}
