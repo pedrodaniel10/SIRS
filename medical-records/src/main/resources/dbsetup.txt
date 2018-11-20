@@ -59,6 +59,7 @@ CREATE TABLE admins(
 ) ENGINE=InnoDB;
 
 
+
 CREATE TABLE medical_records (
     record_id INT NOT NULL AUTO_INCREMENT,
     heart_beat INT NOT NULL,
