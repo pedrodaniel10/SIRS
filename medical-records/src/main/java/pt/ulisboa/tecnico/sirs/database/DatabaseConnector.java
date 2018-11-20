@@ -5,7 +5,9 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
+import java.util.Scanner;
 
 import org.springframework.core.io.ClassPathResource;
 
@@ -17,6 +19,7 @@ public class DatabaseConnector {
 	private String username;
 	private String password;
 	private String configFilename = "database.properties";
+	private String dbSetupFileName = "dbsetup.txt";
     
     public DatabaseConnector() throws DatabaseConnectionException {
     	try {
@@ -29,11 +32,17 @@ public class DatabaseConnector {
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
 			throw new DatabaseConnectionException(e.getMessage());
 		}
+    	try {
+			this.setupTables();
+		} catch (SQLException | IOException e) {
+			throw new DatabaseConnectionException(e.getMessage());
+		}
+    	
     }
 	
-	public void setProperties() throws IOException {
+	private void setProperties() throws IOException {
 		Properties props = new Properties();
-		ClassPathResource resource = new ClassPathResource(configFilename);
+		ClassPathResource resource = new ClassPathResource(this.configFilename);
 		InputStream is = resource.getInputStream();
 		props.load(is);
 		this.url = props.getProperty("db.url");
@@ -41,9 +50,19 @@ public class DatabaseConnector {
 		this.password = props.getProperty("db.password");
 	}
 	
-	public void createConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+	private void createConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
-		this.connection = DriverManager.getConnection(url, username, password);
+		this.connection = DriverManager.getConnection(this.url + "?user=" + this.username + "&password=" + this.password + "&allowMultiQueries=true");
+	}
+	
+	@SuppressWarnings("resource")
+	private void setupTables() throws IOException, SQLException {
+		ClassPathResource resource = new ClassPathResource(this.dbSetupFileName);
+		InputStream is = resource.getInputStream();
+		Scanner s = new Scanner(is).useDelimiter("\\A");
+	    String queryStatement = s.hasNext() ? s.next() : "";
+	    Statement statement = this.connection.createStatement();
+	    statement.execute(queryStatement);
 	}
 	
 	public Connection getConnection() {

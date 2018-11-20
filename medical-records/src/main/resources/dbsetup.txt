@@ -1,0 +1,108 @@
+DROP TABLE IF EXISTS auths, medical_files, medical_records, admins, doctors, institutions, patients, citizens;
+
+
+
+CREATE TABLE citizens(
+    citizen_id INT NOT NULL AUTO_INCREMENT,
+    citizen_name VARCHAR(255) NOT NULL,
+    gender VARCHAR(255) NOT NULL,
+    occupation VARCHAR(255) NOT NULL,
+    date_of_birth DATE NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    home_address VARCHAR(255) NOT NULL,
+
+    PRIMARY KEY (citizen_id)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE patients(
+    patient_id INT NOT NULL AUTO_INCREMENT,
+    citizen_id INT NOT NULL,
+
+    PRIMARY KEY (patient_id),
+    FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id)  
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE institutions(
+    institution_id INT NOT NULL AUTO_INCREMENT,
+    institution_name VARCHAR(255) NOT NULL,
+    institution_address VARCHAR(255) NOT NULL,
+
+    PRIMARY KEY (institution_id)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE doctors(
+    doctor_id INT NOT NULL AUTO_INCREMENT,
+    citizen_id INT NOT NULL,
+    institution_id INT NOT NULL,
+
+    PRIMARY KEY (doctor_id),
+    FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id),
+    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE admins(
+    admin_id INT NOT NULL AUTO_INCREMENT,
+    citizen_id INT NOT NULL,
+    institution_id INT NOT NULL,
+
+    PRIMARY KEY (admin_id),
+    FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id),
+    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)
+) ENGINE=InnoDB;
+
+
+CREATE TABLE medical_records (
+    record_id INT NOT NULL AUTO_INCREMENT,
+    heart_beat INT NOT NULL,
+    blood_pressure INT NOT NULL,
+    sugar INT NOT NULL,
+    haemoglobin INT NOT NULL,
+    creation_date DATE NOT NULL,
+    doctor_id INT NOT NULL,
+    treatment VARCHAR(255) NOT NULL,
+    patient_id INT NOT NULL,
+    institution_id INT NOT NULL,
+    general_report VARCHAR(255) NOT NULL,
+    record_signature VARCHAR(255) NOT NULL,
+
+    CONSTRAINT heart_beat_ck CHECK (heart_beat BETWEEN 0 AND 200),
+    CONSTRAINT blood_pressure_ck CHECK (blood_pressure BETWEEN 0 AND 100),
+    CONSTRAINT sugar_ck CHECK (sugar BETWEEN 0 AND 100),
+    CONSTRAINT haemoglobin_ck CHECK (haemoglobin BETWEEN 0 AND 100),
+
+    PRIMARY KEY (record_id),
+    FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id),
+    FOREIGN KEY (patient_id) REFERENCES patients(patient_id),
+    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)   
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE medical_files(
+    medical_file_id INT NOT NULL AUTO_INCREMENT,
+    record_id INT NOT NULL,
+    file_path VARCHAR(255) NOT NULL,
+
+    PRIMARY KEY (medical_file_id),
+    FOREIGN KEY (record_id) REFERENCES medical_records(record_id)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE auths(
+    auth_id INT NOT NULL AUTO_INCREMENT,
+    begin_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    doctor_id INT NOT NULL,
+    patient_id INT NOT NULL,
+
+    PRIMARY KEY (auth_id)
+) ENGINE=InnoDB;
