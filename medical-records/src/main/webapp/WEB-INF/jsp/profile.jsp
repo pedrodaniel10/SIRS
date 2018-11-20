@@ -5,7 +5,7 @@
 <tags:header title="Profile"/>
 
 <body>
-    <tags:patient name="David Williams" image="img/david_williams.jpg">
+    <tags:patient name="David Williams" image="/img/david_williams.jpg">
         <!--Top panel-->
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
@@ -32,10 +32,6 @@
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
                             </a>
-
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
                         </div>
                     </div>
                     <div class="ibox-content">
@@ -48,7 +44,7 @@
                                     </h2>
                                     <small>David Edward Williams</small>
                                 </div>
-                                <img src="img/david_williams.jpg" class="img-circle circle-border m-b-md" style="width:250px;height:250px;"\>
+                                <img src="/img/david_williams.jpg" class="img-circle circle-border m-b-md" style="width:250px;height:250px;"\>
                             </div>
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -110,10 +106,6 @@
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
-                            </a>
-
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
                             </a>
                         </div>
                     </div>

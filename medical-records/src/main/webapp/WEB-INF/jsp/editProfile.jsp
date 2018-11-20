@@ -4,7 +4,7 @@
 <html lang="en">
 <tags:header title="Edit Profile"/>
 
-<tags:patient name="David Williams" image="img/david_williams.jpg">
+<tags:patient name="David Williams" image="/img/david_williams.jpg">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Edit Profile</h2>
@@ -32,13 +32,10 @@
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
                             </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <form method="/editProfile" class="form-horizontal">
+                        <form method="post" class="form-horizontal">
                             <div class="form-group"><label class="col-sm-2 control-label">Name:</label>
                                 <div class="col-sm-10"><input type="text" class="form-control"></div>
                             </div>
