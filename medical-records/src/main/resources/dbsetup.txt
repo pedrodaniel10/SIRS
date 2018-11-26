@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS auths, medical_files, medical_records, admins, doctors, institutions, patients, citizens;
+DROP TABLE IF EXISTS authorizations, medical_files, medical_records, admins, doctors, institutions, patients, citizens;
 
 
 
@@ -62,10 +62,10 @@ CREATE TABLE admins(
 
 CREATE TABLE medical_records (
     record_id INT NOT NULL AUTO_INCREMENT,
-    heart_beat INT NOT NULL,
-    blood_pressure INT NOT NULL,
-    sugar INT NOT NULL,
-    haemoglobin INT NOT NULL,
+    heart_beat INT,
+    blood_pressure INT,
+    sugar INT,
+    haemoglobin INT,
     creation_date DATE NOT NULL,
     doctor_id INT NOT NULL,
     treatment VARCHAR(255) NOT NULL,
@@ -87,23 +87,12 @@ CREATE TABLE medical_records (
 
 
 
-CREATE TABLE medical_files(
-    medical_file_id INT NOT NULL AUTO_INCREMENT,
-    record_id INT NOT NULL,
-    file_path VARCHAR(255) NOT NULL,
-
-    PRIMARY KEY (medical_file_id),
-    FOREIGN KEY (record_id) REFERENCES medical_records(record_id)
-) ENGINE=InnoDB;
-
-
-
-CREATE TABLE auths(
-    auth_id INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE authorizations(
+    authorization_id INT NOT NULL AUTO_INCREMENT,
     begin_date DATE NOT NULL,
     end_date DATE NOT NULL,
     doctor_id INT NOT NULL,
     patient_id INT NOT NULL,
 
-    PRIMARY KEY (auth_id)
+    PRIMARY KEY (authorization_id)
 ) ENGINE=InnoDB;
