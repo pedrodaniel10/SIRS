@@ -2,32 +2,30 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<tags:header title="Edit Profile">
+<tags:header title="Add Citizen">
     <link href="/css/plugins/iCheck/custom.css" rel="stylesheet">
 </tags:header>
 
+<body>
 <tags:patient name="David Williams" image="/img/david_williams.jpg" citizenId="20" suser="true">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Edit Profile</h2>
+            <h2>Data Tables</h2>
             <ol class="breadcrumb">
                 <li>
                     <a href="/citizens">Citizens</a>
                 </li>
-                <li>
-                    <a href="/citizens/20/view">David Williams</a>
-                </li>
                 <li class="active">
-                    <strong>Edit</strong>
+                    <strong>Add Citizen</strong>
                 </li>
             </ol>
         </div>
-        <div class="col-lg-2"> </div>
+        <div class="col-lg-2">
+
+        </div>
     </div>
 
     <div class="wrapper wrapper-content animated fadeInRight">
-
-
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
@@ -101,7 +99,7 @@
 
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-primary" type="submit">Save Changes</button>
+                                    <button class="btn btn-primary" type="submit">Add Citizen</button>
                                 </div>
                             </div>
                         </form>
@@ -111,6 +109,7 @@
         </div>
     </div>
 </tags:patient>
+<!-- iCheck -->
 <script src="/js/plugins/iCheck/icheck.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -120,4 +119,5 @@
         });
     });
 </script>
+</body>
 </html>

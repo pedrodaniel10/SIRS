@@ -5,16 +5,19 @@
 <tags:header title="Edit Medical Record"></tags:header>
 
 <body>
-<tags:patient name="David Williams" image="/img/david_williams.jpg">
+<tags:patient name="David Williams" image="/img/david_williams.jpg" citizenId="20">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-9">
             <h2>Medical Record</h2>
             <ol class="breadcrumb">
                 <li>
-                    <a href="/profile">David Williams</a>
+                    <a href="/citizens">Citizens</a>
                 </li>
                 <li>
-                    <a href="/profile">#23</a>
+                    <a href="/citizens/20/view">David Williams</a>
+                </li>
+                <li>
+                    <a href="/citizens/20/medrec/23/view">#23</a>
                 </li>
                 <li class="active">
                     <strong>Edit</strong>

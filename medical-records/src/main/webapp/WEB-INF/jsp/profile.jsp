@@ -5,7 +5,7 @@
 <tags:header title="Profile"/>
 
 <body>
-    <tags:patient name="David Williams" image="/img/david_williams.jpg">
+    <tags:patient name="David Williams" image="/img/david_williams.jpg" citizenId="20" suser="true">
         <!--Top panel-->
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
@@ -50,7 +50,24 @@
                                 <div class="panel-heading">
                                     Profile Information
                                 </div>
+
                                 <div class="panel-body">
+                                    <div class="row wrapper border-bottom white-bg">
+                                        <div class="col-lg-6" style="height:40px;line-height:40px;">
+                                            <strong>Roles:</strong>
+                                        </div>
+                                        <div class="col-lg-6" style="height:40px;line-height:40px;">
+                                            <span class="badge badge-success">Patient</span><span class="badge badge-warning">Doctor</span>
+                                        </div>
+                                    </div>
+                                    <div class="row wrapper border-bottom white-bg">
+                                        <div class="col-lg-6" style="height:40px;line-height:40px;">
+                                            <strong>Citizen ID:</strong>
+                                        </div>
+                                        <div class="col-lg-6" style="height:40px;line-height:40px;">
+                                            24786562
+                                        </div>
+                                    </div>
                                     <div class="row wrapper border-bottom white-bg">
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
                                             <strong>Name:</strong>
@@ -73,14 +90,6 @@
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
                                             Male
-                                        </div>
-                                    </div>
-                                    <div class="row wrapper border-bottom white-bg">
-                                        <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                            <strong>Occupation:</strong>
-                                        </div>
-                                        <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                            Humorist
                                         </div>
                                     </div>
                                     <div class="row wrapper white-bg">

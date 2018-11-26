@@ -1,5 +1,11 @@
-<%@ attribute name="image" required="true" %>
-<%@ attribute name="name" required="true" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ attribute name="image" required="true"%>
+<%@ attribute name="name" required="true"%>
+<%@ attribute name="citizenId" required="true"%>
+<%@ attribute name="patient" required="false" type="java.lang.Boolean"%>
+<%@ attribute name="doctor" required="false" type="java.lang.Boolean"%>
+<%@ attribute name="admin" required="false" type="java.lang.Boolean"%>
+<%@ attribute name="suser" required="false" type="java.lang.Boolean"%>
 
 <link href="/css/bootstrap.min.css" rel="stylesheet">
 <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -20,8 +26,6 @@
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">${name}</strong>
                              </span> <span class="text-muted text-xs block">Patient <b class="caret"></b></span> </span> </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="/editProfile">Edit Profile</a></li>
-                            <li class="divider"></li>
                             <li><a href="/login">Logout</a></li>
                         </ul>
                     </div>
@@ -30,8 +34,17 @@
                     </div>
                 </li>
                 <li>
-                    <a href="/profile"><i class="fa fa-user"></i> <span class="nav-label">Profile</span></a>
+                    <a href="/citizens/${citizenId}/profile"><i class="fa fa-user"></i> <span class="nav-label">Profile</span></a>
                 </li>
+                <c:if test="${suser}">
+                    <li>
+                        <a href="#"><i class="fa fa-group"></i> <span class="nav-label">Citizens</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="/citizens">All citizens</a></li>
+                            <li><a href="/citizens/add">Add citizen</a></li>
+                        </ul>
+                    </li>
+                </c:if>
 
             </ul>
 

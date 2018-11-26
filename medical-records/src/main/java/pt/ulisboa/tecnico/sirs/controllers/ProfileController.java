@@ -8,23 +8,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class ProfileController {
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public String getRequestProfile(Map<String, Object> model) {
-        return "profile";
-    }
 
-    @RequestMapping(value = "/editProfile", method = RequestMethod.GET)
-    public String getRequestEditProfile(Map<String, Object> model) {
+    @RequestMapping(value = "/citizens/{citizenId}/edit", method = RequestMethod.GET)
+    public String getRequestEditProfile(Map<String, Object> model, @PathVariable String citizenId) {
         return "editProfile";
     }
 
-    @RequestMapping(value = "/editProfile", method = RequestMethod.POST)
-    public String postRequestEditProfile(Map<String, Object> model) {
+    @RequestMapping(value = "/citizens/{citizenId}/edit", method = RequestMethod.POST)
+    public String postRequestEditProfile(Map<String, Object> model, @PathVariable String citizenId) {
         return "profile";
     }
 
-    @RequestMapping(value = "/patient/{idPatient}", method = RequestMethod.GET)
-    public String getRequestPatientProfile(Map<String, Object> model, @PathVariable String idPatient) {
+    @RequestMapping(value = "/citizens/{citizenId}/profile", method = RequestMethod.GET)
+    public String getRequestPatientProfile(Map<String, Object> model, @PathVariable String citizenId) {
         return "profile";
     }
 }
