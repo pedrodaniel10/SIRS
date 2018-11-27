@@ -6,7 +6,7 @@ CREATE TABLE superusers(
     superuser_id INT NOT NULL AUTO_INCREMENT,
 
     PRIMARY KEY (superuser_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=1;
 
 
 
@@ -21,7 +21,7 @@ CREATE TABLE citizens(
     profile_pic VARCHAR(255) NOT NULL,
 
     PRIMARY KEY (citizen_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=2;
 
 
 
@@ -33,7 +33,7 @@ CREATE TABLE sup_cit_relations(
     PRIMARY KEY (sup_cit_relation_id),
     FOREIGN KEY (superuser_id) REFERENCES superusers(superuser_id),
     FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=3;
 
 
 
@@ -43,7 +43,7 @@ CREATE TABLE patients(
 
     PRIMARY KEY (patient_id),
     FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=4;
 
 
 
@@ -56,7 +56,7 @@ CREATE TABLE institutions(
 
     PRIMARY KEY (institution_id),
     FOREIGN KEY (superuser_id) REFERENCES superusers(superuser_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=5;
 
 
 
@@ -70,7 +70,7 @@ CREATE TABLE admins(
     FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id),
     FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
     FOREIGN KEY (superuser_id) REFERENCES superusers(superuser_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=6;
 
 
 
@@ -86,7 +86,7 @@ CREATE TABLE doctors(
     FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
     FOREIGN KEY (superuser_id) REFERENCES superusers(superuser_id),
     FOREIGN KEY (admin_id) REFERENCES admins(admin_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=7;
 
 
 
@@ -113,7 +113,7 @@ CREATE TABLE medical_records (
     FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id),
     FOREIGN KEY (patient_id) REFERENCES patients(patient_id),
     FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)   
-) ENGINE=InnoDB;
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=8;
 
 
 
@@ -129,7 +129,7 @@ CREATE TABLE doc_pat_relations(
     FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id),
     FOREIGN KEY (patient_id) REFERENCES patients(patient_id),
     FOREIGN KEY (admin_id) REFERENCES admins(admin_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=9;
 
 
 
@@ -141,4 +141,4 @@ CREATE TABLE sessions(
 
     PRIMARY KEY (session_id),
     FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=10;
