@@ -15,7 +15,7 @@
                     <a href="/citizens">Citizens</a>
                 </li>
                 <li>
-                    <a href="/citizens/20/view">David Williams</a>
+                    <a href="/citizens/20/profile">David Williams</a>
                 </li>
                 <li class="active">
                     <strong>Edit</strong>

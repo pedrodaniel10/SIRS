@@ -36,12 +36,31 @@
                 <li>
                     <a href="/citizens/${citizenId}/profile"><i class="fa fa-user"></i> <span class="nav-label">Profile</span></a>
                 </li>
+
+                <c:if test="${admin}">
+                    <li>
+                        <a href="#"><i class="fa fa-user-md"></i> <span class="nav-label">Doctors</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="/doctors">All doctors</a></li>
+                            <li><a href="/doctors/add">Add doctor</a></li>
+                        </ul>
+                    </li>
+                </c:if>
+
                 <c:if test="${suser}">
                     <li>
                         <a href="#"><i class="fa fa-group"></i> <span class="nav-label">Citizens</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                             <li><a href="/citizens">All citizens</a></li>
                             <li><a href="/citizens/add">Add citizen</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#"><i class="fa fa-hospital-o"></i> <span class="nav-label">Institutions</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li><a href="/institutions">All institutions</a></li>
+                            <li><a href="/institutions/add">Add institution</a></li>
                         </ul>
                     </li>
                 </c:if>
