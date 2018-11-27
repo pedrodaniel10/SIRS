@@ -3,14 +3,14 @@ package pt.ulisboa.tecnico.sirs.domain;
 public class Admin {
 	private int adminId;
 	private int citizenId;
-	private Institution institution;
-	
+	private int institutionId;
+
 	public Admin() {}
 	
-	public Admin(int adminId, int citizenId, Institution institution) {
+	public Admin(int adminId, int citizenId, int institutionId) {
 		this.adminId = adminId;
 		this.citizenId = citizenId;
-		this.institution = institution;
+		this.institutionId = institutionId;
 	}
 	
 	public int getAdminId() {
@@ -29,11 +29,11 @@ public class Admin {
 		this.citizenId = citizenId;
 	}
 	
-	public Institution getInstitution() {
-		return institution;
+	public int getInstitutionId() {
+		return institutionId;
 	}
-	
-	public void setInstitution(Institution institution) {
-		this.institution = institution;
+
+	public void setInstitutionId(int institutionId) {
+		this.institutionId = institutionId;
 	}
 }

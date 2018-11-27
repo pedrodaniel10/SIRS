@@ -3,14 +3,14 @@ package pt.ulisboa.tecnico.sirs.domain;
 public class Doctor {
 	private int doctorId;
 	private int citizenId;
-	private Institution institution;
+	private int institutionId;
 	
 	public Doctor() {}
 	
-	public Doctor(int doctorId, int citizenId, Institution institution) {
+	public Doctor(int doctorId, int citizenId, int institutionId) {
 		this.doctorId = doctorId;
 		this.citizenId = citizenId;
-		this.institution = institution;
+		this.institutionId = institutionId;
 	}
 
 	public int getDoctorId() {
@@ -29,11 +29,11 @@ public class Doctor {
 		this.citizenId = citizenId;
 	}
 	
-	public Institution getInstitution() {
-		return institution;
+	public int getInstitution() {
+		return institutionId;
 	}
 	
-	public void setInstitution(Institution institution) {
-		this.institution = institution;
+	public void setInstitution(int institutionId) {
+		this.institutionId = institutionId;
 	}
 }

@@ -2,17 +2,17 @@ package pt.ulisboa.tecnico.sirs.domain;
 
 import java.util.Date;
 
-public class Authorization {
-	private int authorizationId;
+public class DocPatRelation {
+	private int docPatRelationId;
 	private Date beginDate;
 	private Date endDate;
 	private int doctorId;
 	private int patientId;
 	
-	public Authorization() {}
+	public DocPatRelation() {}
 	
-	public Authorization(int authId, Date beginDate, Date endDate, int doctorId, int patientId) {
-		this.authorizationId = authId;
+	public DocPatRelation(int authId, Date beginDate, Date endDate, int doctorId, int patientId) {
+		this.docPatRelationId = authId;
 		this.beginDate = beginDate;
 		this.endDate = endDate;
 		this.doctorId = doctorId;
@@ -20,11 +20,11 @@ public class Authorization {
 	}
 
 	public int getAuthId() {
-		return authorizationId;
+		return docPatRelationId;
 	}
 	
 	public void setAuthId(int authId) {
-		this.authorizationId = authId;
+		this.docPatRelationId = authId;
 	}
 	
 	public Date getBeginDate() {
