@@ -1,20 +1,8 @@
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>HealthRec | Login</title>
-
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
-
-    <link href="/css/animate.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">
-
-</head>
+<tags:header title="Login"/>
 
 <body class="gray-bg">
 
@@ -22,10 +10,10 @@
     <div>
         <div>
 
-            <h1 class="logo-name">HR+</h1>
+            <h1 class="logo-name">MR+</h1>
 
         </div>
-        <h3>Welcome to HealthRec</h3>
+        <h3>Welcome to MedRec</h3>
         <p>Login in.</p>
         <form class="m-t" role="form" action="/">
             <div class="form-group">
