@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS authorizations, medical_files, medical_records, admins, doctors, institutions, patients, citizens;
+DROP TABLE IF EXISTS sessions, medical_files, medical_records, admins, doctors, institutions, patients, citizens;
 
 
 
@@ -10,6 +10,7 @@ CREATE TABLE citizens(
     date_of_birth DATE NOT NULL,
     email VARCHAR(255) NOT NULL,
     home_address VARCHAR(255) NOT NULL,
+    profile_pic VARCHAR(255) NOT NULL,
 
     PRIMARY KEY (citizen_id)
 ) ENGINE=InnoDB;
@@ -87,12 +88,12 @@ CREATE TABLE medical_records (
 
 
 
-CREATE TABLE authorizations(
-    authorization_id INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE sessions(
+    session_id INT NOT NULL AUTO_INCREMENT,
     begin_date DATE NOT NULL,
     end_date DATE NOT NULL,
     doctor_id INT NOT NULL,
     patient_id INT NOT NULL,
 
-    PRIMARY KEY (authorization_id)
+    PRIMARY KEY (session_id)
 ) ENGINE=InnoDB;
