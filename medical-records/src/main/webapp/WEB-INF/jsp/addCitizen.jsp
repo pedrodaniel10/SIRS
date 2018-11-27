@@ -7,7 +7,7 @@
 </tags:header>
 
 <body>
-<tags:patient name="David Williams" image="/img/david_williams.jpg" citizenId="20" suser="true">
+<tags:citizen name="David Williams" image="/img/david_williams.jpg" citizenId="20" suser="true">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Add Citizen</h2>
@@ -108,7 +108,7 @@
             </div>
         </div>
     </div>
-</tags:patient>
+</tags:citizen>
 <!-- iCheck -->
 <script src="/js/plugins/iCheck/icheck.min.js"></script>
 <script>

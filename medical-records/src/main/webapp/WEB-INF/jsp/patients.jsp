@@ -2,23 +2,21 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<tags:header title="Add Doctor"/>
+<tags:header title="Patients"/>
 
 <body>
-<tags:citizen name="David Williams" image="/img/david_williams.jpg" citizenId="20" suser="true" admin="true">
+<tags:citizen name="David Williams" image="/img/david_williams.jpg" citizenId="20" doctor="true">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Add Doctor</h2>
+            <h2>Patients</h2>
             <ol class="breadcrumb">
-                <li>
-                    <a href="/doctors">Doctors</a>
-                </li>
                 <li class="active">
-                    <strong>Add Doctor</strong>
+                    <strong>Patients</strong>
                 </li>
             </ol>
         </div>
-        <div class="col-lg-2"></div>
+        <div class="col-lg-2">
+        </div>
     </div>
 
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -26,7 +24,7 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Doctors</h5>
+                        <h5>Citizens</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -50,15 +48,15 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td class="center"><img src="/img/alex_smith.jpg" class="img-circle" style="width:50px;height:50px;"\></td>
-                                    <td class="center">147258369
-                                    <td class="center">John Terry</td>
+                                    <td class="center"><img src="/img/david_williams.jpg" class="img-circle" style="width:50px;height:50px;"\></td>
+                                    <td class="center">24786562</td>
+                                    <td class="center">David Edward Williams</td>
                                     <td class="center">20/08/1971</td>
                                     <td class="center">Male</td>
-                                    <td class="center">johnterry@hotmail.com</td>
+                                    <td class="center">davidwilliams@hotmail.com</td>
                                     <td class="center">
-                                        <a href="/doctors/1/add" class="btn btn-info btn-circle" type="button">
-                                            <i class="fa fa-plus"></i>
+                                        <a href="/citizens/20/profile" class="btn btn-success btn-circle" type="button">
+                                            <i class="fa fa-chevron-right"></i>
                                         </a>
                                     </td>
                                 </tr>

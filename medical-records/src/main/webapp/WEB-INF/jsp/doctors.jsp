@@ -5,7 +5,7 @@
 <tags:header title="Doctors"/>
 
 <body>
-<tags:patient name="David Williams" image="/img/david_williams.jpg" citizenId="20" suser="true" admin="true">
+<tags:citizen name="David Williams" image="/img/david_williams.jpg" citizenId="20" admin="true">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Doctors</h2>
@@ -71,7 +71,7 @@
             </div>
         </div>
     </div>
-</tags:patient>
+</tags:citizen>
 <!-- Mainly scripts -->
 <script src="/js/jquery-3.1.1.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>

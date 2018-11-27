@@ -13,13 +13,14 @@ public class MedicalRecordController {
         return "medicalRecord";
     }
 
-    @RequestMapping(value = "/patient/{citizenId}/medrec/{idMedRec}/edit", method = RequestMethod.GET)
-    public String getRequestEditMedicalRecord(Map<String, Object> model, @PathVariable String citizenId, @PathVariable String idMedRec) {
-        return "editMedicalRecord";
+    @RequestMapping(value = "/citizens/{citizenId}/medrec/create", method = RequestMethod.GET)
+    public String getRequestCreateMedicalRecord(Map<String, Object> model, @PathVariable String citizenId) {
+        return "createMedicalRecord";
     }
 
-    @RequestMapping(value = "/patient/{citizenId}/medrec/{idMedRec}/edit", method = RequestMethod.POST)
-    public String postRequestEditMedicalRecord(Map<String, Object> model, @PathVariable String citizenId, @PathVariable String idMedRec) {
+    @RequestMapping(value = "/citizens/{citizenId}/medrec/create", method = RequestMethod.POST)
+    public String postRequestCreateMedicalRecord(Map<String, Object> model, @PathVariable String citizenId) {
         return "medicalRecord";
     }
+
 }
