@@ -8,15 +8,17 @@ public class DocPatRelation {
 	private Date endDate;
 	private int doctorId;
 	private int patientId;
+	private int adminId;
 	
 	public DocPatRelation() {}
 	
-	public DocPatRelation(int authId, Date beginDate, Date endDate, int doctorId, int patientId) {
+	public DocPatRelation(int authId, Date beginDate, Date endDate, int doctorId, int patientId, int adminId) {
 		this.docPatRelationId = authId;
 		this.beginDate = beginDate;
 		this.endDate = endDate;
 		this.doctorId = doctorId;
 		this.patientId = patientId;
+		this.adminId = adminId;
 	}
 
 	public int getAuthId() {
@@ -57,5 +59,13 @@ public class DocPatRelation {
 	
 	public void setPatientId(int patientId) {
 		this.patientId = patientId;
+	}
+
+	public int getAdminId() {
+		return adminId;
+	}
+
+	public void setAdminId(int adminId) {
+		this.adminId = adminId;
 	}
 }

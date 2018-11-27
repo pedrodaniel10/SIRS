@@ -4,13 +4,18 @@ public class Institution {
 	private int institutionId;
 	private String institutionName;
 	private String institutionAddress;
+	private String profilePic;
+	private int superuserId;
 	
 	public 	Institution() {}
 	
-	public Institution(int institutionId, String institutionName, String institutionAddress) {
+	public Institution(int institutionId, String institutionName, String institutionAddress, String profilePic, 
+			int superuserId) {
 		this.institutionId = institutionId;
 		this.institutionName = institutionName;
 		this.institutionAddress = institutionAddress;
+		this.profilePic = profilePic;
+		this.superuserId = superuserId;
 	}
 
 	public int getInstitutionId() {
@@ -35,5 +40,21 @@ public class Institution {
 	
 	public void setInstitutionAddress(String institutionAddress) {
 		this.institutionAddress = institutionAddress;
+	}
+
+	public String getProfilePic() {
+		return profilePic;
+	}
+
+	public void setProfilePic(String profilePic) {
+		this.profilePic = profilePic;
+	}
+
+	public int getSuperuserId() {
+		return superuserId;
+	}
+
+	public void setSuperuserId(int superuserId) {
+		this.superuserId = superuserId;
 	}
 }

@@ -10,11 +10,13 @@ public class Citizen {
 	private Date dateOfBirth;
 	private String email;
 	private String homeAddress;
+	private String profilePic;
+	private int superuserId;
 	
 	public Citizen() {}
 	
 	public Citizen(int citizenId, String citizenName, String gender, String occupation, Date dateOfBirth, String email,
-			String homeAddress) {
+			String homeAddress, String profilePic, int superuserId) {
 		this.citizenId = citizenId;
 		this.citizenName = citizenName;
 		this.gender = gender;
@@ -22,6 +24,8 @@ public class Citizen {
 		this.dateOfBirth = dateOfBirth;
 		this.email = email;
 		this.homeAddress = homeAddress;
+		this.profilePic = profilePic;
+		this.superuserId = superuserId;
 	}
 
 	public int getCitizenId() {
@@ -78,5 +82,21 @@ public class Citizen {
 	
 	public void setHomeAddress(String homeAddress) {
 		this.homeAddress = homeAddress;
+	}
+
+	public String getProfilePic() {
+		return profilePic;
+	}
+
+	public void setProfilePic(String profilePic) {
+		this.profilePic = profilePic;
+	}
+
+	public int getSuperuserId() {
+		return superuserId;
+	}
+
+	public void setSuperuserId(int superuserId) {
+		this.superuserId = superuserId;
 	}
 }
