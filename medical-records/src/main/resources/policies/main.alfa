@@ -1,73 +1,34 @@
 namespace hospital {
 
-import Attributes.*	
-import hospital.attributes.*
+import Attributes.*
 
 	policyset main {
 		apply firstApplicable
-	
-		policyset records {
-			target clause attributes.objectType == "medicalRecord"
-			apply firstApplicable
 		
-			policyset patients {
-				target clause user.role == "patient"
-				apply firstApplicable	
-					
-				policy patientViewRecords {
-					target clause attributes.actionId == "view"
-					apply firstApplicable
-					
-					rule patientsViewTheirRecords {
-						condition record.patient == user.identifier
-						permit
-					}
-				}
-			}
-				
-			policyset doctors {
-				target clause user.role == "doctor"
-				apply firstApplicable	
-				
-				policy doctorViewRecords {
-					target clause attributes.actionId == "view" 
-					apply firstApplicable
-					
-					rule doctorViewRecordsRegularAccess {
-						condition record.doctor == user.identifier
-						permit
-					}
-					
-					rule doctorViewRecordsEmergencyAccess {
-						condition isEmergency == true
-						permit
-					}
-				}
-			}
-				
-			policyset admin {
-				target clause user.role == "admin"
-				apply firstApplicable	
-				
-				policy adminViewRecords {
-					target clause attributes.actionId == "view" 
-					apply firstApplicable
-					
-					rule adminViewAllRecords {
-						permit
-					}
-				}
-				
-				policy adminChangeRoles {
-					target clause attributes.actionId == "change" 
-					apply firstApplicable
-					
-					rule adminChangeAllRoles {
-						permit
-					}
-				}
+		policyset indexPage {
+			target clause Attributes.resourceId == "indexPage"
+			apply firstApplicable
 			
-			}		
+			policy authorized {
+				apply firstApplicable
+				
+				rule AuthorizedCanViewIndex {
+					permit
+				}
+			}
 		}
-	}	
+		
+		policyset doctorsPage {
+			target clause Attributes.resourceId == "doctorsPage"
+			apply firstApplicable
+			
+			policy unauthorized {
+				apply firstApplicable
+				
+				rule UnauthorizedCannotViewDoctorsPage {
+					deny
+				}
+			}
+		}
+	}
 }

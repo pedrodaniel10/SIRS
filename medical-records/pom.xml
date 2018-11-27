@@ -120,7 +120,14 @@
 			<version>${mysql-connector-java.version}</version>
 		</dependency>
 
-    </dependencies>
+		<!-- AuthzForce -->
+		<dependency>
+			<groupId>org.ow2.authzforce</groupId>
+			<artifactId>authzforce-ce-core-pdp-engine</artifactId>
+			<version>13.0.0</version>
+		</dependency>
+
+	</dependencies>
 
   <build>
     <finalName>medical-records</finalName>

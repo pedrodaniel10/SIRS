@@ -42,12 +42,6 @@ namespace hospital.attributes {
 		category = actionCat
 	}
 	
-	attribute objectType{
-		id = "pt.ulisboa.tecnico.sirs.objectType"
-		type = string
-		category = resourceCat
-	}
-	
 	attribute isEmergency{
 		id = "pt.ulisboa.tecnico.sirs.isEmergency"
 		type = boolean
