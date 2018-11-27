@@ -1,4 +1,12 @@
-DROP TABLE IF EXISTS sessions, medical_files, medical_records, admins, doctors, institutions, patients, citizens;
+DROP TABLE IF EXISTS sessions, doc_pat_relations, medical_records, doctors, admins, institutions, patients, sup_cit_relations, citizens, superusers;
+
+
+
+CREATE TABLE superusers(
+    superuser_id INT NOT NULL AUTO_INCREMENT,
+
+    PRIMARY KEY (superuser_id)
+) ENGINE=InnoDB;
 
 
 
@@ -17,12 +25,24 @@ CREATE TABLE citizens(
 
 
 
+CREATE TABLE sup_cit_relations(
+    sup_cit_relation_id INT NOT NULL AUTO_INCREMENT,
+    superuser_id INT NOT NULL,
+    citizen_id INT NOT NULL,
+
+    PRIMARY KEY (sup_cit_relation_id),
+    FOREIGN KEY (superuser_id) REFERENCES superusers(superuser_id),
+    FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id)
+) ENGINE=InnoDB;
+
+
+
 CREATE TABLE patients(
     patient_id INT NOT NULL AUTO_INCREMENT,
     citizen_id INT NOT NULL,
 
     PRIMARY KEY (patient_id),
-    FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id)  
+    FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id)
 ) ENGINE=InnoDB;
 
 
@@ -31,20 +51,11 @@ CREATE TABLE institutions(
     institution_id INT NOT NULL AUTO_INCREMENT,
     institution_name VARCHAR(255) NOT NULL,
     institution_address VARCHAR(255) NOT NULL,
+    profile_pic VARCHAR(255) NOT NULL,
+    superuser_id INT NOT NULL,
 
-    PRIMARY KEY (institution_id)
-) ENGINE=InnoDB;
-
-
-
-CREATE TABLE doctors(
-    doctor_id INT NOT NULL AUTO_INCREMENT,
-    citizen_id INT NOT NULL,
-    institution_id INT NOT NULL,
-
-    PRIMARY KEY (doctor_id),
-    FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id),
-    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)
+    PRIMARY KEY (institution_id),
+    FOREIGN KEY (superuser_id) REFERENCES superusers(superuser_id)
 ) ENGINE=InnoDB;
 
 
@@ -53,10 +64,28 @@ CREATE TABLE admins(
     admin_id INT NOT NULL AUTO_INCREMENT,
     citizen_id INT NOT NULL,
     institution_id INT NOT NULL,
+    superuser_id INT NOT NULL,
 
     PRIMARY KEY (admin_id),
     FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id),
-    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)
+    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
+    FOREIGN KEY (superuser_id) REFERENCES superusers(superuser_id)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE doctors(
+    doctor_id INT NOT NULL AUTO_INCREMENT,
+    citizen_id INT NOT NULL,
+    institution_id INT NOT NULL,
+    superuser_id INT NOT NULL,
+    admin_id INT NOT NULL,
+
+    PRIMARY KEY (doctor_id),
+    FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id),
+    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
+    FOREIGN KEY (superuser_id) REFERENCES superusers(superuser_id),
+    FOREIGN KEY (admin_id) REFERENCES admins(admin_id)
 ) ENGINE=InnoDB;
 
 
@@ -67,7 +96,7 @@ CREATE TABLE medical_records (
     blood_pressure INT,
     sugar INT,
     haemoglobin INT,
-    creation_date DATE NOT NULL,
+    creation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     doctor_id INT NOT NULL,
     treatment VARCHAR(255) NOT NULL,
     patient_id INT NOT NULL,
@@ -88,12 +117,28 @@ CREATE TABLE medical_records (
 
 
 
-CREATE TABLE sessions(
-    session_id INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE doc_pat_relations(
+    doc_pat_relation_id INT NOT NULL AUTO_INCREMENT,
     begin_date DATE NOT NULL,
     end_date DATE NOT NULL,
     doctor_id INT NOT NULL,
     patient_id INT NOT NULL,
+    admin_id INT NOT NULL,
 
-    PRIMARY KEY (session_id)
+    PRIMARY KEY (doc_pat_relation_id),
+    FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id),
+    FOREIGN KEY (patient_id) REFERENCES patients(patient_id),
+    FOREIGN KEY (admin_id) REFERENCES admins(admin_id)
+) ENGINE=InnoDB;
+
+
+
+CREATE TABLE sessions(
+    session_id INT NOT NULL,
+    citizen_id INT NOT NULL,
+    creation_time DATETIME NOT NULL,
+    end_time DATETIME NOT NULL,
+
+    PRIMARY KEY (session_id),
+    FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id)
 ) ENGINE=InnoDB;
