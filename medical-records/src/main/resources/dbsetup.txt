@@ -11,13 +11,11 @@ CREATE TABLE superusers(
 
 
 CREATE TABLE citizens(
-    citizen_id INT NOT NULL AUTO_INCREMENT,
+    citizen_id VARCHAR(10) NOT NULL,
     citizen_name VARCHAR(255) NOT NULL,
     gender VARCHAR(255) NOT NULL,
-    occupation VARCHAR(255) NOT NULL,
     date_of_birth DATE NOT NULL,
     email VARCHAR(255) NOT NULL,
-    home_address VARCHAR(255) NOT NULL,
     profile_pic VARCHAR(255) NOT NULL,
 
     PRIMARY KEY (citizen_id)
@@ -28,7 +26,7 @@ CREATE TABLE citizens(
 CREATE TABLE sup_cit_relations(
     sup_cit_relation_id INT NOT NULL AUTO_INCREMENT,
     superuser_id INT NOT NULL,
-    citizen_id INT NOT NULL,
+    citizen_id VARCHAR(10) NOT NULL,
 
     PRIMARY KEY (sup_cit_relation_id),
     FOREIGN KEY (superuser_id) REFERENCES superusers(superuser_id),
@@ -39,7 +37,7 @@ CREATE TABLE sup_cit_relations(
 
 CREATE TABLE patients(
     patient_id INT NOT NULL AUTO_INCREMENT,
-    citizen_id INT NOT NULL,
+    citizen_id VARCHAR(10) NOT NULL,
 
     PRIMARY KEY (patient_id),
     FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id)
@@ -62,7 +60,7 @@ CREATE TABLE institutions(
 
 CREATE TABLE admins(
     admin_id INT NOT NULL AUTO_INCREMENT,
-    citizen_id INT NOT NULL,
+    citizen_id VARCHAR(10) NOT NULL,
     institution_id INT NOT NULL,
     superuser_id INT NOT NULL,
 
@@ -76,7 +74,7 @@ CREATE TABLE admins(
 
 CREATE TABLE doctors(
     doctor_id INT NOT NULL AUTO_INCREMENT,
-    citizen_id INT NOT NULL,
+    citizen_id VARCHAR(10) NOT NULL,
     institution_id INT NOT NULL,
     superuser_id INT NOT NULL,
     admin_id INT NOT NULL,
@@ -134,8 +132,8 @@ CREATE TABLE doc_pat_relations(
 
 
 CREATE TABLE sessions(
-    session_id INT NOT NULL,
-    citizen_id INT NOT NULL,
+    session_id VARCHAR(10) NOT NULL,
+    citizen_id VARCHAR(10) NOT NULL,
     creation_time DATETIME NOT NULL,
     end_time DATETIME NOT NULL,
 

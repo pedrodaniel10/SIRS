@@ -1,13 +1,13 @@
-package pt.ulisboa.tecnico.sirs.domain;
+package pt.ulisboa.tecnico.sirs.dataobjects;
 
 public class Admin {
 	private int adminId;
-	private int citizenId;
+	private String citizenId;
 	private int institutionId;
 
 	public Admin() {}
 	
-	public Admin(int adminId, int citizenId, int institutionId) {
+	public Admin(int adminId, String citizenId, int institutionId) {
 		this.adminId = adminId;
 		this.citizenId = citizenId;
 		this.institutionId = institutionId;
@@ -21,11 +21,11 @@ public class Admin {
 		this.adminId = adminId;
 	}
 	
-	public int getCitizenId() {
+	public String getCitizenId() {
 		return citizenId;
 	}
 
-	public void setCitizenId(int citizenId) {
+	public void setCitizenId(String citizenId) {
 		this.citizenId = citizenId;
 	}
 	

@@ -1,38 +1,46 @@
-package pt.ulisboa.tecnico.sirs.domain;
+package pt.ulisboa.tecnico.sirs.dataobjects;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Citizen {
-	private int citizenId;
+	
+	public enum Gender {
+		MALE, FEMALE
+	}
+	
+	public enum Role {
+		PATIENT, DOCTOR, ADMIN, SUPERUSER
+	}
+	
+	private String citizenId;
 	private String citizenName;
-	private String gender;
-	private String occupation;
+	private Gender gender;
 	private Date dateOfBirth;
 	private String email;
-	private String homeAddress;
 	private String profilePic;
 	private int superuserId;
+	private ArrayList<Role> roles = new ArrayList<Role>();
 	
 	public Citizen() {}
 	
-	public Citizen(int citizenId, String citizenName, String gender, String occupation, Date dateOfBirth, String email,
-			String homeAddress, String profilePic, int superuserId) {
+	public Citizen(String citizenId, String citizenName, Gender gender, Date dateOfBirth, String email,
+			String profilePic, int superuserId, ArrayList<Role> roles) {
 		this.citizenId = citizenId;
 		this.citizenName = citizenName;
 		this.gender = gender;
-		this.occupation = occupation;
 		this.dateOfBirth = dateOfBirth;
 		this.email = email;
-		this.homeAddress = homeAddress;
 		this.profilePic = profilePic;
 		this.superuserId = superuserId;
+		this.roles = roles;
 	}
 
-	public int getCitizenId() {
+	public String getCitizenId() {
 		return citizenId;
 	}
 	
-	public void setCitizenId(int citizenId) {
+	public void setCitizenId(String citizenId) {
 		this.citizenId = citizenId;
 	}
 	
@@ -44,20 +52,12 @@ public class Citizen {
 		this.citizenName = citizenName;
 	}
 	
-	public String getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 	
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
-	}
-	
-	public String getOccupation() {
-		return occupation;
-	}
-	
-	public void setOccupation(String occupation) {
-		this.occupation = occupation;
 	}
 	
 	public Date getDateOfBirth() {
@@ -76,14 +76,6 @@ public class Citizen {
 		this.email = email;
 	}
 	
-	public String getHomeAddress() {
-		return homeAddress;
-	}
-	
-	public void setHomeAddress(String homeAddress) {
-		this.homeAddress = homeAddress;
-	}
-
 	public String getProfilePic() {
 		return profilePic;
 	}
@@ -98,5 +90,17 @@ public class Citizen {
 
 	public void setSuperuserId(int superuserId) {
 		this.superuserId = superuserId;
+	}
+
+	public ArrayList<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(ArrayList<Role> roles) {
+		this.roles = roles;
+	}
+	
+	public void addRole(Role role) {
+		this.roles.add(role);
 	}
 }
