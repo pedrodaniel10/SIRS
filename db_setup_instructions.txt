@@ -1,6 +1,6 @@
 copy keys.enc and .key files to mysql config folder (usually /etc/mysql/ in Unix, where config file is located)
 
-comment lines 1, 8, 9, 10, 11 of medical-records/src/main/resources/dbconfig and check if file paths for the keys are correct
+comment lines 1, 8, 9, 10, 11, 12 of medical-records/src/main/resources/dbconfig and check if file paths for the keys are correct
 
 copy dbconfig file contents to mysql config file (ususally /etc/mysql/my.cnf in Unix)
 
