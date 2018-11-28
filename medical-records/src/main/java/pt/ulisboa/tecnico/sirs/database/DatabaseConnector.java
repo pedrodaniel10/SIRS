@@ -18,8 +18,8 @@ public class DatabaseConnector {
 	private String url;
 	private String username;
 	private String password;
-	private String configFilename = "database.properties";
-	private String dbSetupFileName = "dbsetup.txt";
+	private static final String CONFIG_FILE_NAME = "database.properties";
+	private static final String DB_SETUP_FILE_NAME = "dbsetup.txt";
     
     public DatabaseConnector() throws DatabaseConnectionException {
     	try {
@@ -42,7 +42,7 @@ public class DatabaseConnector {
 	
 	private void setProperties() throws IOException {
 		Properties props = new Properties();
-		ClassPathResource resource = new ClassPathResource(this.configFilename);
+		ClassPathResource resource = new ClassPathResource(CONFIG_FILE_NAME);
 		InputStream is = resource.getInputStream();
 		props.load(is);
 		this.url = props.getProperty("db.url");
@@ -57,12 +57,13 @@ public class DatabaseConnector {
 	
 	@SuppressWarnings("resource")
 	private void setupTables() throws IOException, SQLException {
-		ClassPathResource resource = new ClassPathResource(this.dbSetupFileName);
+		ClassPathResource resource = new ClassPathResource(DB_SETUP_FILE_NAME);
 		InputStream is = resource.getInputStream();
 		Scanner s = new Scanner(is).useDelimiter("\\A");
 	    String queryStatement = s.hasNext() ? s.next() : "";
-	    Statement statement = this.connection.createStatement();
-	    statement.execute(queryStatement);
+	    try (Statement statement = this.connection.createStatement()) {
+	        statement.execute(queryStatement);
+	    }
 	}
 	
 	public Connection getConnection() {

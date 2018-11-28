@@ -1,12 +1,12 @@
-package pt.ulisboa.tecnico.sirs.domain;
+package pt.ulisboa.tecnico.sirs.dataobjects;
 
 public class Superuser {
 	private int superuserId;
-	private int citizenId;
+	private String citizenId;
 
 	public Superuser() {}
 	
-	public Superuser(int superuserId, int citizenId) {
+	public Superuser(int superuserId, String citizenId) {
 		this.superuserId = superuserId;
 		this.citizenId = citizenId;
 	}
@@ -19,11 +19,11 @@ public class Superuser {
 		this.superuserId = superuserId;
 	}
 
-	public int getCitizenId() {
+	public String getCitizenId() {
 		return citizenId;
 	}
 
-	public void setCitizenId(int citizenId) {
+	public void setCitizenId(String citizenId) {
 		this.citizenId = citizenId;
 	}
 	

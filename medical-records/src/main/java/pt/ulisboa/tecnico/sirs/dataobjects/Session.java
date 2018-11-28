@@ -1,16 +1,16 @@
-package pt.ulisboa.tecnico.sirs.domain;
+package pt.ulisboa.tecnico.sirs.dataobjects;
 
 import java.util.Date;
 
 public class Session {
-	private int sessionId;
-	private int citizenId;
+	private String sessionId;
+	private String citizenId;
 	private Date creationTime;
 	private Date endTime;
 	
 	public Session() {}
 
-	public Session(int sessionId, int citizenId, Date creationTime, Date endTime) {
+	public Session(String sessionId, String citizenId, Date creationTime, Date endTime) {
 		super();
 		this.sessionId = sessionId;
 		this.citizenId = citizenId;
@@ -18,19 +18,19 @@ public class Session {
 		this.endTime = endTime;
 	}
 	
-	public int getSessionId() {
+	public String getSessionId() {
 		return sessionId;
 	}
 
-	public void setSessionId(int sessionId) {
+	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
 
-	public int getCitizenId() {
+	public String getCitizenId() {
 		return citizenId;
 	}
 
-	public void setCitizenId(int citizenId) {
+	public void setCitizenId(String citizenId) {
 		this.citizenId = citizenId;
 	}
 

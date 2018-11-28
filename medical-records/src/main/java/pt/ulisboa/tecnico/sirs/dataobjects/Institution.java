@@ -1,4 +1,4 @@
-package pt.ulisboa.tecnico.sirs.domain;
+package pt.ulisboa.tecnico.sirs.dataobjects;
 
 public class Institution {
 	private int institutionId;

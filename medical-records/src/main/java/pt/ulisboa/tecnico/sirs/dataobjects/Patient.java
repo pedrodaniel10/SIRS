@@ -1,13 +1,13 @@
-package pt.ulisboa.tecnico.sirs.domain;
+package pt.ulisboa.tecnico.sirs.dataobjects;
 
 public class Patient{
 	private int patientId;
-	private int citizenId;
+	private String citizenId;
 
 	public Patient() {
 	}
 
-	public Patient(int patientId, int citizenId) {
+	public Patient(int patientId, String citizenId) {
 		this.patientId = patientId;
 		this.citizenId = citizenId;
 	}
@@ -20,11 +20,11 @@ public class Patient{
 		this.patientId = patientId;
 	}
 
-	public int getCitizenId() {
+	public String getCitizenId() {
 		return citizenId;
 	}
 
-	public void setCitizenId(int citizenId) {
+	public void setCitizenId(String citizenId) {
 		this.citizenId = citizenId;
 	}
 }

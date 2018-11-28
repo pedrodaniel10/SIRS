@@ -1,15 +1,15 @@
-package pt.ulisboa.tecnico.sirs.domain;
+package pt.ulisboa.tecnico.sirs.dataobjects;
 
 public class Doctor {
 	private int doctorId;
-	private int citizenId;
+	private String citizenId;
 	private int institutionId;
 	private int superuserId;
 	private int adminId;
 	
 	public Doctor() {}
 	
-	public Doctor(int doctorId, int citizenId, int institutionId, int superuserId, int adminId) {
+	public Doctor(int doctorId, String citizenId, int institutionId, int superuserId, int adminId) {
 		this.doctorId = doctorId;
 		this.citizenId = citizenId;
 		this.institutionId = institutionId;
@@ -25,11 +25,11 @@ public class Doctor {
 		this.doctorId = doctorId;
 	}
 	
-	public int getCitizenId() {
+	public String getCitizenId() {
 		return citizenId;
 	}
 	
-	public void setCitizenId(int citizenId) {
+	public void setCitizenId(String citizenId) {
 		this.citizenId = citizenId;
 	}
 	
