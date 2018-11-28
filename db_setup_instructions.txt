@@ -1,0 +1,17 @@
+copy keys.enc and .key files to mysql config folder (usually /etc/mysql/ in Unix, where config file is located)
+
+comment lines 1, 8, 9, 10, 11 of medical-records/src/main/resources/dbconfig and check if file paths for the keys are correct
+
+copy dbconfig file contents to mysql config file (ususally /etc/mysql/my.cnf in Unix)
+
+restart mariadb service
+
+access mariadb and insert the following statement:
+INSTALL PLUGIN file_key_management SONAME 'file_key_management.so';
+(if on windows use file_key_management.dll)
+
+uncomment the lines previously commented
+
+remove the .key file from the config folder and it's good to go
+
+everytime the mariadb service starts, the key must be in the the config folder
