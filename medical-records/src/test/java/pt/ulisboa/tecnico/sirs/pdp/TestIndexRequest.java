@@ -14,8 +14,7 @@ public class TestIndexRequest {
 	public void AnyoneViewIndex() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
-		DecisionRequest request = policyEnforcementPoint.createRequest("indexPage", new ArrayList<>(), "view");
-		boolean result = policyEnforcementPoint.evaluateRequest(request);
+		boolean result = policyEnforcementPoint.requestEvaluation("indexPage", new ArrayList<>(), "view");
 		assertTrue(result);
 	}
 	
@@ -23,8 +22,7 @@ public class TestIndexRequest {
 	public void NoOneCreateInIndex() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
-		DecisionRequest request = policyEnforcementPoint.createRequest("indexPage", new ArrayList<>(), "create");
-		boolean result = policyEnforcementPoint.evaluateRequest(request);
+		boolean result = policyEnforcementPoint.requestEvaluation("indexPage", new ArrayList<>(), "create");
 		assertFalse(result);
 	}
 
@@ -32,8 +30,7 @@ public class TestIndexRequest {
 	public void NoOneEditInIndex() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
-		DecisionRequest request = policyEnforcementPoint.createRequest("indexPage", new ArrayList<>(), "edit");
-		boolean result = policyEnforcementPoint.evaluateRequest(request);
+		boolean result = policyEnforcementPoint.requestEvaluation("indexPage", new ArrayList<>(), "edit");
 		assertFalse(result);
 	}
 }

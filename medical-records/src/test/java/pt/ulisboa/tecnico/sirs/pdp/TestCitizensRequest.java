@@ -3,6 +3,7 @@ package pt.ulisboa.tecnico.sirs.pdp;
 import org.junit.Test;
 import org.ow2.authzforce.core.pdp.api.DecisionRequest;
 
+import java.security.Principal;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertFalse;
@@ -11,86 +12,79 @@ import static org.junit.Assert.assertTrue;
 public class TestCitizensRequest {
 	
 	@Test
-	public void SuperUserViewCitizens() {
+	public void superUserViewCitizens() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 		ArrayList<String> roles = new ArrayList<>();
 		roles.add("SUPERUSER");
-		DecisionRequest request = policyEnforcementPoint.createRequest(
+		boolean result = policyEnforcementPoint.requestEvaluation(
 				"citizensPage", roles, "view" );
-		boolean result = policyEnforcementPoint.evaluateRequest(request);
 		assertTrue(result);
 	}
 
 	@Test
-	public void SuperUserCreatesCitizens() {
+	public void superUserCreatesCitizens() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 		ArrayList<String> roles = new ArrayList<>();
 		roles.add("SUPERUSER");
-		DecisionRequest request = policyEnforcementPoint.createRequest(
+		boolean result = policyEnforcementPoint.requestEvaluation(
 				"citizensPage", roles, "create" );
-		boolean result = policyEnforcementPoint.evaluateRequest(request);
 		assertTrue(result);
 	}
 
 	@Test
-	public void SuperUserDeletesCitizens() {
+	public void superUserCannotDeleteCitizens() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 		ArrayList<String> roles = new ArrayList<>();
 		roles.add("SUPERUSER");
-		DecisionRequest request = policyEnforcementPoint.createRequest(
+		boolean result = policyEnforcementPoint.requestEvaluation(
 				"citizensPage", roles, "edit" );
-		boolean result = policyEnforcementPoint.evaluateRequest(request);
-		assertTrue(result);
-	}
-
-	@Test
-	public void SuperUserNoOtherActionCitizens() {
-
-		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
-		ArrayList<String> roles = new ArrayList<>();
-		roles.add("SUPERUSER");
-		DecisionRequest request = policyEnforcementPoint.createRequest(
-				"citizensPage", roles, "destroy" );
-		boolean result = policyEnforcementPoint.evaluateRequest(request);
 		assertFalse(result);
 	}
 
 	@Test
-	public void PatientCannotViewCitizens() {
+	public void superUserNoOtherActionCitizens() {
+
+		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
+		ArrayList<String> roles = new ArrayList<>();
+		roles.add("SUPERUSER");
+		boolean result = policyEnforcementPoint.requestEvaluation(
+				"citizensPage", roles, "destroy" );
+		assertFalse(result);
+	}
+
+	@Test
+	public void patientCannotViewCitizens() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 		ArrayList<String> roles = new ArrayList<>();
 		roles.add("PATIENT");
-		DecisionRequest request = policyEnforcementPoint.createRequest(
+		boolean result = policyEnforcementPoint.requestEvaluation(
 				"citizensPage", roles, "view" );
-		boolean result = policyEnforcementPoint.evaluateRequest(request);
 		assertFalse(result);
 	}
 
 	@Test
-	public void DoctorCannotViewCitizens() {
+	public void doctorCannotViewCitizens() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 		ArrayList<String> roles = new ArrayList<>();
 		roles.add("DOCTOR");
-		DecisionRequest request = policyEnforcementPoint.createRequest(
+		boolean result = policyEnforcementPoint.requestEvaluation(
 				"citizensPage", roles, "view" );
-		boolean result = policyEnforcementPoint.evaluateRequest(request);
 		assertFalse(result);
 	}
 
 	@Test
-	public void AdminCannotViewCitizens() {
+	public void adminCannotViewCitizens() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 		ArrayList<String> roles = new ArrayList<>();
 		roles.add("ADMIN");
-		DecisionRequest request = policyEnforcementPoint.createRequest(
+		boolean result = policyEnforcementPoint.requestEvaluation(
 				"citizensPage", roles, "view" );
-		boolean result = policyEnforcementPoint.evaluateRequest(request);
 		assertFalse(result);
 	}
 }

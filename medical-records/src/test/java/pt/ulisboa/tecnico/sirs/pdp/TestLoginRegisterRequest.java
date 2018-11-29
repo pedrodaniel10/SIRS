@@ -11,29 +11,26 @@ import static org.junit.Assert.assertTrue;
 public class TestLoginRegisterRequest {
 	
 	@Test
-	public void AnyoneViewLoginRegister() {
+	public void anyoneViewLoginRegister() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
-		DecisionRequest request = policyEnforcementPoint.createRequest("loginRegisterPage", new ArrayList<>(), "view");
-		boolean result = policyEnforcementPoint.evaluateRequest(request);
+		boolean result = policyEnforcementPoint.requestEvaluation("loginRegisterPage", new ArrayList<>(), "view");
 		assertTrue(result);
 	}
 	
 	@Test
-	public void AnyoneEditInLoginRegister() {
+	public void anyoneEditInLoginRegister() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
-		DecisionRequest request = policyEnforcementPoint.createRequest("loginRegisterPage", new ArrayList<>(), "edit");
-		boolean result = policyEnforcementPoint.evaluateRequest(request);
+		boolean result = policyEnforcementPoint.requestEvaluation("loginRegisterPage", new ArrayList<>(), "edit");
 		assertTrue(result);
 	}
 
 	@Test
-	public void NoOneEditInLoginRegister() {
+	public void noOneEditInLoginRegister() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
-		DecisionRequest request = policyEnforcementPoint.createRequest("loginRegisterPage", new ArrayList<>(), "create");
-		boolean result = policyEnforcementPoint.evaluateRequest(request);
+		boolean result = policyEnforcementPoint.requestEvaluation("loginRegisterPage", new ArrayList<>(), "create");
 		assertFalse(result);
 	}
 }

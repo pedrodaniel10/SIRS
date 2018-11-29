@@ -4,7 +4,7 @@ import Attributes.*
 
 	policyset main {
 		apply firstApplicable
-
+		
 		/* Resource: indexPage */
 		policyset indexPage {
 			target clause Attributes.resourceId == "indexPage"
@@ -54,56 +54,56 @@ import Attributes.*
                 }
 			}
 		}
+				
+	/* Resource: institutionsPage */
+	policyset institutionsPage {
+		target clause Attributes.resourceId == "institutionsPage"
+		apply firstApplicable
 		
-		/* Resource: institutionsPage */
-		policyset institutionsPage {
-			target clause Attributes.resourceId == "institutionsPage"
+		/* Actions*/
+		policyset ActionsInstitutions {
 			apply firstApplicable
 			
-			/* Actions*/
-			policyset ActionsInstitutions {
+			/* SuperUser actions */
+			policy SuperUserActions {
+				target clause Attributes.subjectRole == "SUPERUSER"
+				apply firstApplicable
+			
+				/* RULE: SuperUser can view Institutions */
+				rule SuperUserCanViewInstitutions {
+					target clause Attributes.actionId == "view"
+					permit
+				}
+				
+				/* RULE: SuperUser can add Institutions */
+				rule SuperUserCanAddInstitutions {
+					target clause Attributes.actionId == "create"
+					permit
+				}
+				
+				/* RULE: SuperUser can edit Institutions (edit or delete) */
+				rule SuperUserCanEditInstitutions {
+					target clause Attributes.actionId == "edit"
+					permit
+				}
+
+				/* RULE: SuperUser cannot perform other actions in the institutions page */
+                rule SuperUserCannotPerformOtherActions {
+                    deny
+                }
+			}
+			
+			/* Others actions */
+			policy OthersActions {
 				apply firstApplicable
 				
-				/* SuperUser actions */
-				policy SuperUserActions {
-					target clause Attributes.subjectRole == "SUPERUSER"
-					apply firstApplicable
-				
-					/* RULE: SuperUser can view Institutions */
-					rule SuperUserCanViewInstitutions {
-						target clause Attributes.actionId == "view"
-						permit
-					}
-					
-					/* RULE: SuperUser can add Institutions */
-					rule SuperUserCanAddInstitutions {
-						target clause Attributes.actionId == "create"
-						permit
-					}
-					
-					/* RULE: SuperUser can edit Institutions (edit or delete) */
-					rule SuperUserCanEditInstitutions {
-						target clause Attributes.actionId == "edit"
-						permit
-					}
-	
-					/* RULE: SuperUser cannot perform other actions in the institutions page */
-	                rule SuperUserCannotPerformOtherActions {
-	                    deny
-	                }
-				}
-				
-				/* Others actions */
-				policy OthersActions {
-					apply firstApplicable
-					
-					/* RULE: No one can perform other actions in the institutions page (except SUPERUSER)*/
-	                rule NoOneCanPerformActions {
-	                    deny
-	                }
-				}
+				/* RULE: No one can perform other actions in the institutions page (except SUPERUSER)*/
+                rule NoOneCanPerformActions {
+                    deny
+                }
 			}
 		}
+	}
 		
 		/* Resource: citizensPage */
 		policyset citizensPage {
@@ -128,12 +128,6 @@ import Attributes.*
 					/* RULE: SuperUser can add Citizens */
 					rule SuperUserCanAddCitizens {
 						target clause Attributes.actionId == "create"
-						permit
-					}
-					
-					/* RULE: SuperUser can edit Citizens (edit or delete) */
-					rule SuperUserCanEditCitizens {
-						target clause Attributes.actionId == "edit"
 						permit
 					}
 	

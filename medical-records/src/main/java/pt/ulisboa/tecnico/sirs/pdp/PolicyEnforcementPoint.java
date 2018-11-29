@@ -36,8 +36,13 @@ public class PolicyEnforcementPoint {
 		}
 	}
 
+	public boolean requestEvaluation(String resource, List<String> roles, String action) {
+		DecisionRequest request = createRequest(resource, roles, action);
+		return evaluateRequest(request);
+	}
+
 	/* Create the XACML request in native model */
-	public DecisionRequest createRequest(String resource, List<String> roles, String action) {
+	private DecisionRequest createRequest(String resource, List<String> roles, String action) {
 
 		//TODO: Update Attribute and Category numbers in the end
 		final DecisionRequestBuilder<?> requestBuilder = pdp.newRequestBuilder(-1, -1);
@@ -47,7 +52,7 @@ public class PolicyEnforcementPoint {
 		return requestBuilder.build(false);
 	}
 
-	public boolean evaluateRequest(DecisionRequest request) {
+	private boolean evaluateRequest(DecisionRequest request) {
 		DecisionResult result = pdp.evaluate(request);
 		return result.getDecision() == DecisionType.PERMIT;
 	}
@@ -64,7 +69,7 @@ public class PolicyEnforcementPoint {
 	private void addRoleAttribute(DecisionRequestBuilder<?> requestBuilder, List<StringValue> roles) {
 		final AttributeFqn roleAttributeId = AttributeFqns.newInstance(
 				XACML_1_0_ACCESS_SUBJECT.value(), Optional.empty(), XacmlAttributeId.XACML_2_0_SUBJECT_ROLE.value());
-		final AttributeBag<?> roleAttributeValues = Bags.newAttributeBag(StandardDatatypes.STRING, roles); //TODO: TEST SEVERAL ROLES
+		final AttributeBag<?> roleAttributeValues = Bags.newAttributeBag(StandardDatatypes.STRING, roles); 
 
 		requestBuilder.putNamedAttributeIfAbsent(roleAttributeId, roleAttributeValues);
 	}
