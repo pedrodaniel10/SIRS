@@ -4,29 +4,305 @@ import Attributes.*
 
 	policyset main {
 		apply firstApplicable
-		
+
+		/* Resource: indexPage */
 		policyset indexPage {
 			target clause Attributes.resourceId == "indexPage"
 			apply firstApplicable
 			
-			policy authorized {
+			/* Actions*/
+			policy ActionsIndex {
 				apply firstApplicable
 				
-				rule AuthorizedCanViewIndex {
+				/* RULE: Everyone can view the index page */
+				rule EveryoneCanViewIndex {
+					target clause Attributes.actionId == "view"
 					permit
+				}
+				
+				/* RULE: No one can perform other action than view in the index page */
+                rule NoOneCanCreateOrEditIndex {
+                    deny
+                }
+			}
+		}
+		
+		/* Resource: loginRegisterPage */
+		policyset loginRegisterPage {
+			target clause Attributes.resourceId == "loginRegisterPage"
+			apply firstApplicable
+			
+			/* Actions*/
+			policy ActionsLoginRegister {
+				apply firstApplicable
+				
+				/* RULE: Everyone can view the loginRegister page */
+				rule EveryoneCanViewloginRegister {
+					target clause Attributes.actionId == "view"
+					permit
+				}
+				
+				/* RULE: Everyone can register or login */
+				rule EveryoneCanRegisterOrLogin {
+					target clause Attributes.actionId == "edit"
+					permit
+				}
+				
+				/* RULE: No one can perform other action than view/login/register in the index page */
+                rule NoOneCanCreateInLoginPage {
+                    deny
+                }
+			}
+		}
+		
+		/* Resource: institutionsPage */
+		policyset institutionsPage {
+			target clause Attributes.resourceId == "institutionsPage"
+			apply firstApplicable
+			
+			/* Actions*/
+			policyset ActionsInstitutions {
+				apply firstApplicable
+				
+				/* SuperUser actions */
+				policy SuperUserActions {
+					target clause Attributes.subjectRole == "SUPERUSER"
+					apply firstApplicable
+				
+					/* RULE: SuperUser can view Institutions */
+					rule SuperUserCanViewInstitutions {
+						target clause Attributes.actionId == "view"
+						permit
+					}
+					
+					/* RULE: SuperUser can add Institutions */
+					rule SuperUserCanAddInstitutions {
+						target clause Attributes.actionId == "create"
+						permit
+					}
+					
+					/* RULE: SuperUser can edit Institutions (edit or delete) */
+					rule SuperUserCanEditInstitutions {
+						target clause Attributes.actionId == "edit"
+						permit
+					}
+	
+					/* RULE: SuperUser cannot perform other actions in the institutions page */
+	                rule SuperUserCannotPerformOtherActions {
+	                    deny
+	                }
+				}
+				
+				/* Others actions */
+				policy OthersActions {
+					apply firstApplicable
+					
+					/* RULE: No one can perform other actions in the institutions page (except SUPERUSER)*/
+	                rule NoOneCanPerformActions {
+	                    deny
+	                }
 				}
 			}
 		}
 		
+		/* Resource: citizensPage */
+		policyset citizensPage {
+			target clause Attributes.resourceId == "citizensPage"
+			apply firstApplicable
+			
+			/* Actions*/
+			policyset ActionsCitizens {
+				apply firstApplicable
+				
+				/* SuperUser actions */
+				policy SuperUserActions {
+					target clause Attributes.subjectRole == "SUPERUSER"
+					apply firstApplicable
+				
+					/* RULE: SuperUser can view Citizens */
+					rule SuperUserCanViewCitizens {
+						target clause Attributes.actionId == "view"
+						permit
+					}
+					
+					/* RULE: SuperUser can add Citizens */
+					rule SuperUserCanAddCitizens {
+						target clause Attributes.actionId == "create"
+						permit
+					}
+					
+					/* RULE: SuperUser can edit Citizens (edit or delete) */
+					rule SuperUserCanEditCitizens {
+						target clause Attributes.actionId == "edit"
+						permit
+					}
+	
+					/* RULE: SuperUser cannot perform other actions in the citizens page */
+	                rule SuperUserCannotPerformOtherActions {
+	                    deny
+	                }
+				}
+				
+				/* Others actions */
+				policy OthersActions {
+					apply firstApplicable
+					
+					/* RULE: No one can perform other actions in the citizens page (except SUPERUSER)*/
+	                rule NoOneCanPerformActions {
+	                    deny
+	                }
+				}
+			}
+		}
+		
+		/* Resource: doctorsPage */
 		policyset doctorsPage {
 			target clause Attributes.resourceId == "doctorsPage"
 			apply firstApplicable
 			
-			policy unauthorized {
+			/* Actions*/
+			policyset ActionsDoctors {
 				apply firstApplicable
 				
-				rule UnauthorizedCannotViewDoctorsPage {
-					deny
+				/* Admin actions */
+				policy AdminActions {
+					target clause Attributes.subjectRole == "ADMIN"
+					apply firstApplicable
+				
+					/* RULE: Admin can view doctors */
+					rule AdminCanViewDoctors {
+						target clause Attributes.actionId == "view"
+						permit
+					}
+					
+					/* RULE: Admin can add doctors */
+					rule AdminCanAddDoctors {
+						target clause Attributes.actionId == "create"
+						permit
+					}
+					
+					/* RULE: Admin can edit Doctors (delete) */
+					rule AdminCanEditDoctors {
+						target clause Attributes.actionId == "edit"
+						permit
+					}
+	
+					/* RULE: Admin cannot perform other actions in the doctors page */
+	                rule AdminCannotPerformOtherActions {
+	                    deny
+	                }
+				}
+				
+				/* Others actions */
+				policy OthersActions {
+					apply firstApplicable
+					
+					/* RULE: No one can perform other actions in the doctors page (except ADMIN)*/
+	                rule NoOneCanPerformActions {
+	                    deny
+	                }
+				}
+			}
+		}
+		
+		/* Resource: patientsPage */
+		policyset patientsPage {
+			target clause Attributes.resourceId == "patientsPage"
+			apply firstApplicable
+			
+			/* Actions*/
+			policyset ActionsPatients {
+				apply firstApplicable
+				
+				/* Doctor actions */
+				policy DoctorActions {
+					target clause Attributes.subjectRole == "DOCTOR"
+					apply firstApplicable
+				
+					/* RULE: Doctors can view their patients */
+					rule DoctorsCanViewPatients {
+						target clause Attributes.actionId == "view"
+						permit
+					}
+	
+					/* RULE: Doctor cannot perform other actions in the patients page */
+	                rule DoctorCannotPerformOtherActions {
+	                    deny
+	                }
+				}
+				
+				/* Others actions */
+				policy OthersActions {
+					apply firstApplicable
+					
+					/* RULE: No one can perform other actions in the patients page (except DOCTOR)*/
+	                rule NoOneCanPerformActions {
+	                    deny
+	                }
+				}
+			}
+		}
+		
+		/* Resource: medicalRecordsPage */
+		policyset medicalRecordsPage {
+			target clause Attributes.resourceId == "medicalRecordsPage"
+			apply firstApplicable
+			
+			/* Actions*/
+			policyset ActionsMedicalRecords {
+				apply firstApplicable
+				
+				/* Patients actions */
+				policy PatientActions {
+					target clause Attributes.subjectRole == "PATIENT"
+					apply firstApplicable
+				
+					/* RULE: Patients can view their medical records */
+					rule PatientsCanViewTheirMedicalRecords {
+						target clause Attributes.actionId == "view"
+							and Attributes.actionId == "view"
+						permit
+					}
+	
+					/* RULE: Patients cannot perform other actions in their medical records */
+	                rule PatientsCannotPerformOtherActions {
+	                    deny
+	                }
+				}
+				
+				/* Doctors actions */
+				policy DoctorsActions {
+					target clause Attributes.subjectRole == "DOCTOR"
+					apply firstApplicable
+				
+					/* RULE: Doctors can view their patients medical records */
+					rule DoctorsCanViewTheirPatientsMedicalRecords {
+						target clause Attributes.actionId == "view"
+							//and Attributes.actionId == "view"
+						permit
+					}
+					
+					/* RULE: Doctors can create medical records */
+					rule DoctorsCanCreateMedicalRecords {
+						target clause Attributes.actionId == "create"
+							//and Attributes.actionId == "view"
+						permit
+					}
+	
+					/* RULE: Doctors cannot perform other actions in medical records */
+	                rule PatientsCannotPerformOtherActions {
+	                    deny
+	                }
+				}
+				
+				/* Others actions */
+				policy OthersActions {
+					apply firstApplicable
+					
+					/* RULE: No one can perform other actions in the medicalrecords page (except DOCTOR/PATIENT)*/
+	                rule NoOneCanPerformActions {
+	                    deny
+	                }
 				}
 			}
 		}

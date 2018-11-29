@@ -54,6 +54,12 @@ namespace Attributes {
         category = subjectCat
     }
 
+    attribute subjectRole {
+        id = "urn:oasis:names:tc:xacml:2.0:subject:role"
+        type = string
+        category = subjectCat
+    }
+
     attribute resourceId {
         id = "urn:oasis:names:tc:xacml:1.0:resource:resource-id"
         type = string
