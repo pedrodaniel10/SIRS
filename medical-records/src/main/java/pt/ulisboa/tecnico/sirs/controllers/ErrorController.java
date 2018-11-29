@@ -13,7 +13,7 @@ public class ErrorController implements org.springframework.boot.autoconfigure.w
 
     @RequestMapping(value = "/error", method = RequestMethod.GET)
     public String handleError(Map<String, Object> model) {
-        return "unforbidden";
+        return "401";
     }
 
     public String getErrorPath() {

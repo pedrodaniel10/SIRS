@@ -39,7 +39,7 @@ public class CitizensController {
 
     @RequestMapping(value = "/citizens/{citizenId}/edit", method = RequestMethod.POST)
     public String postRequestEditProfile(Map<String, Object> model, @PathVariable String citizenId) {
-        return "profile";
+        return "redirect:/citizens";
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/profile", method = RequestMethod.GET)

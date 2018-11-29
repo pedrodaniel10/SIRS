@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<tags:header title="Edit Medical Record"></tags:header>
+<tags:header title="Edit Medical Record"/>
 
 <body>
 <tags:citizen name="David Williams" image="/img/david_williams.jpg" citizenId="20">
@@ -14,7 +14,7 @@
                     <a href="/citizens">Citizens</a>
                 </li>
                 <li>
-                    <a href="/citizens/20/view">David Williams</a>
+                    <a href="/citizens/20/profile">David Williams</a>
                 </li>
                 <li class="active">
                     <strong>Create Medical Record</strong>
