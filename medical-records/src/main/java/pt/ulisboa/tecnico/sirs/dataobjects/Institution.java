@@ -5,17 +5,17 @@ public class Institution {
 	private String institutionName;
 	private String institutionAddress;
 	private String profilePic;
-	private int superuserId;
+	private String superuserCitizenId;
 	
 	public 	Institution() {}
 	
 	public Institution(int institutionId, String institutionName, String institutionAddress, String profilePic, 
-			int superuserId) {
+			String superuserCitizenId) {
 		this.institutionId = institutionId;
 		this.institutionName = institutionName;
 		this.institutionAddress = institutionAddress;
 		this.profilePic = profilePic;
-		this.superuserId = superuserId;
+		this.setSuperuserCitizenId(superuserCitizenId);
 	}
 
 	public int getInstitutionId() {
@@ -50,11 +50,11 @@ public class Institution {
 		this.profilePic = profilePic;
 	}
 
-	public int getSuperuserId() {
-		return superuserId;
+	public String getSuperuserCitizenId() {
+		return superuserCitizenId;
 	}
 
-	public void setSuperuserId(int superuserId) {
-		this.superuserId = superuserId;
+	public void setSuperuserCitizenId(String superuserCitizenId) {
+		this.superuserCitizenId = superuserCitizenId;
 	}
 }

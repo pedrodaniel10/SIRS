@@ -1,7 +1,7 @@
 package pt.ulisboa.tecnico.sirs.dataobjects;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Citizen {
 	
@@ -16,23 +16,26 @@ public class Citizen {
 	private String citizenId;
 	private String citizenName;
 	private Gender gender;
-	private Date dateOfBirth;
+	private LocalDate dateOfBirth;
 	private String email;
+	private String password;
 	private String profilePic;
-	private int superuserId;
+	private String superuserCitizenId;
 	private ArrayList<Role> roles = new ArrayList<Role>();
 	
 	public Citizen() {}
-	
-	public Citizen(String citizenId, String citizenName, Gender gender, Date dateOfBirth, String email,
-			String profilePic, int superuserId, ArrayList<Role> roles) {
+
+	public Citizen(String citizenId, String citizenName, Gender gender, LocalDate dateOfBirth, String email,
+			String password, String profilePic, String superuserCitizenId, ArrayList<Role> roles) {
+		super();
 		this.citizenId = citizenId;
 		this.citizenName = citizenName;
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
 		this.email = email;
+		this.password = password;
 		this.profilePic = profilePic;
-		this.superuserId = superuserId;
+		this.superuserCitizenId = superuserCitizenId;
 		this.roles = roles;
 	}
 
@@ -60,11 +63,11 @@ public class Citizen {
 		this.gender = gender;
 	}
 	
-	public Date getDateOfBirth() {
+	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
 	
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 	
@@ -75,6 +78,14 @@ public class Citizen {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	
 	public String getProfilePic() {
 		return profilePic;
@@ -83,13 +94,13 @@ public class Citizen {
 	public void setProfilePic(String profilePic) {
 		this.profilePic = profilePic;
 	}
-
-	public int getSuperuserId() {
-		return superuserId;
+	
+	public String getSuperuserCitizenId() {
+		return superuserCitizenId;
 	}
 
-	public void setSuperuserId(int superuserId) {
-		this.superuserId = superuserId;
+	public void setSuperuserCitizenId(String superuserCitizenId) {
+		this.superuserCitizenId = superuserCitizenId;
 	}
 
 	public ArrayList<Role> getRoles() {
@@ -103,4 +114,9 @@ public class Citizen {
 	public void addRole(Role role) {
 		this.roles.add(role);
 	}
+	
+	public void removeRole(Role role) {
+		this.roles.remove(role);
+	}
+	
 }

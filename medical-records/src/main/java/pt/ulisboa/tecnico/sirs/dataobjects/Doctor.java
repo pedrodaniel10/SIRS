@@ -4,18 +4,19 @@ public class Doctor {
 	private int doctorId;
 	private String citizenId;
 	private int institutionId;
-	private int superuserId;
-	private int adminId;
+	private String superuserCitizenId;
+	private String adminCitizenId;
 	
-	public Doctor() {}
-	
-	public Doctor(int doctorId, String citizenId, int institutionId, int superuserId, int adminId) {
+	public Doctor(int doctorId, String citizenId, int institutionId, String superuserCitizenId, String adminCitizenId) {
+		super();
 		this.doctorId = doctorId;
 		this.citizenId = citizenId;
 		this.institutionId = institutionId;
-		this.superuserId = superuserId;
-		this.adminId = adminId;
+		this.superuserCitizenId = superuserCitizenId;
+		this.adminCitizenId = adminCitizenId;
 	}
+
+	public Doctor() {}
 
 	public int getDoctorId() {
 		return doctorId;
@@ -41,19 +42,19 @@ public class Doctor {
 		this.institutionId = institutionId;
 	}
 
-	public int getSuperuserId() {
-		return superuserId;
+	public String getSuperuserCitizenId() {
+		return superuserCitizenId;
 	}
 
-	public void setSuperuserId(int superuserId) {
-		this.superuserId = superuserId;
+	public void setSuperuserCitizenId(String superuserCitizenId) {
+		this.superuserCitizenId = superuserCitizenId;
 	}
 
-	public int getAdminId() {
-		return adminId;
+	public String getAdminCitizenId() {
+		return adminCitizenId;
 	}
 
-	public void setAdminId(int adminId) {
-		this.adminId = adminId;
+	public void setAdminCitizenId(String adminCitizenId) {
+		this.adminCitizenId = adminCitizenId;
 	}
 }

@@ -9,9 +9,9 @@ public class MedicalRecord {
 	private int sugar;
 	private int haemoglobin;
 	private Date creationDate;
-	private int doctorId;
+	private String doctorCitizenId;
 	private String treatment;
-	private int patientId;
+	private String patientCitizenId;
 	private int institutionId;
 	private String generalReport;
 	private String recordSignature;
@@ -19,17 +19,18 @@ public class MedicalRecord {
 	public MedicalRecord() {}
 	
 	public MedicalRecord(int recordId, int heartBeat, int bloodPressure, int sugar, int haemoglobin, Date creationDate,
-			int doctorId, String treatment, int patientId, int institutionId, String generalReport,
+			String doctorCitizenId, String treatment, String patientCitizenId, int institutionId, String generalReport,
 			String recordSignature) {
+		super();
 		this.recordId = recordId;
 		this.heartBeat = heartBeat;
 		this.bloodPressure = bloodPressure;
 		this.sugar = sugar;
 		this.haemoglobin = haemoglobin;
 		this.creationDate = creationDate;
-		this.doctorId = doctorId;
+		this.doctorCitizenId = doctorCitizenId;
 		this.treatment = treatment;
-		this.patientId = patientId;
+		this.patientCitizenId = patientCitizenId;
 		this.institutionId = institutionId;
 		this.generalReport = generalReport;
 		this.recordSignature = recordSignature;
@@ -83,12 +84,12 @@ public class MedicalRecord {
 		this.creationDate = creationDate;
 	}
 	
-	public int getDoctorId() {
-		return doctorId;
+	public String getDoctorCitizenId() {
+		return doctorCitizenId;
 	}
-	
-	public void setDoctorId(int doctorId) {
-		this.doctorId = doctorId;
+
+	public void setDoctorCitizenId(String doctorCitizenId) {
+		this.doctorCitizenId = doctorCitizenId;
 	}
 	
 	public String getTreatment() {
@@ -99,14 +100,14 @@ public class MedicalRecord {
 		this.treatment = treatment;
 	}
 	
-	public int getPatientId() {
-		return patientId;
+	public String getPatientCitizenId() {
+		return patientCitizenId;
 	}
-	
-	public void setPatientId(int patientId) {
-		this.patientId = patientId;
+
+	public void setPatientCitizenId(String patientCitizenId) {
+		this.patientCitizenId = patientCitizenId;
 	}
-	
+
 	public int getInstitutionId() {
 		return institutionId;
 	}

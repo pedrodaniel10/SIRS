@@ -6,27 +6,29 @@ public class DocPatRelation {
 	private int docPatRelationId;
 	private Date beginDate;
 	private Date endDate;
-	private int doctorId;
-	private int patientId;
-	private int adminId;
+	private String doctorCitizenId;
+	private String patientCitizenId;
+	private String adminCitizenId;
 	
 	public DocPatRelation() {}
-	
-	public DocPatRelation(int authId, Date beginDate, Date endDate, int doctorId, int patientId, int adminId) {
-		this.docPatRelationId = authId;
+
+	public DocPatRelation(int docPatRelationId, Date beginDate, Date endDate, String doctorCitizenId,
+			String patientCitizenId, String adminCitizenId) {
+		super();
+		this.docPatRelationId = docPatRelationId;
 		this.beginDate = beginDate;
 		this.endDate = endDate;
-		this.doctorId = doctorId;
-		this.patientId = patientId;
-		this.adminId = adminId;
+		this.doctorCitizenId = doctorCitizenId;
+		this.patientCitizenId = patientCitizenId;
+		this.adminCitizenId = adminCitizenId;
 	}
 
-	public int getAuthId() {
+	public int getDocPatRelationId() {
 		return docPatRelationId;
 	}
 	
-	public void setAuthId(int authId) {
-		this.docPatRelationId = authId;
+	public void setDocPatRelationId(int docPatRelationId) {
+		this.docPatRelationId = docPatRelationId;
 	}
 	
 	public Date getBeginDate() {
@@ -44,28 +46,28 @@ public class DocPatRelation {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	
-	public int getDoctorId() {
-		return doctorId;
-	}
-	
-	public void setDoctorId(int doctorId) {
-		this.doctorId = doctorId;
-	}
-	
-	public int getPatientId() {
-		return patientId;
-	}
-	
-	public void setPatientId(int patientId) {
-		this.patientId = patientId;
+
+	public String getDoctorCitizenId() {
+		return doctorCitizenId;
 	}
 
-	public int getAdminId() {
-		return adminId;
+	public void setDoctorCitizenId(String doctorCitizenId) {
+		this.doctorCitizenId = doctorCitizenId;
 	}
 
-	public void setAdminId(int adminId) {
-		this.adminId = adminId;
+	public String getPatientCitizenId() {
+		return patientCitizenId;
+	}
+
+	public void setPatientCitizenId(String patientCitizenId) {
+		this.patientCitizenId = patientCitizenId;
+	}
+
+	public String getAdminCitizenId() {
+		return adminCitizenId;
+	}
+
+	public void setAdminCitizenId(String adminCitizenId) {
+		this.adminCitizenId = adminCitizenId;
 	}
 }
