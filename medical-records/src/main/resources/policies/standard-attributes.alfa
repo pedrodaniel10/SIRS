@@ -65,6 +65,12 @@ namespace Attributes {
         type = string
         category = resourceCat
     }
+    
+    attribute resourceName {
+        id = "urn:oasis:names:tc:xacml:1.0:resource:resource-location"
+        type = string
+        category = resourceCat
+    }
 
     attribute resourceTargetNamespace {
         id = "urn:oasis:names:tc:xacml:2.0:resource:target-namespace"

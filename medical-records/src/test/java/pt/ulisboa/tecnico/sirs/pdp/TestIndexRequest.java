@@ -1,7 +1,6 @@
 package pt.ulisboa.tecnico.sirs.pdp;
 
 import org.junit.Test;
-import org.ow2.authzforce.core.pdp.api.DecisionRequest;
 
 import java.util.ArrayList;
 
@@ -14,7 +13,7 @@ public class TestIndexRequest {
 	public void AnyoneViewIndex() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
-		boolean result = policyEnforcementPoint.requestEvaluation("indexPage", new ArrayList<>(), "view");
+		boolean result = policyEnforcementPoint.requestEvaluation("", new ArrayList<>(), "view", "indexPage", "");
 		assertTrue(result);
 	}
 	
@@ -22,7 +21,7 @@ public class TestIndexRequest {
 	public void NoOneCreateInIndex() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
-		boolean result = policyEnforcementPoint.requestEvaluation("indexPage", new ArrayList<>(), "create");
+		boolean result = policyEnforcementPoint.requestEvaluation("", new ArrayList<>(), "create", "indexPage", "");
 		assertFalse(result);
 	}
 
@@ -30,7 +29,7 @@ public class TestIndexRequest {
 	public void NoOneEditInIndex() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
-		boolean result = policyEnforcementPoint.requestEvaluation("indexPage", new ArrayList<>(), "edit");
+		boolean result = policyEnforcementPoint.requestEvaluation("", new ArrayList<>(), "edit", "indexPage", "");
 		assertFalse(result);
 	}
 }

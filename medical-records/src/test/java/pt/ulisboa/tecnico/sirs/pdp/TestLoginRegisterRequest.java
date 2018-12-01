@@ -1,8 +1,10 @@
 package pt.ulisboa.tecnico.sirs.pdp;
 
 import org.junit.Test;
-import org.ow2.authzforce.core.pdp.api.DecisionRequest;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertFalse;
@@ -11,10 +13,11 @@ import static org.junit.Assert.assertTrue;
 public class TestLoginRegisterRequest {
 	
 	@Test
-	public void anyoneViewLoginRegister() {
+	public void anyoneViewLoginRegister() throws IOException {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
-		boolean result = policyEnforcementPoint.requestEvaluation("loginRegisterPage", new ArrayList<>(), "view");
+		System.out.println("HEY:" + policyEnforcementPoint.toString());
+		boolean result = policyEnforcementPoint.requestEvaluation("", new ArrayList<>(), "view", "loginRegisterPage", "");
 		assertTrue(result);
 	}
 	
@@ -22,7 +25,7 @@ public class TestLoginRegisterRequest {
 	public void anyoneEditInLoginRegister() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
-		boolean result = policyEnforcementPoint.requestEvaluation("loginRegisterPage", new ArrayList<>(), "edit");
+		boolean result = policyEnforcementPoint.requestEvaluation("", new ArrayList<>(), "edit", "loginRegisterPage","");
 		assertTrue(result);
 	}
 
@@ -30,7 +33,7 @@ public class TestLoginRegisterRequest {
 	public void noOneEditInLoginRegister() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
-		boolean result = policyEnforcementPoint.requestEvaluation("loginRegisterPage", new ArrayList<>(), "create");
+		boolean result = policyEnforcementPoint.requestEvaluation("", new ArrayList<>(), "create", "loginRegisterPage", "");
 		assertFalse(result);
 	}
 }

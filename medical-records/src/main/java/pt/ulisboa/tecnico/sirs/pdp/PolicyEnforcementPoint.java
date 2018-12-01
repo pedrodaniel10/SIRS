@@ -27,26 +27,28 @@ public class PolicyEnforcementPoint {
 
 	public PolicyEnforcementPoint() {
 		try {
-			File file = new ClassPathResource("pdp/pdp.xml").getFile();
-			log.info("File:" + file.getAbsolutePath());
-			PdpEngineConfiguration pdpEngineConf = PdpEngineConfiguration.getInstance(file.getAbsolutePath());
+			File confLocation = new ClassPathResource("pdp/pdp.xml").getFile();
+			PdpEngineConfiguration pdpEngineConf = PdpEngineConfiguration.getInstance(
+					confLocation.getAbsolutePath());
 			pdp = new BasePdpEngine(pdpEngineConf);
 		} catch (IOException e) {
-			log.error("Enable to find configuration file: ");
+			log.error("Enable to find configuration file" + e);
 		}
 	}
 
-	public boolean requestEvaluation(String resource, List<String> roles, String action) {
-		DecisionRequest request = createRequest(resource, roles, action);
+	public boolean requestEvaluation(String subjectId, List<String> roles, String action, String resourceName, String resourceId) {
+		DecisionRequest request = createRequest(subjectId, roles, action, resourceName, resourceId);
 		return evaluateRequest(request);
 	}
 
 	/* Create the XACML request in native model */
-	private DecisionRequest createRequest(String resource, List<String> roles, String action) {
+	private DecisionRequest createRequest(
+			String subjectId, List<String> roles, String action, String resourceName, String resourceId) {
 
-		//TODO: Update Attribute and Category numbers in the end
 		final DecisionRequestBuilder<?> requestBuilder = pdp.newRequestBuilder(-1, -1);
-		addResourceAttribute(requestBuilder, resource);
+		addResourceIdAttribute(requestBuilder, resourceId);
+		addResourceNameAttribute(requestBuilder, resourceName);
+		addSubjectIdAttribute(requestBuilder, subjectId);
 		addRoleAttribute(requestBuilder, AuthzForceUtils.parseStringList(roles));
 		addActionAttribute(requestBuilder, action);
 		return requestBuilder.build(false);
@@ -57,19 +59,36 @@ public class PolicyEnforcementPoint {
 		return result.getDecision() == DecisionType.PERMIT;
 	}
 
-	private void addResourceAttribute(DecisionRequestBuilder<?> requestBuilder, String resource) {
-		final AttributeFqn resourceAttributeId = AttributeFqns.newInstance(
+	private void addResourceIdAttribute(DecisionRequestBuilder<?> requestBuilder, String resourceId) {
+		final AttributeFqn resourceIdAttributeId = AttributeFqns.newInstance(
 				XACML_3_0_RESOURCE.value(), Optional.empty(), XacmlAttributeId.XACML_1_0_RESOURCE_ID.value());
+		final AttributeBag<?> resourceIdAttributeValues = Bags.singletonAttributeBag(
+				StandardDatatypes.STRING, new StringValue(resourceId));
+		
+		requestBuilder.putNamedAttributeIfAbsent(resourceIdAttributeId, resourceIdAttributeValues);
+	}
+
+	private void addResourceNameAttribute(DecisionRequestBuilder<?> requestBuilder, String resourceName) {
+		final AttributeFqn resourceAttributeId = AttributeFqns.newInstance(
+				XACML_3_0_RESOURCE.value(), Optional.empty(), XacmlAttributeId.XACML_1_0_RESOURCE_LOCATION.value());
 		final AttributeBag<?> resourceAttributeValues = Bags.singletonAttributeBag(
-				StandardDatatypes.STRING, new StringValue(resource));
+				StandardDatatypes.STRING, new StringValue(resourceName));
 
 		requestBuilder.putNamedAttributeIfAbsent(resourceAttributeId, resourceAttributeValues);
+	}
+
+	private void addSubjectIdAttribute(DecisionRequestBuilder<?> requestBuilder, String subjectId) {
+		final AttributeFqn subjectIdAttributeId = AttributeFqns.newInstance(
+				XACML_1_0_ACCESS_SUBJECT.value(), Optional.empty(), XacmlAttributeId.XACML_1_0_SUBJECT_ID.value());
+		final AttributeBag<?> subjectIdAttributeValues = Bags.singletonAttributeBag(StandardDatatypes.STRING, new StringValue(subjectId));
+
+		requestBuilder.putNamedAttributeIfAbsent(subjectIdAttributeId, subjectIdAttributeValues);
 	}
 
 	private void addRoleAttribute(DecisionRequestBuilder<?> requestBuilder, List<StringValue> roles) {
 		final AttributeFqn roleAttributeId = AttributeFqns.newInstance(
 				XACML_1_0_ACCESS_SUBJECT.value(), Optional.empty(), XacmlAttributeId.XACML_2_0_SUBJECT_ROLE.value());
-		final AttributeBag<?> roleAttributeValues = Bags.newAttributeBag(StandardDatatypes.STRING, roles); 
+		final AttributeBag<?> roleAttributeValues = Bags.newAttributeBag(StandardDatatypes.STRING, roles);
 
 		requestBuilder.putNamedAttributeIfAbsent(roleAttributeId, roleAttributeValues);
 	}

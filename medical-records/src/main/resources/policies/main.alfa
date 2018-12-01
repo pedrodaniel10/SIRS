@@ -7,7 +7,7 @@ import Attributes.*
 		
 		/* Resource: indexPage */
 		policyset indexPage {
-			target clause Attributes.resourceId == "indexPage"
+			target clause Attributes.resourceName == "indexPage"
 			apply firstApplicable
 			
 			/* Actions*/
@@ -29,7 +29,7 @@ import Attributes.*
 		
 		/* Resource: loginRegisterPage */
 		policyset loginRegisterPage {
-			target clause Attributes.resourceId == "loginRegisterPage"
+			target clause Attributes.resourceName == "loginRegisterPage"
 			apply firstApplicable
 			
 			/* Actions*/
@@ -57,7 +57,7 @@ import Attributes.*
 				
 	/* Resource: institutionsPage */
 	policyset institutionsPage {
-		target clause Attributes.resourceId == "institutionsPage"
+		target clause Attributes.resourceName == "institutionsPage"
 		apply firstApplicable
 		
 		/* Actions*/
@@ -107,7 +107,7 @@ import Attributes.*
 		
 		/* Resource: citizensPage */
 		policyset citizensPage {
-			target clause Attributes.resourceId == "citizensPage"
+			target clause Attributes.resourceName == "citizensPage"
 			apply firstApplicable
 			
 			/* Actions*/
@@ -151,7 +151,7 @@ import Attributes.*
 		
 		/* Resource: doctorsPage */
 		policyset doctorsPage {
-			target clause Attributes.resourceId == "doctorsPage"
+			target clause Attributes.resourceName == "doctorsPage"
 			apply firstApplicable
 			
 			/* Actions*/
@@ -201,7 +201,7 @@ import Attributes.*
 		
 		/* Resource: patientsPage */
 		policyset patientsPage {
-			target clause Attributes.resourceId == "patientsPage"
+			target clause Attributes.resourceName == "patientsPage"
 			apply firstApplicable
 			
 			/* Actions*/
@@ -239,7 +239,7 @@ import Attributes.*
 		
 		/* Resource: medicalRecordsPage */
 		policyset medicalRecordsPage {
-			target clause Attributes.resourceId == "medicalRecordsPage"
+			target clause Attributes.resourceName == "medicalRecordsPage"
 			apply firstApplicable
 			
 			/* Actions*/

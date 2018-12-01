@@ -15,8 +15,8 @@ public class TestDoctorsRequest {
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 		ArrayList<String> roles = new ArrayList<>();
 		roles.add("ADMIN");
-		boolean result = policyEnforcementPoint.requestEvaluation(
-				"doctorsPage", roles, "view" );
+		boolean result = policyEnforcementPoint.requestEvaluation("",
+				roles, "view", "doctorsPage", "");
 		assertTrue(result);
 	}
 
@@ -26,8 +26,8 @@ public class TestDoctorsRequest {
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 		ArrayList<String> roles = new ArrayList<>();
 		roles.add("ADMIN");
-		boolean result = policyEnforcementPoint.requestEvaluation(
-				"doctorsPage", roles, "create" );
+		boolean result = policyEnforcementPoint.requestEvaluation("",
+				roles, "create", "doctorsPage", "");
 		assertTrue(result);
 	}
 
@@ -37,8 +37,8 @@ public class TestDoctorsRequest {
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 		ArrayList<String> roles = new ArrayList<>();
 		roles.add("ADMIN");
-		boolean result = policyEnforcementPoint.requestEvaluation(
-				"doctorsPage", roles, "edit" );
+		boolean result = policyEnforcementPoint.requestEvaluation("",
+				roles, "edit", "doctorsPage", "");
 		assertTrue(result);
 	}
 
@@ -48,8 +48,8 @@ public class TestDoctorsRequest {
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 		ArrayList<String> roles = new ArrayList<>();
 		roles.add("ADMIN");
-		boolean result = policyEnforcementPoint.requestEvaluation(
-				"doctorsPage", roles, "destroy" );
+		boolean result = policyEnforcementPoint.requestEvaluation("",
+				roles, "destroy", "doctorsPage", "");
 		assertFalse(result);
 	}
 
@@ -59,8 +59,8 @@ public class TestDoctorsRequest {
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 		ArrayList<String> roles = new ArrayList<>();
 		roles.add("PATIENT");
-		boolean result = policyEnforcementPoint.requestEvaluation(
-				"doctorsPage", roles, "view" );
+		boolean result = policyEnforcementPoint.requestEvaluation("",
+				roles, "view", "doctorsPage", "");
 		assertFalse(result);
 	}
 
@@ -70,8 +70,8 @@ public class TestDoctorsRequest {
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 		ArrayList<String> roles = new ArrayList<>();
 		roles.add("DOCTOR");
-		boolean result = policyEnforcementPoint.requestEvaluation(
-				"doctorsPage", roles, "view" );
+		boolean result = policyEnforcementPoint.requestEvaluation("",
+				roles, "view", "doctorsPage", "");
 		assertFalse(result);
 	}
 
@@ -81,8 +81,8 @@ public class TestDoctorsRequest {
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 		ArrayList<String> roles = new ArrayList<>();
 		roles.add("SUPERUSER");
-		boolean result = policyEnforcementPoint.requestEvaluation(
-				"doctorsPage", roles, "view" );
+		boolean result = policyEnforcementPoint.requestEvaluation("",
+				roles, "view", "doctorsPage", "");
 		assertFalse(result);
 	}
 }
