@@ -5,7 +5,7 @@ public class Doctor {
 	private String citizenId;
 	private int institutionId;
 	private String superuserCitizenId;
-	private String adminCitizenId;
+	private String adminCitizenId; //admin that set the institution
 	
 	public Doctor(int doctorId, String citizenId, int institutionId, String superuserCitizenId, String adminCitizenId) {
 		super();
@@ -34,11 +34,11 @@ public class Doctor {
 		this.citizenId = citizenId;
 	}
 	
-	public int getInstitution() {
+	public int getInstitutionId() {
 		return institutionId;
 	}
 	
-	public void setInstitution(int institutionId) {
+	public void setInstitutionId(int institutionId) {
 		this.institutionId = institutionId;
 	}
 

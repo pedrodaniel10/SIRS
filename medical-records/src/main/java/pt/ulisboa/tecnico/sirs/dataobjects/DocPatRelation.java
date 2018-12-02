@@ -1,6 +1,6 @@
 package pt.ulisboa.tecnico.sirs.dataobjects;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class DocPatRelation {
 	private int docPatRelationId;

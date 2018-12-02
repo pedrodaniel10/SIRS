@@ -16,16 +16,19 @@ import pt.ulisboa.tecnico.sirs.dataobjects.Citizen;
 import pt.ulisboa.tecnico.sirs.dataobjects.Citizen.Gender;
 import pt.ulisboa.tecnico.sirs.dataobjects.Citizen.Role;
 
-public class DatabaseCitizenOperationsTest {
+public class DatabaseDocPatRelationOperations {
 	
 	private Connection conn;
 	private Citizen citizen;
-	
+	/*
 	@Before
-	public void setup() throws DatabaseConnectionException {
+	public void setup() throws DatabaseConnectionException, SQLException {
 		this.conn = (new DatabaseConnector()).getConnection();
 		this.citizen = new Citizen("test_id", "paulo", Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt", 
 				"jálhedigo", "path", "super", new ArrayList<Role>());
+		DatabaseUtils.addCitizen(this.conn, this.citizen);
+		this.citizen.addRole(Role.DOCTOR);
+		
 	}
 	
 	@Test
@@ -34,25 +37,7 @@ public class DatabaseCitizenOperationsTest {
 		Citizen result = DatabaseUtils.getCitizenById(this.conn, "test_id");
 		assertEquals(result.getCitizenId(), this.citizen.getCitizenId());
 	}
+	*/
 	
-	@Test
-	public void allRoles() throws DatabaseConnectionException, SQLException {
-		this.citizen.addRole(Role.DOCTOR);
-		this.citizen.addRole(Role.ADMIN);
-		this.citizen.addRole(Role.SUPERUSER);
-		DatabaseUtils.addCitizen(this.conn, this.citizen);
-		Citizen result = DatabaseUtils.getCitizenById(this.conn, "test_id");
-		assertEquals(result.getCitizenId(), this.citizen.getCitizenId());
-	}
 	
-	@Test
-	public void updateCitizen() throws SQLException {
-		this.citizen.addRole(Role.DOCTOR);
-		DatabaseUtils.addCitizen(conn, citizen);
-		
-		this.citizen.setCitizenName("polo");
-		this.citizen.addRole(Role.ADMIN);
-		this.citizen.removeRole(Role.DOCTOR);
-		DatabaseUtils.updateCitizen(conn, citizen);
-	}
 }

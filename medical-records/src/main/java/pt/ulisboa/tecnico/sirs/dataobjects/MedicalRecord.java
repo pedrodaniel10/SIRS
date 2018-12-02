@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.sirs.dataobjects;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class MedicalRecord {
@@ -8,7 +9,7 @@ public class MedicalRecord {
 	private int bloodPressure;
 	private int sugar;
 	private int haemoglobin;
-	private Date creationDate;
+	private Timestamp creationDate;
 	private String doctorCitizenId;
 	private String treatment;
 	private String patientCitizenId;
@@ -18,7 +19,7 @@ public class MedicalRecord {
 	
 	public MedicalRecord() {}
 	
-	public MedicalRecord(int recordId, int heartBeat, int bloodPressure, int sugar, int haemoglobin, Date creationDate,
+	public MedicalRecord(int recordId, int heartBeat, int bloodPressure, int sugar, int haemoglobin, Timestamp creationDate,
 			String doctorCitizenId, String treatment, String patientCitizenId, int institutionId, String generalReport,
 			String recordSignature) {
 		super();
@@ -76,11 +77,11 @@ public class MedicalRecord {
 		this.haemoglobin = haemoglobin;
 	}
 	
-	public Date getCreationDate() {
+	public Timestamp getCreationDate() {
 		return creationDate;
 	}
 	
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}
 	
