@@ -15,6 +15,7 @@ import pt.ulisboa.tecnico.sirs.dataobjects.Doctor;
 import pt.ulisboa.tecnico.sirs.dataobjects.Institution;
 import pt.ulisboa.tecnico.sirs.dataobjects.MedicalRecord;
 import pt.ulisboa.tecnico.sirs.dataobjects.Patient;
+import pt.ulisboa.tecnico.sirs.dataobjects.Session;
 
 public class DatabaseUtils {
 	
@@ -25,8 +26,7 @@ public class DatabaseUtils {
 	}
 	
 	public static Citizen getCitizenById(Connection conn, String citizenId) throws SQLException {
-		String getCitizenByIdQuery = Constants.GET_CITIZEN_BY_ID_QUERY;
-		ArrayList<Citizen> citizens = getCitizens(conn, getCitizenByIdQuery, citizenId);
+		ArrayList<Citizen> citizens = getCitizens(conn, Constants.GET_CITIZEN_BY_ID_QUERY, citizenId);
 		if (citizens.isEmpty()) {
 			return null;
 		}
@@ -421,4 +421,67 @@ public class DatabaseUtils {
 		}
 		return patients;
 	}
+	
+	public static void setAdminInstitutionId(Connection conn, String adminCitizenId, int institutionId) 
+			throws SQLException {
+		try (PreparedStatement statement = conn.prepareStatement(Constants.SET_ADMIN_INSTITUTION_ID_QUERY)) {
+			statement.setInt(1, institutionId);
+			statement.setString(2, adminCitizenId);
+			
+			statement.executeUpdate();
+		}
+	}
+	
+	public static Session getSessionBySessionId(Connection conn, String sessionId) throws SQLException {
+		ArrayList<Session> sessions = getSessions(conn, Constants.GET_SESSION_BY_ID_QUERY, sessionId);
+		if (sessions.isEmpty()) {
+			return null;
+		}
+		return sessions.get(0);
+	}
+	
+	public static ArrayList<Session> getSessionsByCitizenId(Connection conn, String citizenId) throws SQLException {
+		return getSessions(conn, Constants.GET_SESSIONS_BY_CITIZEN_ID_QUERY, citizenId);
+	}
+	
+	private static ArrayList<Session> getSessions(Connection conn, String query, String id) throws SQLException {
+		ArrayList<Session> sessions = new ArrayList<Session>();
+		try (PreparedStatement statement = conn.prepareStatement(query)) {
+			statement.setString(1, id);
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				Session session = new Session();
+				session.setSessionId(rs.getString("session_id"));
+				session.setCitizenId(rs.getString("citizen_id"));
+				session.setCreationTime(rs.getTimestamp("creation_time"));
+				session.setEndTime(rs.getTimestamp("end_time"));
+				
+				sessions.add(session);
+			}
+		}
+		return sessions;
+	}
+	
+	public static void addSession(Connection conn, Session session) throws SQLException {
+		try (PreparedStatement statement = conn.prepareStatement(Constants.ADD_SESSION_QUERY)) {
+			statement.setString(1, session.getSessionId());
+			statement.setString(2, session.getCitizenId());
+			statement.setTimestamp(3, session.getCreationTime());
+			statement.setTimestamp(4, session.getEndTime());
+			
+			statement.executeUpdate();
+		}
+	}
+	
+	public static void updateSession(Connection conn, Session session) throws SQLException {
+		try (PreparedStatement statement = conn.prepareStatement(Constants.UPDATE_SESSION_QUERY)) {
+			statement.setString(1, session.getCitizenId());
+			statement.setTimestamp(2, session.getCreationTime());
+			statement.setTimestamp(3, session.getEndTime());
+			statement.setString(4, session.getSessionId());
+			
+			statement.executeUpdate();
+		}
+	}
+	
 }

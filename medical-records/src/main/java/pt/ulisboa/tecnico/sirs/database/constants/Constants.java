@@ -88,12 +88,18 @@ public class Constants {
 	public static final String REMOVE_DOCTOR_FROM_INSTITUTION_QUERY = "UPDATE doctors SET institution_id=NULL,admin_citizen=? "
 			+ "WHERE citizen_id=?";
 
-	public static final String GET_PATIENTS_BY_DOCTOR_ID_QUERY = "SELECT * FROM patients WHERE citizen_id IN (SELECT patient_citizen_id FROM doc_pat_relations WHERE doctor_citizen_id=?)";
+	public static final String GET_PATIENTS_BY_DOCTOR_ID_QUERY = "SELECT * FROM patients WHERE citizen_id IN "
+			+ "(SELECT patient_citizen_id FROM doc_pat_relations WHERE doctor_citizen_id=?)";
 
 	public static final String GET_ALL_PATIENTS_QUERY = "SELECT * FROM patients";
-	
-	
-	
-	
-	
+
+	public static final String SET_ADMIN_INSTITUTION_ID_QUERY = "UPDATE admins SET institution_id=? WHERE citizen_id=?";
+
+	public static final String GET_SESSION_BY_ID_QUERY = "SELECT * FROM sessions WHERE session_id=?";
+
+	public static final String GET_SESSIONS_BY_CITIZEN_ID_QUERY = "SELECT * FROM sessions WHERE citizen_id=?";
+
+	public static final String ADD_SESSION_QUERY = "INSERT INTO sessions VALUES (?,?,?,?)";
+
+	public static final String UPDATE_SESSION_QUERY = "UPDATE sessions SET citizen_id=?,creation_time=?,end_time=? WHERE session_id=?";
 }

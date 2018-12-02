@@ -1,16 +1,16 @@
 package pt.ulisboa.tecnico.sirs.dataobjects;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Session {
 	private String sessionId;
 	private String citizenId;
-	private Date creationTime;
-	private Date endTime;
+	private Timestamp creationTime;
+	private Timestamp endTime;
 	
 	public Session() {}
 
-	public Session(String sessionId, String citizenId, Date creationTime, Date endTime) {
+	public Session(String sessionId, String citizenId, Timestamp creationTime, Timestamp endTime) {
 		super();
 		this.sessionId = sessionId;
 		this.citizenId = citizenId;
@@ -34,19 +34,19 @@ public class Session {
 		this.citizenId = citizenId;
 	}
 
-	public Date getCreationTime() {
+	public Timestamp getCreationTime() {
 		return creationTime;
 	}
 
-	public void setCreationTime(Date creationTime) {
+	public void setCreationTime(Timestamp creationTime) {
 		this.creationTime = creationTime;
 	}
 
-	public Date getEndTime() {
+	public Timestamp getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(Date endTime) {
+	public void setEndTime(Timestamp endTime) {
 		this.endTime = endTime;
 	}
 }
