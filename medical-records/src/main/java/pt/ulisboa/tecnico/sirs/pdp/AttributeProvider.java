@@ -1,31 +1,26 @@
 package pt.ulisboa.tecnico.sirs.pdp;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.ow2.authzforce.core.pdp.api.AttributeFqn;
-import org.ow2.authzforce.core.pdp.api.BaseNamedAttributeProvider;
-import org.ow2.authzforce.core.pdp.api.CloseableNamedAttributeProvider;
-import org.ow2.authzforce.core.pdp.api.EnvironmentProperties;
-import org.ow2.authzforce.core.pdp.api.EvaluationContext;
-import org.ow2.authzforce.core.pdp.api.IndeterminateEvaluationException;
+import org.ow2.authzforce.core.pdp.api.*;
 import org.ow2.authzforce.core.pdp.api.io.NamedXacmlAttributeParser;
 import org.ow2.authzforce.core.pdp.api.io.NonIssuedLikeIssuedStrictXacmlAttributeParser;
 import org.ow2.authzforce.core.pdp.api.io.XacmlJaxbParsingUtils.NamedXacmlJaxbAttributeParser;
 import org.ow2.authzforce.core.pdp.api.io.XacmlRequestAttributeParser;
 import org.ow2.authzforce.core.pdp.api.value.*;
+import org.ow2.authzforce.xacml.identifiers.XacmlAttributeId;
 import org.ow2.authzforce.xacml.identifiers.XacmlStatusCode;
 
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.Attribute;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.AttributeDesignatorType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.Attributes;
 import pt.ulisboa.tecnico.sirs.pdp.attributeprovider.AttributeProviderDescriptor;
+
+import static org.ow2.authzforce.xacml.identifiers.XacmlAttributeCategory.XACML_1_0_ACCESS_SUBJECT;
+import static org.ow2.authzforce.xacml.identifiers.XacmlAttributeCategory.XACML_3_0_RESOURCE;
 
 
 public class AttributeProvider extends BaseNamedAttributeProvider {
@@ -78,11 +73,33 @@ public class AttributeProvider extends BaseNamedAttributeProvider {
         if (attrVals == null) {
             return null;
         }
+
         if (attrVals.getElementDatatype().equals(attributeDatatype)) {
-            /* This is where the query to de database is going to be
-             * For now is returning true */
-            AttributeBag<?> validRelationAttrValue = Bags.singletonAttributeBag(StandardDatatypes.BOOLEAN, new BooleanValue(true));
-            return (AttributeBag<AV>) validRelationAttrValue;
+
+            /* get ResourceId from request context */
+            final AttributeFqn resourceIdAttributeId = AttributeFqns.newInstance(
+                    XACML_3_0_RESOURCE.value(), Optional.empty(), XacmlAttributeId.XACML_1_0_RESOURCE_ID.value());
+            String resourceId = context.getNamedAttributeValue(resourceIdAttributeId, StandardDatatypes.STRING).getSingleElement().toString();
+
+            /* get subjectId from request context */
+            final AttributeFqn subjectIdAttributeId = AttributeFqns.newInstance(
+                    XACML_1_0_ACCESS_SUBJECT.value(), Optional.empty(), XacmlAttributeId.XACML_1_0_SUBJECT_ID.value());
+            String subjectId = context.getNamedAttributeValue(subjectIdAttributeId, StandardDatatypes.STRING).getSingleElement().toString();
+
+            /* Check if medical record patient is the subject id*/
+            if(attributeGUID.getId().equals("pt.ulisboa.tecnico.sirs.medicalRecordPatient")) {
+                /* This is where the query to the database is going to be
+                 * For now is returning true */
+                AttributeBag<?> validRelationAttrValue = Bags.singletonAttributeBag(StandardDatatypes.BOOLEAN, new BooleanValue(true));
+                return (AttributeBag<AV>) validRelationAttrValue;
+            }
+            /* Check if doctor has valid relation with the subject id (medical record patient) */
+            if(attributeGUID.getId().equals("pt.ulisboa.tecnico.sirs.validRelation")) {
+                /* This is where the query to the database is going to be
+                 * For now is returning true */
+                AttributeBag<?> validRelationAttrValue = Bags.singletonAttributeBag(StandardDatatypes.BOOLEAN, new BooleanValue(true));
+                return (AttributeBag<AV>) validRelationAttrValue;
+            }
         }
 
         throw new IndeterminateEvaluationException("Requested datatype (" + attributeDatatype + ") != provided by " + this + " (" + attrVals.getElementDatatype() + ")",

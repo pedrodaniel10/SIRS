@@ -15,8 +15,8 @@ public class TestMedicalRecordsRequest {
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 		ArrayList<String> roles = new ArrayList<>();
 		roles.add("PATIENT");
-		boolean result = policyEnforcementPoint.requestEvaluation("",
-				roles, "view", "medicalRecordsPage", "");
+		boolean result = policyEnforcementPoint.requestEvaluation("123456789",
+				roles, "view", "medicalRecordsPage", "123456789");
 		assertTrue(result);
 	}
 

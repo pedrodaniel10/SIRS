@@ -254,7 +254,7 @@ import Attributes.*
 					/* RULE: Patients can view their medical records */
 					rule PatientsCanViewTheirMedicalRecords {
 						target clause Attributes.actionId == "view"
-							//and attributes.medicalRecordPatient == true
+							and attributes.medicalRecordPatient == true
 						permit
 					}
 	

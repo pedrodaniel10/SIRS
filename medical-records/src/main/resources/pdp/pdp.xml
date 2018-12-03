@@ -12,6 +12,9 @@
 			<xacml:Attribute AttributeId="pt.ulisboa.tecnico.sirs.validRelation" IncludeInResult="false">
 				<xacml:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">true</xacml:AttributeValue>
 			</xacml:Attribute>
+			<xacml:Attribute AttributeId="pt.ulisboa.tecnico.sirs.medicalRecordPatient" IncludeInResult="false">
+				<xacml:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">true</xacml:AttributeValue>
+			</xacml:Attribute>
 		</xacml:Attributes>
 	</attributeProvider>
     <rootPolicyProvider
