@@ -12,8 +12,8 @@ public class DocPatRelation {
 	
 	public DocPatRelation() {}
 	
-	public DocPatRelation(int authId, Date beginDate, Date endDate, int doctorId, int patientId, int adminId) {
-		this.docPatRelationId = authId;
+	public DocPatRelation(int docPatRelationId, Date beginDate, Date endDate, int doctorId, int patientId, int adminId) {
+		this.docPatRelationId = docPatRelationId;
 		this.beginDate = beginDate;
 		this.endDate = endDate;
 		this.doctorId = doctorId;
@@ -21,12 +21,12 @@ public class DocPatRelation {
 		this.adminId = adminId;
 	}
 
-	public int getAuthId() {
+	public int getDocPatRelationId() {
 		return docPatRelationId;
 	}
 	
-	public void setAuthId(int authId) {
-		this.docPatRelationId = authId;
+	public void setDocPatRelationId(int docPatRelationId) {
+		this.docPatRelationId = docPatRelationId;
 	}
 	
 	public Date getBeginDate() {

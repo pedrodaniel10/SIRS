@@ -11,7 +11,6 @@ public class Session {
 	public Session() {}
 
 	public Session(String sessionId, String citizenId, Date creationTime, Date endTime) {
-		super();
 		this.sessionId = sessionId;
 		this.citizenId = citizenId;
 		this.creationTime = creationTime;
