@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class DatabaseCitizenOperationsTest {
 	public void setup() throws DatabaseConnectionException {
 		this.conn = (new DatabaseConnector()).getConnection();
 		this.c1 = new Citizen("test_id", "paulo", Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt", 
-				"jálhedigo", "path", "super", new ArrayList<Role>());
+				"jálhedigo", "path", "super", new ArrayList<>());
 	}
 	
 	@Test
@@ -67,9 +68,9 @@ public class DatabaseCitizenOperationsTest {
 	@Test
 	public void updateCitizenWithRelations() throws SQLException {
 		Citizen c2 = new Citizen("test_id2", "paulo", Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt", 
-				"jálhedigo", "path", "super", new ArrayList<Role>());
+				"jálhedigo", "path", "super", new ArrayList<>());
 		Citizen c3 = new Citizen("test_id3", "paulo", Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt", 
-				"jálhedigo", "path", "super", new ArrayList<Role>());
+				"jálhedigo", "path", "super", new ArrayList<>());
 		
 		c1.addRole(Role.PATIENT);
 		c1.addRole(Role.DOCTOR);
@@ -95,7 +96,7 @@ public class DatabaseCitizenOperationsTest {
 		DatabaseUtils.addDocPatRelation(conn, dpr1);
 		DatabaseUtils.addDocPatRelation(conn, dpr2);
 		
-		ArrayList<DocPatRelation> dprs = DatabaseUtils.getDocPatRelationsByAdminId(conn, c1.getCitizenId());
+		List<DocPatRelation> dprs = DatabaseUtils.getDocPatRelationsByAdminId(conn, c1.getCitizenId());
 		assertEquals(2, dprs.size());
 		
 		c3.removeRole(Role.PATIENT);

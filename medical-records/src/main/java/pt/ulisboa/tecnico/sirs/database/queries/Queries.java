@@ -1,9 +1,9 @@
-package pt.ulisboa.tecnico.sirs.database.constants;
+package pt.ulisboa.tecnico.sirs.database.queries;
 	
 
-public class Constants {
+public class Queries {
 	
-	private Constants(){}
+	private Queries(){}
 	
 	/**
 	 * Database Queries
