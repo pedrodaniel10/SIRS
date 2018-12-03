@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.ow2.authzforce.core.pdp.api.AttributeFqn;
-import org.ow2.authzforce.core.pdp.api.AttributeProvider;
 import org.ow2.authzforce.core.pdp.api.BaseNamedAttributeProvider;
 import org.ow2.authzforce.core.pdp.api.CloseableNamedAttributeProvider;
 import org.ow2.authzforce.core.pdp.api.EnvironmentProperties;
@@ -20,59 +19,70 @@ import org.ow2.authzforce.core.pdp.api.io.NamedXacmlAttributeParser;
 import org.ow2.authzforce.core.pdp.api.io.NonIssuedLikeIssuedStrictXacmlAttributeParser;
 import org.ow2.authzforce.core.pdp.api.io.XacmlJaxbParsingUtils.NamedXacmlJaxbAttributeParser;
 import org.ow2.authzforce.core.pdp.api.io.XacmlRequestAttributeParser;
-import org.ow2.authzforce.core.pdp.api.value.AttributeBag;
-import org.ow2.authzforce.core.pdp.api.value.AttributeValue;
-import org.ow2.authzforce.core.pdp.api.value.AttributeValueFactoryRegistry;
-import org.ow2.authzforce.core.pdp.api.value.Bag;
-import org.ow2.authzforce.core.pdp.api.value.Datatype;
+import org.ow2.authzforce.core.pdp.api.value.*;
 import org.ow2.authzforce.xacml.identifiers.XacmlStatusCode;
 
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.Attribute;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.AttributeDesignatorType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.Attributes;
-import pt.ulisboa.tecnico.sirs.pdp.attributeprovider.TestAttributeProviderDescriptor;
+import pt.ulisboa.tecnico.sirs.pdp.attributeprovider.AttributeProviderDescriptor;
 
-/**
- * Fake AttributeProviderModule for test purposes only that can be configured to support a specific set of attribute Providers, but always return an empty bag as attribute value.
- */
-public class TestAttributeProvider extends BaseNamedAttributeProvider {
 
-    private static AttributeDesignatorType newAttributeDesignator(final Entry<AttributeFqn, AttributeBag<?>> attributeEntry) {
-        final AttributeFqn attrKey = attributeEntry.getKey();
-        final Bag<?> attrVals = attributeEntry.getValue();
-        return new AttributeDesignatorType(attrKey.getCategory(), attrKey.getId(), attrVals.getElementDatatype().getId(), attrKey.getIssuer().orElse(null), false);
-    }
+public class AttributeProvider extends BaseNamedAttributeProvider {
 
     private final Set<AttributeDesignatorType> supportedDesignatorTypes;
     private final Map<AttributeFqn, AttributeBag<?>> attrMap;
 
-    private TestAttributeProvider(final String id, final Map<AttributeFqn, AttributeBag<?>> attributeMap) throws IllegalArgumentException {
+    private AttributeProvider(final String id, final Map<AttributeFqn, AttributeBag<?>> attributeMap) throws IllegalArgumentException {
         super(id);
         attrMap = Collections.unmodifiableMap(attributeMap);
-        final Set<AttributeDesignatorType> mutableSupportedAttDesignatorSet = attrMap.entrySet().stream().map(attEntry -> newAttributeDesignator(attEntry)).collect(Collectors.toSet());
+        final Set<AttributeDesignatorType> mutableSupportedAttDesignatorSet = attrMap.entrySet().stream().map(
+                attEntry -> newAttributeDesignator(attEntry)).collect(Collectors.toSet());
         this.supportedDesignatorTypes = Collections.unmodifiableSet(mutableSupportedAttDesignatorSet);
     }
 
+    private static AttributeDesignatorType newAttributeDesignator(final Entry<AttributeFqn, AttributeBag<?>> attributeEntry) {
+        final AttributeFqn attrKey = attributeEntry.getKey();
+        final Bag<?> attrVals = attributeEntry.getValue();
+        return new AttributeDesignatorType(
+                attrKey.getCategory(), attrKey.getId(), attrVals.getElementDatatype().getId(), attrKey.getIssuer().orElse(null), false);
+    }
+
     @Override
-    public void close() throws IOException {
+    public void close() {
         // nothing to close
     }
 
+    /**
+     * This method returns the attributes this PIP resolves (configured in pdp.xml file)
+     */
     @Override
     public Set<AttributeDesignatorType> getProvidedAttributes() {
         return supportedDesignatorTypes;
     }
 
+    /**
+     *
+     * @param attributeGUID identifies an XACML attribute's fully qualified name
+     * @param attributeDatatype expected attribute datatype
+     * @param context request context, including the content from the current XACML Request and possibly extra attributes
+     * @return the resolved value (retrieved from database)
+     * @throws IndeterminateEvaluationException
+     */
     @Override
-    public <AV extends AttributeValue> AttributeBag<AV> get(final AttributeFqn attributeGUID, final Datatype<AV> attributeDatatype, final EvaluationContext context)
+    public <AV extends AttributeValue> AttributeBag<AV> get(
+            final AttributeFqn attributeGUID, final Datatype<AV> attributeDatatype, final EvaluationContext context)
             throws IndeterminateEvaluationException {
+
         final AttributeBag<?> attrVals = attrMap.get(attributeGUID);
         if (attrVals == null) {
             return null;
         }
-
         if (attrVals.getElementDatatype().equals(attributeDatatype)) {
-            return (AttributeBag<AV>) attrVals;
+            /* This is where the query to de database is going to be
+             * For now is returning true */
+            AttributeBag<?> validRelationAttrValue = Bags.singletonAttributeBag(StandardDatatypes.BOOLEAN, new BooleanValue(true));
+            return (AttributeBag<AV>) validRelationAttrValue;
         }
 
         throw new IndeterminateEvaluationException("Requested datatype (" + attributeDatatype + ") != provided by " + this + " (" + attrVals.getElementDatatype() + ")",
@@ -80,17 +90,19 @@ public class TestAttributeProvider extends BaseNamedAttributeProvider {
     }
 
     /**
-     * {@link TestAttributeProvider} factory
+     * Factory Design Pattern for creating AttributeProviders.
+     * This class is given by Authzforce.
+     * https://github.com/authzforce/core/blob/develop/pdp-testutils/src/main/java/org/ow2/authzforce/core/pdp/testutil/ext/TestAttributeProvider.java
      */
-    public static class Factory extends CloseableNamedAttributeProvider.FactoryBuilder<TestAttributeProviderDescriptor> {
+    public static class Factory extends CloseableNamedAttributeProvider.FactoryBuilder<AttributeProviderDescriptor> {
 
         @Override
-        public Class<TestAttributeProviderDescriptor> getJaxbClass() {
-            return TestAttributeProviderDescriptor.class;
+        public Class<AttributeProviderDescriptor> getJaxbClass() {
+            return AttributeProviderDescriptor.class;
         }
 
         @Override
-        public DependencyAwareFactory getInstance(final TestAttributeProviderDescriptor conf, final EnvironmentProperties environmentProperties) {
+        public DependencyAwareFactory getInstance(final AttributeProviderDescriptor conf, final EnvironmentProperties environmentProperties) {
             return new DependencyAwareFactory() {
 
                 @Override
@@ -100,7 +112,7 @@ public class TestAttributeProvider extends BaseNamedAttributeProvider {
                 }
 
                 @Override
-                public CloseableNamedAttributeProvider getInstance(final AttributeValueFactoryRegistry attributeValueFactories, final AttributeProvider depAttrProvider) {
+                public CloseableNamedAttributeProvider getInstance(final AttributeValueFactoryRegistry attributeValueFactories, final org.ow2.authzforce.core.pdp.api.AttributeProvider depAttrProvider) {
                     final NamedXacmlAttributeParser<Attribute> namedXacmlAttParser = new NamedXacmlJaxbAttributeParser(attributeValueFactories);
                     final XacmlRequestAttributeParser<Attribute, AttributeBag<?>> xacmlAttributeParser = new NonIssuedLikeIssuedStrictXacmlAttributeParser<>(namedXacmlAttParser);
                     final Set<String> attrCategoryNames = new HashSet<>();
@@ -116,7 +128,7 @@ public class TestAttributeProvider extends BaseNamedAttributeProvider {
                         }
                     }
 
-                    return new TestAttributeProvider(conf.getId(), mutableAttMap);
+                    return new AttributeProvider(conf.getId(), mutableAttMap);
                 }
             };
         }

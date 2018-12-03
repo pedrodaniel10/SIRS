@@ -7,7 +7,7 @@
         </xs:documentation>
     </xs:annotation>
     <!-- Do not specify schema locations here. Define the schema locations in the XML catalog instead (see file 'catalog.xml'). -->
-    <!--  Adding TestAttributeProvider extension -->
+    <!--  Adding AttributeProvider extension -->
     <xs:import namespace="http://sirs.tecnico.ulisboa.pt/pdp/attributeprovider" />
 </xs:schema>
 

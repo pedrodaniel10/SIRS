@@ -254,7 +254,7 @@ import Attributes.*
 					/* RULE: Patients can view their medical records */
 					rule PatientsCanViewTheirMedicalRecords {
 						target clause Attributes.actionId == "view"
-							and Attributes.actionId == "view"
+							//and attributes.medicalRecordPatient == true
 						permit
 					}
 	
@@ -272,19 +272,18 @@ import Attributes.*
 					/* RULE: Doctors can view their patients medical records */
 					rule DoctorsCanViewTheirPatientsMedicalRecords {
 						target clause Attributes.actionId == "view"
-							//and Attributes.actionId == "view"
+							and attributes.validRelation == true
 						permit
 					}
 					
 					/* RULE: Doctors can create medical records */
 					rule DoctorsCanCreateMedicalRecords {
 						target clause Attributes.actionId == "create"
-							//and Attributes.actionId == "view"
 						permit
 					}
 	
 					/* RULE: Doctors cannot perform other actions in medical records */
-	                rule PatientsCannotPerformOtherActions {
+	                rule DoctorsCannotPerformOtherActions {
 	                    deny
 	                }
 				}

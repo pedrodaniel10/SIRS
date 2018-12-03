@@ -6,11 +6,11 @@
 	<attributeProvider
 			id="test"
 			xmlns:test="http://sirs.tecnico.ulisboa.pt/pdp/attributeprovider"
-			xsi:type="test:TestAttributeProviderDescriptor"
+			xsi:type="test:AttributeProviderDescriptor"
 			xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" >
-		<xacml:Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
-			<xacml:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:authentication-method" IncludeInResult="false">
-				<xacml:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Physician</xacml:AttributeValue>
+		<xacml:Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+			<xacml:Attribute AttributeId="pt.ulisboa.tecnico.sirs.validRelation" IncludeInResult="false">
+				<xacml:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">true</xacml:AttributeValue>
 			</xacml:Attribute>
 		</xacml:Attributes>
 	</attributeProvider>
