@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
 	<!-- For Maven JAXB plugin -->
-	<system systemId="http://www.w3.org/2001/xml.xsd" uri="classpath:xml.xsd" />
-	<uri name="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" uri="classpath:xacml-core-v3-schema-wd-17.xsd"/>
-	<uri name="http://authzforce.github.io/xmlns/pdp/ext/3" uri="classpath:pdp-ext-base.xsd"/>
-	<uri name="http://sirs.tecnico.ulisboa.pt/pdp/attributeprovider" uri="classpath:pt.ulisboa.tecnico.sirs.ext.xsd" />
+	<system systemId="http://www.w3.org/2001/xml.xsd" uri="classpath:pdp/xml.xsd" />
+	<uri name="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" uri="classpath:pdp/xacml-core-v3-schema-wd-17.xsd"/>
+	<uri name="http://authzforce.github.io/xmlns/pdp/ext/3" uri="classpath:pdp/pdp-ext-base.xsd"/>
+	<uri name="http://sirs.tecnico.ulisboa.pt/pdp/attributeprovider" uri="classpath:pdp/pt.ulisboa.tecnico.sirs.ext.xsd" />
 </catalog>

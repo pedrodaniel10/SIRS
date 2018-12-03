@@ -161,7 +161,7 @@
 				<useDependenciesAsEpisodes>true</useDependenciesAsEpisodes>
 				<catalog>src/main/jaxb/catalog.xml</catalog>
 				<bindingDirectory>src/main/jaxb</bindingDirectory>
-				<schemaDirectory>src/main/resources</schemaDirectory>
+				<schemaDirectory>src/main/resources/pdp</schemaDirectory>
 			</configuration>
 			<executions>
 				<execution>
