@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.sirs.dataobjects;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Citizen {
 	
@@ -21,13 +22,12 @@ public class Citizen {
 	private String password;
 	private String profilePic;
 	private String superuserCitizenId;
-	private ArrayList<Role> roles = new ArrayList<Role>();
+	private List<Role> roles = new ArrayList<Role>();
 	
 	public Citizen() {}
 
 	public Citizen(String citizenId, String citizenName, Gender gender, LocalDate dateOfBirth, String email,
-			String password, String profilePic, String superuserCitizenId, ArrayList<Role> roles) {
-		super();
+			String password, String profilePic, String superuserCitizenId, List<Role> roles) {
 		this.citizenId = citizenId;
 		this.citizenName = citizenName;
 		this.gender = gender;
@@ -103,11 +103,11 @@ public class Citizen {
 		this.superuserCitizenId = superuserCitizenId;
 	}
 
-	public ArrayList<Role> getRoles() {
+	public List<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(ArrayList<Role> roles) {
+	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
 	

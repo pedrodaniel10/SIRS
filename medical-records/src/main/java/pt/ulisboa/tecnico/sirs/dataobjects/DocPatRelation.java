@@ -14,7 +14,6 @@ public class DocPatRelation {
 
 	public DocPatRelation(int docPatRelationId, Date beginDate, Date endDate, String doctorCitizenId,
 			String patientCitizenId, String adminCitizenId) {
-		super();
 		this.docPatRelationId = docPatRelationId;
 		this.beginDate = beginDate;
 		this.endDate = endDate;

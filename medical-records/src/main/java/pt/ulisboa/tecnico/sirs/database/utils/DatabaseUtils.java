@@ -234,16 +234,16 @@ public class DatabaseUtils {
 			while (rs.next()) {
 				MedicalRecord medicalRecord = new MedicalRecord();
 				medicalRecord.setRecordId(rs.getInt("record_id"));
-				medicalRecord.setHeartBeat(rs.getInt("heart_beat"));
-				medicalRecord.setBloodPressure(rs.getInt("blood_pressure"));
-				medicalRecord.setSugar(rs.getInt("sugar"));
-				medicalRecord.setHaemoglobin(rs.getInt("haemoglobin"));
+				medicalRecord.getReportInfo().setHeartBeat(rs.getInt("heart_beat"));
+				medicalRecord.getReportInfo().setBloodPressure(rs.getInt("blood_pressure"));
+				medicalRecord.getReportInfo().setSugar(rs.getInt("sugar"));
+				medicalRecord.getReportInfo().setHaemoglobin(rs.getInt("haemoglobin"));
 				medicalRecord.setCreationDate(rs.getTimestamp("creation_date"));
 				medicalRecord.setDoctorCitizenId(rs.getString("doctor_citizen_id"));
-				medicalRecord.setTreatment(rs.getString("treatment"));
+				medicalRecord.getReportInfo().setTreatment(rs.getString("treatment"));
 				medicalRecord.setPatientCitizenId(rs.getString("patient_citizen_id"));
 				medicalRecord.setInstitutionId(rs.getInt("institution_id"));
-				medicalRecord.setGeneralReport(rs.getString("general_report"));
+				medicalRecord.getReportInfo().setGeneralReport(rs.getString("general_report"));
 				medicalRecord.setRecordSignature(rs.getString("record_signature"));
 				
 				medicalRecords.add(medicalRecord);
@@ -263,15 +263,15 @@ public class DatabaseUtils {
 	private static void setMedicalRecord(Connection conn, MedicalRecord medicalRecord, String query) throws SQLException {
 		try (PreparedStatement statement = conn.prepareStatement(query)) {
 			
-			setRecordData(statement, medicalRecord.getHeartBeat(), 1);
-			setRecordData(statement, medicalRecord.getBloodPressure(), 2);
-			setRecordData(statement, medicalRecord.getSugar(), 3);
-			setRecordData(statement, medicalRecord.getHaemoglobin(), 4);
+			setRecordData(statement, medicalRecord.getReportInfo().getHeartBeat(), 1);
+			setRecordData(statement, medicalRecord.getReportInfo().getBloodPressure(), 2);
+			setRecordData(statement, medicalRecord.getReportInfo().getSugar(), 3);
+			setRecordData(statement, medicalRecord.getReportInfo().getHaemoglobin(), 4);
 			statement.setString(5, medicalRecord.getDoctorCitizenId());
-			statement.setString(6, medicalRecord.getTreatment());
+			statement.setString(6, medicalRecord.getReportInfo().getTreatment());
 			statement.setString(7, medicalRecord.getPatientCitizenId());
 			statement.setInt(8, medicalRecord.getInstitutionId());
-			statement.setString(9, medicalRecord.getGeneralReport());
+			statement.setString(9, medicalRecord.getReportInfo().getGeneralReport());
 			statement.setString(10, medicalRecord.getRecordSignature());
 			try {
 				statement.setInt(11, medicalRecord.getRecordId());

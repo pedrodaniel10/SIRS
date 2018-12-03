@@ -21,6 +21,7 @@ import pt.ulisboa.tecnico.sirs.dataobjects.Citizen.Role;
 import pt.ulisboa.tecnico.sirs.dataobjects.DocPatRelation;
 import pt.ulisboa.tecnico.sirs.dataobjects.Institution;
 import pt.ulisboa.tecnico.sirs.dataobjects.MedicalRecord;
+import pt.ulisboa.tecnico.sirs.dataobjects.ReportInfo;
 import pt.ulisboa.tecnico.sirs.dataobjects.Session;
 
 public class DatabaseCitizenOperationsTest {
@@ -121,10 +122,11 @@ public class DatabaseCitizenOperationsTest {
 		DatabaseUtils.updateCitizen(conn, c1);
 		DatabaseUtils.setAdminInstitutionId(conn, c1.getCitizenId(), 1);
 		DatabaseUtils.setDoctorInstitutionId(conn, c1.getCitizenId(), 1, c1.getCitizenId());
-		MedicalRecord mr = new MedicalRecord(0, 1, -1, -1, -1, Timestamp.valueOf("1922-11-1 22:22:22"),
-				c1.getCitizenId(), "heh", c1.getCitizenId(), 1, "hah", "hoh");
+		ReportInfo ri = new ReportInfo(-1,-1,-1,-1,"heh","hah");
+		MedicalRecord mr = new MedicalRecord(0, Timestamp.valueOf("1922-11-1 22:22:22"),
+				c1.getCitizenId(), c1.getCitizenId(), 1, "hoh", ri);
 		DatabaseUtils.addMedicalRecord(conn, mr);
-		mr.setHaemoglobin(10);
+		mr.getReportInfo().setHaemoglobin(10);
 		DatabaseUtils.updateMedicalRecord(conn, mr);
 		DatabaseUtils.getDoctorsByAdminId(conn, c1.getCitizenId());
 		DatabaseUtils.removeDoctorFromInstitution(conn, c1.getCitizenId(), c1.getCitizenId());
