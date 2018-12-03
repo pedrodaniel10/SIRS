@@ -262,10 +262,11 @@ public class DatabaseUtils {
 	
 	private static void setMedicalRecord(Connection conn, MedicalRecord medicalRecord, String query) throws SQLException {
 		try (PreparedStatement statement = conn.prepareStatement(query)) {
-			statement.setInt(1, medicalRecord.getHeartBeat());
-			statement.setInt(2, medicalRecord.getBloodPressure());
-			statement.setInt(3, medicalRecord.getSugar());
-			statement.setInt(4, medicalRecord.getHaemoglobin());
+			
+			setRecordData(statement, medicalRecord.getHeartBeat(), 1);
+			setRecordData(statement, medicalRecord.getBloodPressure(), 2);
+			setRecordData(statement, medicalRecord.getSugar(), 3);
+			setRecordData(statement, medicalRecord.getHaemoglobin(), 4);
 			statement.setString(5, medicalRecord.getDoctorCitizenId());
 			statement.setString(6, medicalRecord.getTreatment());
 			statement.setString(7, medicalRecord.getPatientCitizenId());
@@ -281,28 +282,33 @@ public class DatabaseUtils {
 			statement.executeUpdate();
 		}
 	}
+
+	private static void setRecordData(PreparedStatement statement, int recordData, int index) throws SQLException {
+		if (recordData <= 200 && recordData > 0) {
+			statement.setInt(index, recordData);
+		} else {
+			statement.setInt(index, 0);
+		}
+	}
 	
-	public static ArrayList<DocPatRelation> getDocPatRelationsByAdminInstitutionId(Connection conn, int institutionId) throws SQLException {
-		return getDocPatRelations(conn, Constants.GET_DOC_PAT_RELATIONS_BY_INSTITUTION_ID_QUERY, null, institutionId);
+	public static ArrayList<DocPatRelation> getDocPatRelationsByAdminId(Connection conn, String adminId) throws SQLException {
+		return getDocPatRelations(conn, Constants.GET_DOC_PAT_RELATIONS_BY_ADMIN_ID_QUERY, adminId);
 	}
 	
 	public static ArrayList<DocPatRelation> getDocPatRelationsByPatientId(Connection conn, String patientId) throws SQLException {
-		return getDocPatRelations(conn, Constants.GET_DOC_PAT_RELATIONS_BY_PATIENT_ID_QUERY, patientId, -1);
+		return getDocPatRelations(conn, Constants.GET_DOC_PAT_RELATIONS_BY_PATIENT_ID_QUERY, patientId);
 	}
 	
 	public static ArrayList<DocPatRelation> getDocPatRelationsByDoctorId(Connection conn, String doctorId) throws SQLException {
-		return getDocPatRelations(conn, Constants.GET_DOC_PAT_RELATIONS_BY_DOCTOR_ID_QUERY, doctorId, -1);
+		return getDocPatRelations(conn, Constants.GET_DOC_PAT_RELATIONS_BY_DOCTOR_ID_QUERY, doctorId);
 	}
 	
-	private static ArrayList<DocPatRelation> getDocPatRelations(Connection conn, String query, String citizenId, int institutionId) throws SQLException {
+	private static ArrayList<DocPatRelation> getDocPatRelations(Connection conn, String query, String citizenId) throws SQLException {
 		ArrayList<DocPatRelation> docPatRelations = new ArrayList<DocPatRelation>();
 		try (PreparedStatement statement = conn.prepareStatement(query)) {
 			if (citizenId != null) {
 				statement.setString(1, citizenId);
-			} else {
-				statement.setInt(1, institutionId);
 			}
-			
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
 				DocPatRelation docPatRelation = new DocPatRelation();
@@ -345,19 +351,19 @@ public class DatabaseUtils {
 		}
 	}
 
-	public static ArrayList<Doctor> getDoctorsByInstitutionId(Connection conn, String institutionId) throws SQLException {
-		return getDoctors(conn, Constants.GET_DOC_PAT_RELATIONS_BY_DOCTOR_ID_QUERY, institutionId);
+	public static ArrayList<Doctor> getDoctorsByAdminId(Connection conn, String adminId) throws SQLException {
+		return getDoctors(conn, Constants.GET_DOCTORS_BY_ADMIN_ID_QUERY, adminId);
 	}
 	
 	public static ArrayList<Doctor> getAllDoctorsWithoutInstitution(Connection conn) throws SQLException {
 		return getDoctors(conn, Constants.GET_ALL_DOCTORS_WITHOUT_INSTITUTION_QUERY, null);
 	}
 	
-	private static ArrayList<Doctor> getDoctors(Connection conn, String query, String institutionId) throws SQLException {
+	private static ArrayList<Doctor> getDoctors(Connection conn, String query, String adminId) throws SQLException {
 		ArrayList<Doctor> doctors = new ArrayList<Doctor>();
 		try (PreparedStatement statement = conn.prepareStatement(query)) {
-			if (institutionId != null) {
-				statement.setString(1, institutionId);
+			if (adminId != null) {
+				statement.setString(1, adminId);
 			}
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {

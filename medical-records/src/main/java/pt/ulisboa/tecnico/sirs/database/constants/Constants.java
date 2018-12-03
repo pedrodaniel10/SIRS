@@ -77,7 +77,7 @@ public class Constants {
 
 	public static final String GET_DOCTORS_BY_INSTITUTION_QUERY = "SELECT * FROM doctors WHERE institution_id=?";
 	
-	public static final String GET_ALL_DOCTORS_WITHOUT_INSTITUTION_QUERY = "SELECT * FROM doctor WHERE institution_id IS NULL";
+	public static final String GET_ALL_DOCTORS_WITHOUT_INSTITUTION_QUERY = "SELECT * FROM doctors WHERE institution_id IS NULL";
 
 	public static final String ADD_DOCTOR_QUERY = "INSERT INTO doctors(citizen_id,institution_id,superuser_citizen_id,admin_citizen_id) "
 			+ "VALUES (?,?,?,?)";
@@ -85,7 +85,7 @@ public class Constants {
 	public static final String SET_DOCTOR_INSTITUTION_ID_QUERY = "UPDATE doctors SET institution_id=?,admin_citizen_id=? "
 			+ "WHERE citizen_id=?";
 
-	public static final String REMOVE_DOCTOR_FROM_INSTITUTION_QUERY = "UPDATE doctors SET institution_id=NULL,admin_citizen=? "
+	public static final String REMOVE_DOCTOR_FROM_INSTITUTION_QUERY = "UPDATE doctors SET institution_id=NULL,admin_citizen_id=? "
 			+ "WHERE citizen_id=?";
 
 	public static final String GET_PATIENTS_BY_DOCTOR_ID_QUERY = "SELECT * FROM patients WHERE citizen_id IN "
@@ -102,4 +102,10 @@ public class Constants {
 	public static final String ADD_SESSION_QUERY = "INSERT INTO sessions VALUES (?,?,?,?)";
 
 	public static final String UPDATE_SESSION_QUERY = "UPDATE sessions SET citizen_id=?,creation_time=?,end_time=? WHERE session_id=?";
+
+	public static final String GET_DOC_PAT_RELATIONS_BY_ADMIN_ID_QUERY = "SELECT * FROM doc_pat_relations WHERE doctor_citizen_id "
+			+ "IN (SELECT citizen_id FROM doctors WHERE institution_id IN (SELECT institution_id FROM admins WHERE citizen_id=?))";
+
+	public static final String GET_DOCTORS_BY_ADMIN_ID_QUERY = "SELECT * FROM doctors WHERE institution_id IN "
+			+ "(SELECT institution_id FROM admins WHERE citizen_id=?)";
 }
