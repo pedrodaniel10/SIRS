@@ -126,17 +126,52 @@
 			<artifactId>authzforce-ce-core-pdp-engine</artifactId>
 			<version>13.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.ow2.authzforce</groupId>
+			<artifactId>authzforce-ce-core-pdp-api</artifactId>
+			<version>15.0.0</version>
+		</dependency>
 
 	</dependencies>
 
   <build>
     <finalName>medical-records</finalName>
+	  <resources>
+		  <resource>
+			  <directory>src/main/jaxb</directory>
+		  </resource>
+	  </resources>
     <plugins>
 		<!-- Package as an executable jar/war -->
 		<plugin>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-maven-plugin</artifactId>
             <version>1.5.12.RELEASE</version>
+		</plugin>
+		<plugin>
+			<groupId>org.jvnet.jaxb2.maven2</groupId>
+			<artifactId>maven-jaxb2-plugin</artifactId>
+			<version>0.14.0</version>
+			<configuration>
+				<debug>false</debug>
+				<strict>false</strict>
+				<verbose>true</verbose>
+				<removeOldOutput>true</removeOldOutput>
+				<extension>true</extension>
+				<useDependenciesAsEpisodes>true</useDependenciesAsEpisodes>
+				<catalog>src/main/jaxb/catalog.xml</catalog>
+				<bindingDirectory>src/main/jaxb</bindingDirectory>
+				<schemaDirectory>src/main/resources</schemaDirectory>
+			</configuration>
+			<executions>
+				<execution>
+					<id>jaxb-generate-compile-sources</id>
+					<phase>generate-sources</phase>
+					<goals>
+						<goal>generate</goal>
+					</goals>
+				</execution>
+			</executions>
 		</plugin>
 	</plugins>
 	

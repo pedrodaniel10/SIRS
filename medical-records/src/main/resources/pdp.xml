@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pdp
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://authzforce.github.io/core/xmlns/pdp/6.0"
+	version="6.0.0">
+	<attributeProvider
+			id="test"
+			xmlns:test="http://sirs.tecnico.ulisboa.pt/pdp/attributeprovider"
+			xsi:type="test:TestAttributeProviderDescriptor"
+			xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" >
+		<xacml:Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
+			<xacml:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:authentication-method" IncludeInResult="false">
+				<xacml:AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Physician</xacml:AttributeValue>
+			</xacml:Attribute>
+		</xacml:Attributes>
+	</attributeProvider>
+    <rootPolicyProvider
+    	id="rootPolicyProvider"
+    	xsi:type="StaticRootPolicyProvider"
+    	policyLocation="src-gen/hospital.main.xml"
+    />
+</pdp>

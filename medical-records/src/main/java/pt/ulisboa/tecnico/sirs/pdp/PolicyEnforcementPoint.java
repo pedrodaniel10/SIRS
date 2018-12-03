@@ -27,9 +27,11 @@ public class PolicyEnforcementPoint {
 
 	public PolicyEnforcementPoint() {
 		try {
-			File confLocation = new ClassPathResource("pdp/pdp.xml").getFile();
+			File confLocation = new ClassPathResource("pdp.xml").getFile();
+			File catalogLocation = new ClassPathResource("catalog.xml").getFile();
+			File extensionXsdLocation = new ClassPathResource("pdp-ext.xsd").getFile();
 			PdpEngineConfiguration pdpEngineConf = PdpEngineConfiguration.getInstance(
-					confLocation.getAbsolutePath());
+					confLocation.getAbsolutePath(), catalogLocation.getAbsolutePath(), extensionXsdLocation.getAbsolutePath());
 			pdp = new BasePdpEngine(pdpEngineConf);
 		} catch (IOException e) {
 			log.error("Enable to find configuration file" + e);
