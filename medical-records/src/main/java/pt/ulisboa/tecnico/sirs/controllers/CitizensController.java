@@ -31,4 +31,19 @@ public class CitizensController {
     public String getRequestDeleteCitizen(Map<String, Object> model, @PathVariable String citizenId) {
         return "citizens";
     }
+
+    @RequestMapping(value = "/citizens/{citizenId}/edit", method = RequestMethod.GET)
+    public String getRequestEditProfile(Map<String, Object> model, @PathVariable String citizenId) {
+        return "editCitizen";
+    }
+
+    @RequestMapping(value = "/citizens/{citizenId}/edit", method = RequestMethod.POST)
+    public String postRequestEditProfile(Map<String, Object> model, @PathVariable String citizenId) {
+        return "redirect:/citizens";
+    }
+
+    @RequestMapping(value = "/citizens/{citizenId}/profile", method = RequestMethod.GET)
+    public String getRequestPatientProfile(Map<String, Object> model, @PathVariable String citizenId) {
+        return "profile";
+    }
 }

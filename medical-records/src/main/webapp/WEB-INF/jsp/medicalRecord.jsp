@@ -7,7 +7,7 @@
 </tags:header>
 
 <body>
-<tags:patient name="David Williams" image="/img/david_williams.jpg" citizenId="20">
+<tags:citizen name="David Williams" image="/img/david_williams.jpg" citizenId="20">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-9">
             <h2>Medical Record</h2>
@@ -66,8 +66,7 @@
                                 <span>Signature Institution:</span>
                                 <span class="pull-right text-info">Verified</span>
                             </div>
-                            <br/><br/><br/>
-                            <div class="text-center"><button class="btn btn-success" type="button"><i class="fa fa-paste"></i> Edit Record</button></div>
+                            <br/><br/><br/><br/><br/>
                         </div>
                     </div>
                 </div>
@@ -159,29 +158,13 @@
                 </div>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="ibox float-e-margins">
-
-                    <div class="ibox-content">
-
-                        <h2>Attachments</h2>
-                            <a href="/img/xray1.jpg" title="X-Ray 1" data-gallery=""><img src="/img/xray1.jpg" style="width:auto;height:100px;"></a>
-                            <a href="/img/xray2.jpg" title="X-Ray 2" data-gallery=""><img src="/img/xray2.jpg"style="width:auto;height:100px;"></a>
-                            <a href="/img/electrocardiogram.png" title="Electrocardiogram" data-gallery=""><img src="/img/electrocardiogram.png"style="width:auto;height:100px;"></a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
     </div>
 
 
 
 
 
-</tags:patient>
+</tags:citizen>
 
 </body>
 </html>
