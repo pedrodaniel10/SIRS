@@ -29,7 +29,7 @@ public class PolicyEnforcementPoint {
 			/* confLocation - location of the PDP configuration file */
 			File confLocation = new ClassPathResource("pdp/pdp.xml").getFile();
 			/* catalogLocation - location of the XML catalog, used to resolve the configuration schemas */
-			File catalogLocation = new ClassPathResource("catalog.xml").getFile();
+			File catalogLocation = new ClassPathResource("jaxb/catalog.xml").getFile();
 			/* extensionXsdLocation - location of the PDP extensions schema file */
 			File extensionXsdLocation = new ClassPathResource("pdp/pdp-ext.xsd").getFile();
 
