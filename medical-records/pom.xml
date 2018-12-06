@@ -30,7 +30,9 @@
 	</properties>
 
     <modules>
+        <module>API</module>
         <module>Front-End</module>
+        <module>Server</module>
     </modules>
 
 </project>
