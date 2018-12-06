@@ -1,4 +1,4 @@
-<%@ taglib tagdir="/src/main/webapp/WEB-INF/tags" prefix="tags" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
 <!DOCTYPE html>
 
 <html lang="en">
