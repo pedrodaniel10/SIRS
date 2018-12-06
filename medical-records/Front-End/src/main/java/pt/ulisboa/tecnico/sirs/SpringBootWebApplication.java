@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
+import org.springframework.remoting.rmi.RmiProxyFactoryBean;
+import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 
 @SpringBootApplication
 public class SpringBootWebApplication extends SpringBootServletInitializer {
@@ -39,6 +41,14 @@ public class SpringBootWebApplication extends SpringBootServletInitializer {
 
         tomcat.addAdditionalTomcatConnectors(initiateHttpConnector());
         return tomcat;
+    }
+
+    @Bean
+    RmiProxyFactoryBean service() {
+        RmiProxyFactoryBean bean = new RmiProxyFactoryBean();
+        bean.setServiceUrl("rmi://localhost:1099/MedicalRecordsService");
+        bean.setServiceInterface(MedicalRecordsService.class);
+        return bean;
     }
 
     private Connector initiateHttpConnector() {
