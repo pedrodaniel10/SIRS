@@ -1,4 +1,5 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -50,23 +51,29 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td class="center"><img src="/img/david_williams.jpg" class="img-circle" style="width:50px;height:50px;"\></td>
-                                    <td class="center"><span class="badge badge-success">Patient</span><span class="badge badge-warning">Doctor</span></td>
-                                    <td class="center">24786562</td>
-                                    <td class="center">David Edward Williams</td>
-                                    <td class="center">20/08/1971</td>
-                                    <td class="center">Male</td>
-                                    <td class="center">davidwilliams@hotmail.com</td>
-                                    <td class="center">
-                                        <a href="/citizens/20/edit" class="btn btn-success btn-circle" type="button">
-                                            <i class="fa fa-pencil"></i>
-                                        </a>
-                                        <a class="btn btn-danger btn-circle" type="button">
-                                            <i class="fa fa-trash-o"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                                <c:forEach var="citizen" items="${citizens}">
+                                    <tr>
+                                        <td class="center"><img src=${citizen.profilePic} class="img-circle" style="width:50px;height:50px;"\></td>
+                                        <td class="center">
+                                            <c:forEach var="role" items="${citizen.roles}">
+                                            <span class="badge badge-success">${role.name()}</span>
+                                            </c:forEach>
+                                        </td>
+                                        <td class="center">${citizen.citizenId}</td>
+                                        <td class="center">${citizen.citizenName}</td>
+                                        <td class="center">${citizen.dateOfBirth}</td>
+                                        <td class="center">${citizen.gender.name()}</td>
+                                        <td class="center">${citizen.email}</td>
+                                        <td class="center">
+                                            <a href="/citizens/${citizen.citizenId}/edit" class="btn btn-success btn-circle" type="button">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                            <a class="btn btn-danger btn-circle" type="button">
+                                                <i class="fa fa-trash-o"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>

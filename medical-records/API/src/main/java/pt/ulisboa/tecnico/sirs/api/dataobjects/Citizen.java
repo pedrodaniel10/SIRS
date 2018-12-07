@@ -3,8 +3,10 @@ package pt.ulisboa.tecnico.sirs.api.dataobjects;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-public class Citizen {
+
+public class Citizen implements Serializable{
 
     public enum Gender {
         MALE, FEMALE
