@@ -1,5 +1,9 @@
 package pt.ulisboa.tecnico.sirs.api;
 
 public interface MedicalRecordsService {
-    String getWelcomePage();
+    Boolean getWelcomePage();
+
+    Boolean getLoginRegisterPage();
+
+    Boolean postLoginRegisterPage();
 }

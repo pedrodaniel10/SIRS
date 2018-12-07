@@ -22,7 +22,7 @@ public class IndexPageController {
 	public String getRequest(Map<String, Object> model) {
         log.info("Entering getRequest function");
 		MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-		return "welcome";
+		boolean result = service.getWelcomePage();
+		return result? "welcome": "404";
 	}
-
 }
