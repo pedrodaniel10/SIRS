@@ -32,27 +32,46 @@ public class CitizensController {
 
     @RequestMapping(value = "/citizens/add", method = RequestMethod.GET)
     public String getRequestAddCitizen(Map<String, Object> model) {
-        return "addCitizen";
+        log.info("Entering addCitizens function");
+        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        boolean result = service.getAddCitizensPage("12345"); //12345 is the subjectId (the one that makes the request)
+        return result? "addCitizen": "404";
     }
 
     @RequestMapping(value = "/citizens/add", method = RequestMethod.POST)
     public String postRequestAddCitizen(Map<String, Object> model) {
-        return "citizens";
+        log.info("Entering addCitizens function");
+        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        /*change to a service that does a post?*/
+        boolean result = service.getAddCitizensPage("12345"); //12345 is the subjectId (the one that makes the request)
+        return result? "addCitizen": "404";
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/delete", method = RequestMethod.GET)
     public String getRequestDeleteCitizen(Map<String, Object> model, @PathVariable String citizenId) {
-        return "citizens";
+        log.info("Entering deleteCitizens function");
+        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        List<Citizen> citizens = service.deleteCitizen("12345", citizenId); //12345 is the subjectId (the one that makes the request)
+        model.put("citizens", citizens);
+        log.info(citizens);
+        return (citizens != null)? "citizens": "404";
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/edit", method = RequestMethod.GET)
     public String getRequestEditProfile(Map<String, Object> model, @PathVariable String citizenId) {
-        return "editCitizen";
+        log.info("Entering deleteCitizens function");
+        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        Boolean result = service.editCitizen("12345", citizenId); //12345 is the subjectId (the one that makes the request)
+        return result? "editCitizen": "404";
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/edit", method = RequestMethod.POST)
     public String postRequestEditProfile(Map<String, Object> model, @PathVariable String citizenId) {
-        return "redirect:/citizens";
+        log.info("Entering deleteCitizens function");
+        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        /*change to a service that does a post?*/
+        Boolean result = service.editCitizen("12345", citizenId); //12345 is the subjectId (the one that makes the request)
+        return result? "redirect:/citizens": "404";
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/profile", method = RequestMethod.GET)
