@@ -1,4 +1,6 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -40,11 +42,11 @@
                             <div class="widget-head-color-box navy-bg p-lg text-center">
                                 <div class="m-b-md">
                                     <h2 class="font-bold no-margins">
-                                        David Williams
+                                        ${citizen.citizenName}
                                     </h2>
-                                    <small>David Edward Williams</small>
+                                    <small>${citizen.citizenName}</small>
                                 </div>
-                                <img src="/img/david_williams.jpg" class="img-circle circle-border m-b-md" style="width:250px;height:250px;"\>
+                                <img src="${citizen.profilePic}" class="img-circle circle-border m-b-md" style="width:250px;height:250px;"\>
                             </div>
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -57,7 +59,9 @@
                                             <strong>Roles:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                            <span class="badge badge-success">Patient</span><span class="badge badge-warning">Doctor</span>
+                                            <c:forEach var="role" items="${citizen.roles}">
+                                                <span class="badge badge-success">${role.name()}</span>
+                                            </c:forEach>
                                         </div>
                                     </div>
                                     <div class="row wrapper border-bottom white-bg">
@@ -65,7 +69,7 @@
                                             <strong>Citizen ID:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                            24786562
+                                            ${citizen.citizenId}
                                         </div>
                                     </div>
                                     <div class="row wrapper border-bottom white-bg">
@@ -73,7 +77,7 @@
                                             <strong>Name:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                            David Edward Williams
+                                                ${citizen.citizenName}
                                         </div>
                                     </div>
                                     <div class="row wrapper border-bottom white-bg">
@@ -81,7 +85,7 @@
                                             <strong>Born:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                            20 August 1971
+                                                ${citizen.dateOfBirth}
                                         </div>
                                     </div>
                                     <div class="row wrapper border-bottom white-bg">
@@ -89,7 +93,7 @@
                                             <strong>Gender:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                            Male
+                                                ${citizen.gender.name()}
                                         </div>
                                     </div>
                                     <div class="row wrapper white-bg">
@@ -97,7 +101,7 @@
                                             <strong>Email:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                            davidwilliams@hotmail.com
+                                                ${citizen.email}
                                         </div>
                                     </div>
                                 </div>

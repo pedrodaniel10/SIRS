@@ -44,6 +44,30 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
+    public Citizen getCitizen(String subjectId, String citizenId) {
+        /* THIS IS THE CODE WHEN DATABASE IS MERGED - not tested obviously
+        Connection conn = (new DatabaseConnector()).getConnection();
+        Citizen subject = DatabaseUtils.getCitizenById(conn, subjectId);
+        Boolean authorization = requestEvaluation(subjectId,
+                ServiceUtils.parseRoleList(citizen.getRoles()), "view", "citizensPage", citizenId);
+        if (authorization) {
+         return DatabaseUtils.getCitizenById(conn, citizenId);
+        }
+        return null;
+         */
+
+        //STATIC CODE
+        List<Citizen.Role> roles = new ArrayList<>();
+        roles.add(Citizen.Role.SUPERUSER);
+        Boolean authorization = requestEvaluation(subjectId,
+                ServiceUtils.parseRoleList(roles), "view", "citizensPage", citizenId);
+        if (authorization) {
+            return getACitizen();
+        }
+        return null;
+    }
+
+    @Override
     public List<Citizen> getCitizens(String subjectId) {
         /* THIS IS THE CODE WHEN DATABASE IS MERGED - not tested obviously
         Connection conn = (new DatabaseConnector()).getConnection();
@@ -146,6 +170,18 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         citizens.add(c2);
 
         return citizens;
+    }
+
+    /*
+    This code only serves to simulate a citizen because there's no database connection yet.
+    TO DELETE
+     */
+    private Citizen getACitizen() {
+        List<Citizen.Role> roles = new ArrayList<>();
+        roles.add(Citizen.Role.PATIENT);
+        Citizen c1 = new Citizen("12345p", "David Paciente", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.paciente@megamail.com", "pass", "", "", roles);
+
+        return c1;
     }
 
 

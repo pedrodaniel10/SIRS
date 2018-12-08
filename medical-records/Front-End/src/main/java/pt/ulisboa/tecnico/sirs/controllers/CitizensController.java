@@ -59,7 +59,7 @@ public class CitizensController {
 
     @RequestMapping(value = "/citizens/{citizenId}/edit", method = RequestMethod.GET)
     public String getRequestEditProfile(Map<String, Object> model, @PathVariable String citizenId) {
-        log.info("Entering deleteCitizens function");
+        log.info("Entering editCitizens function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Boolean result = service.editCitizen("12345", citizenId); //12345 is the subjectId (the one that makes the request)
         return result? "editCitizen": "404";
@@ -67,7 +67,7 @@ public class CitizensController {
 
     @RequestMapping(value = "/citizens/{citizenId}/edit", method = RequestMethod.POST)
     public String postRequestEditProfile(Map<String, Object> model, @PathVariable String citizenId) {
-        log.info("Entering deleteCitizens function");
+        log.info("Entering editCitizens function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         /*change to a service that does a post?*/
         Boolean result = service.editCitizen("12345", citizenId); //12345 is the subjectId (the one that makes the request)
@@ -76,6 +76,13 @@ public class CitizensController {
 
     @RequestMapping(value = "/citizens/{citizenId}/profile", method = RequestMethod.GET)
     public String getRequestPatientProfile(Map<String, Object> model, @PathVariable String citizenId) {
+        log.info("Entering profileCitizens function");
+        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        Citizen citizen = service.getCitizen("12345", citizenId); //12345 is the subjectId (the one that makes the request)
+        if (citizen == null)
+            return "404";
+        model.put("citizen", citizen);
+        log.info(citizen);
         return "profile";
     }
 }
