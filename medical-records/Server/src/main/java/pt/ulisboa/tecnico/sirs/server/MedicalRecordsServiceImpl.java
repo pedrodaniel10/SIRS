@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("Duplicates")
 public class MedicalRecordsServiceImpl implements MedicalRecordsService {
 
     public Boolean requestEvaluation(String subjectId, List<String> roles, String action, String resourceName, String resourceId) {
@@ -44,12 +43,21 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public Citizen getCitizen(String subjectId, String citizenId) {
+    public Citizen getSessionCitizen() {
+        /*
+        GET SESSION CITIZEN TODO
+         */
+
+        //STATIC CODE
+        return getSessionCitizenTest();
+    }
+
+    @Override
+    public Citizen getCitizen(Citizen subject, String citizenId) {
         /* THIS IS THE CODE WHEN DATABASE IS MERGED - not tested obviously
         Connection conn = (new DatabaseConnector()).getConnection();
-        Citizen subject = DatabaseUtils.getCitizenById(conn, subjectId);
-        Boolean authorization = requestEvaluation(subjectId,
-                ServiceUtils.parseRoleList(citizen.getRoles()), "view", "citizensPage", citizenId);
+        Boolean authorization = requestEvaluation(subject.subjectId,
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "citizensPage", citizenId);
         if (authorization) {
          return DatabaseUtils.getCitizenById(conn, citizenId);
         }
@@ -57,33 +65,16 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
          */
 
         //STATIC CODE
-        List<Citizen.Role> roles = new ArrayList<>();
-        roles.add(Citizen.Role.SUPERUSER);
-        Boolean authorization = requestEvaluation(subjectId,
-                ServiceUtils.parseRoleList(roles), "view", "citizensPage", citizenId);
-        if (authorization) {
-            return getACitizen();
-        }
-        return null;
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "citizensPage", citizenId);
+        return authorization? getACitizen() : null;
     }
 
     @Override
-    public List<Citizen> getCitizens(String subjectId) {
-        /* THIS IS THE CODE WHEN DATABASE IS MERGED - not tested obviously
-        Connection conn = (new DatabaseConnector()).getConnection();
-        Citizen citizen = DatabaseUtils.getCitizenById(conn, subjectId);
-        Boolean authorization = requestEvaluation(subjectId,
-                ServiceUtils.parseRoleList(citizen.getRoles()), "view", "citizensPage", "");
-        if (!authorization) return null;
-        List<Citizen> citizens = DatabaseUtils.getAllCitizens(conn);
-        return citizens;
-         */
-
+    public List<Citizen> getCitizens(Citizen subject) {
         //STATIC CODE
-        List<Citizen.Role> roles = new ArrayList<>();
-        roles.add(Citizen.Role.SUPERUSER);
-        Boolean authorization = requestEvaluation("",
-                ServiceUtils.parseRoleList(roles), "view", "citizensPage", "");
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "citizensPage", "");
         if (!authorization) return null;
         List<Citizen> citizens = getSomeCitizens();
 
@@ -91,43 +82,17 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public Boolean getAddCitizensPage(String subjectId) {
-        /* THIS IS THE CODE WHEN DATABASE IS MERGED - not tested obviously
-        Connection conn = (new DatabaseConnector()).getConnection();
-        Citizen citizen = DatabaseUtils.getCitizenById(conn, subjectId);
-        Boolean authorization = requestEvaluation(subjectId,
-                citizen.getRoles(), "create", "citizensPage", "");
-        if (!authorization) return null;
-        return authorization;
-         */
-
+    public Boolean getAddCitizensPage(Citizen subject) {
         //STATIC CODE
-        List<Citizen.Role> roles = new ArrayList<>();
-        roles.add(Citizen.Role.SUPERUSER);
-        Citizen c1 = new Citizen("12345", "David Silva", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.silva@megamail.com", "pass", "", "", roles);
-
-        return requestEvaluation("",
-                ServiceUtils.parseRoleList(roles), "create", "citizensPage", "");
+        return requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "citizensPage", "");
     }
 
     @Override
-    public List<Citizen> deleteCitizen(String subjectId, String citizenToDelete) {
-        /* THIS IS THE CODE WHEN DATABASE IS MERGED - not tested obviously
-        Connection conn = (new DatabaseConnector()).getConnection();
-        Citizen citizen = DatabaseUtils.getCitizenById(conn, subjectId);
-        Boolean authorization = requestEvaluation(subjectId,
-                citizen.getRoles(), "edit", "citizensPage", "");
-        if (!authorization) return null;
-        List<Citizen> citizens = DatabaseUtils.getAllCitizens(conn);
-        return citizens;
-         */
-
+    public List<Citizen> deleteCitizen(Citizen subject, String citizenToDelete) {
         //STATIC CODE
-        List<Citizen.Role> roles = new ArrayList<>();
-        roles.add(Citizen.Role.SUPERUSER);
-        Citizen c1 = new Citizen("12345", "David Silva", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.silva@megamail.com", "pass", "", "", roles);
-        Boolean authorization = requestEvaluation("",
-                ServiceUtils.parseRoleList(roles), "edit", "citizensPage", "");
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "citizensPage", citizenToDelete);
         if (!authorization) return null;
         List<Citizen> citizens = getSomeCitizens();
         return citizens;
@@ -135,22 +100,12 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public Boolean editCitizen(String subjectId, String citizenToDelete) {
-        /* THIS IS THE CODE WHEN DATABASE IS MERGED - not tested obviously
-        Connection conn = (new DatabaseConnector()).getConnection();
-        Citizen citizen = DatabaseUtils.getCitizenById(conn, subjectId);
-        Boolean authorization = requestEvaluation(subjectId,
-                citizen.getRoles(), "edit", "citizensPage", "");
-        return authorization;
-         */
-
+    public Citizen editCitizen(Citizen subject, String citizenToEdit) {
         //STATIC CODE
-        List<Citizen.Role> roles = new ArrayList<>();
-        roles.add(Citizen.Role.SUPERUSER);
-        Citizen c1 = new Citizen("12345", "David Silva", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.silva@megamail.com", "pass", "", "", roles);
-        Boolean authorization = requestEvaluation("",
-                ServiceUtils.parseRoleList(roles), "edit", "citizensPage", "");
-        return authorization;
+        Citizen c1 = getACitizen(); //database get citizenbyid(citizenToEdit)
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "citizensPage", citizenToEdit);
+        return authorization? c1 : null;
 
     }
 
@@ -184,5 +139,16 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         return c1;
     }
 
+    /*
+    This code only serves to simulate a session citizen because session is not implemented.
+    TO DELETE
+     */
+    private Citizen getSessionCitizenTest() {
+        List<Citizen.Role> roles = new ArrayList<>();
+        roles.add(Citizen.Role.SUPERUSER);
+        Citizen c1 = new Citizen("12345p", "David Admin", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.paciente@megamail.com", "pass", "https://blog.estantevirtual.com.br/wp-content/uploads/fernando-pessoa-1.jpg", "", roles);
+
+        return c1;
+    }
 
 }

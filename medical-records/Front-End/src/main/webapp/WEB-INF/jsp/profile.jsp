@@ -7,7 +7,7 @@
 <tags:header title="Profile"/>
 
 <body>
-    <tags:citizen name="David Williams" image="/img/david_williams.jpg" citizenId="20" suser="true">
+    <tags:citizen citizen="${citizen}">
         <!--Top panel-->
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">

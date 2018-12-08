@@ -9,11 +9,12 @@ public interface MedicalRecordsService {
 
     Boolean getLoginRegisterPage();
     Boolean postLoginRegisterPage();
+    Citizen getSessionCitizen();
 
-    List<Citizen> getCitizens(String subjectId);
-    Citizen getCitizen(String subjectId, String citizenId);
-    Boolean getAddCitizensPage(String subjectId);
-    List<Citizen> deleteCitizen(String subjectId, String citizenToDelete);
-    Boolean editCitizen(String subjectId, String citizenToEdit);
+    Citizen getCitizen(Citizen subject, String citizenId);
+    List<Citizen> getCitizens(Citizen subject);
+    Boolean getAddCitizensPage(Citizen subject);
+    List<Citizen> deleteCitizen(Citizen subject, String citizenToDelete);
+    Citizen editCitizen(Citizen subject, String citizenToEdit);
 
 }

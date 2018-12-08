@@ -121,4 +121,8 @@ public class Citizen implements Serializable{
         this.roles.remove(role);
     }
 
+    public boolean hasRole(String role) {
+        return this.roles.contains(Role.valueOf(role));
+    }
+
 }

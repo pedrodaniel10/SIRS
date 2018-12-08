@@ -1,10 +1,5 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<%@ attribute name="image" required="true"%>
-<%@ attribute name="name" required="true"%>
-<%@ attribute name="citizenId" required="true"%>
-<%@ attribute name="doctor" required="false" type="java.lang.Boolean"%>
-<%@ attribute name="admin" required="false" type="java.lang.Boolean"%>
-<%@ attribute name="suser" required="false" type="java.lang.Boolean"%>
+<%@ attribute name="citizen" required="true" type="pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen"%>
 
 <link href="/css/bootstrap.min.css" rel="stylesheet">
 <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -19,11 +14,19 @@
             <ul class="nav metismenu" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element"> <span>
-                            <img alt="image" class="img-circle" src="${image}" style="width:90px;height:90px;"/>
+                            <img alt="image" class="img-circle" src="${citizen.profilePic}" style="width:90px;height:90px;"/>
                              </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">${name}</strong>
-                             </span> <span class="text-muted text-xs block">Patient <b class="caret"></b></span> </span> </a>
+                            <span class="clear">
+                                <span class="block m-t-xs"> <strong class="font-bold">${citizen.citizenName}</strong></span>
+                                <span class="text-muted text-xs block">
+                                     <c:forEach var="role" items="${citizen.roles}">
+                                        ${role.name()} &nbsp;&nbsp;
+                                     </c:forEach>
+                                    <b class="caret"></b>
+                                </span>
+                            </span>
+                        </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a href="/login">Logout</a></li>
                         </ul>
@@ -33,16 +36,16 @@
                     </div>
                 </li>
                 <li>
-                    <a href="/citizens/${citizenId}/profile"><i class="fa fa-user"></i> <span class="nav-label">Profile</span></a>
+                    <a href="/citizens/${citizen.citizenId}/profile"><i class="fa fa-user"></i> <span class="nav-label">Profile</span></a>
                 </li>
 
-                <c:if test="${doctor}">
+                <c:if test="${citizen.hasRole(\"DOCTOR\")}">
                     <li>
                         <a href="/patients"><i class="fa fa-wheelchair"></i> <span class="nav-label">Patients</span></a>
                     </li>
                 </c:if>
 
-                <c:if test="${admin}">
+                <c:if test="${citizen.hasRole(\"ADMIN\")}">
                     <li>
                         <a href="#"><i class="fa fa-book"></i> <span class="nav-label">Appointments</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
@@ -60,7 +63,7 @@
                     </li>
                 </c:if>
 
-                <c:if test="${suser}">
+                <c:if test="${citizen.hasRole(\"SUPERUSER\")}">
                     <li>
                         <a href="#"><i class="fa fa-group"></i> <span class="nav-label">Citizens</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
@@ -68,7 +71,7 @@
                             <li><a href="/citizens/add">Add citizen</a></li>
                         </ul>
                     </li>
-
+                
                     <li>
                         <a href="#"><i class="fa fa-hospital-o"></i> <span class="nav-label">Institutions</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">

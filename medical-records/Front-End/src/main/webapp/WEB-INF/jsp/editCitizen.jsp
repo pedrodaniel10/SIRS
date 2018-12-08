@@ -1,4 +1,6 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -6,7 +8,7 @@
     <link href="/css/plugins/iCheck/custom.css" rel="stylesheet">
 </tags:header>
 
-<tags:citizen name="David Williams" image="/img/david_williams.jpg" citizenId="20" suser="true">
+<tags:citizen citizen="${citizen}">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Edit Profile</h2>
@@ -15,7 +17,7 @@
                     <a href="/citizens">Citizens</a>
                 </li>
                 <li>
-                    <a href="/citizens/20/profile">David Williams</a>
+                    <a href="/citizens/${citizen.citizenId}/profile">${citizen.citizenName}</a>
                 </li>
                 <li class="active">
                     <strong>Edit</strong>
@@ -50,25 +52,31 @@
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group"><label class="col-sm-2 control-label">Citizen ID:</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                                <div class="col-sm-10"><input type="text" class="form-control" value="${citizenToEdit.citizenId}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group"><label class="col-sm-2 control-label">Name:</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                                <div class="col-sm-10"><input type="text" class="form-control" value="${citizenToEdit.citizenName}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group"><label class="col-sm-2 control-label">Date of Birth:</label>
-                                <div class="col-sm-10"><input type="date" class="form-control"></div>
+                                <div class="col-sm-10"><input type="date" class="form-control" value="${citizenToEdit.dateOfBirth}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group"><label class="col-sm-2 control-label">Gender:</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b">
-                                        <option>Male</option>
-                                        <option>Female</option>
+                                    <select class="form-control m-b" >
+                                        <c:if test="${citizenToEdit.gender.name().equals(\"MALE\")}">
+                                            <option selected>Male</option>
+                                            <option>Female</option>
+                                        </c:if>
+                                        <c:if test="${citizenToEdit.gender.name().equals(\"FEMALE\")}">
+                                            <option>Male</option>
+                                            <option selected>Female</option>
+                                        </c:if>
                                     </select>
                                 </div>
                             </div>
@@ -76,14 +84,10 @@
 
                             <div class="form-group"><label class="col-sm-2 control-label">Email:</label>
 
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                                <div class="col-sm-10"><input type="text" class="form-control" value="${citizenToEdit.email}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
 
-                            <div class="form-group"><label class="col-sm-2 control-label">Username:</label>
-
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
-                            </div>
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group"><label class="col-sm-2 control-label">Password:</label>
