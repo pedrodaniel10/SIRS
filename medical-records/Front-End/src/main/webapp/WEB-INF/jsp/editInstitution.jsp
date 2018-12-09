@@ -6,7 +6,7 @@
     <link href="/css/plugins/iCheck/custom.css" rel="stylesheet">
 </tags:header>
 
-<tags:citizen name="David Williams" image="/img/david_williams.jpg" citizenId="20" suser="true">
+<tags:citizen citizen="${citizen}">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Edit Institution</h2>
@@ -15,7 +15,7 @@
                     <a href="/institutions">Institutions</a>
                 </li>
                 <li>
-                    <a href="/institutions">Royal London Hospital</a>
+                    <a href="/institutions">${institutionToEdit.institutionName}</a>
                 </li>
                 <li class="active">
                     <strong>Edit</strong>
@@ -43,17 +43,17 @@
                         <form method="post" class="form-horizontal">
 
                             <div class="form-group"><label class="col-sm-2 control-label">Name:</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                                <div class="col-sm-10"><input type="text" class="form-control" value="${institutionToEdit.institutionName}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group"><label class="col-sm-2 control-label">Address:</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                                <div class="col-sm-10"><input type="text" class="form-control" value="${institutionToEdit.institutionAddress}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group"><label class="col-sm-2 control-label">Citizen ID:</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                                <div class="col-sm-10"><input type="text" class="form-control" ${institutionToEdit.institutionId}></div>
                             </div>
                             <div class="hr-line-dashed"></div>
 

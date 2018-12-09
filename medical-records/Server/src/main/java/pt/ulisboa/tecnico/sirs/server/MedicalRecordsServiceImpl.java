@@ -2,10 +2,12 @@ package pt.ulisboa.tecnico.sirs.server;
 
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.Doctor;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Institution;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.ServiceUtils;
 import pt.ulisboa.tecnico.sirs.pdp.PolicyEnforcementPoint;
 
+import javax.print.Doc;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,6 +145,51 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         return getSomeInstitutions();
     }
 
+    @Override
+    public List<Doctor> getDoctors(Citizen subject) {
+        //STATIC CODE
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "doctorsPage", "");
+        if (!authorization) return null;
+
+        return getSomeDoctors();
+    }
+
+    @Override
+    public List<Doctor> getDoctorsWithInstitution(Citizen subject, String adminId) {
+        //STATIC CODE
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "doctorsPage", "");
+        if (!authorization) return null;
+
+        return getSomeDoctors();
+    }
+
+
+    @Override
+    public Boolean getAddDoctorPage(Citizen subject) {
+        return requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "doctorsPage", "");
+    }
+
+    @Override
+    public List<Doctor> addDoctor(Citizen subject, String doctorToAdd) {
+        //STATIC CODE
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "doctorsPage", doctorToAdd);
+        if (!authorization) return null;
+        return getSomeDoctors();
+    }
+
+    @Override
+    public List<Doctor> deleteDoctor(Citizen subject, String doctorToDelete) {
+        //STATIC CODE
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "doctorsPage", doctorToDelete);
+        if (!authorization) return null;
+        return getSomeDoctors();
+    }
+
 
     // This code only serves to simulate some citizens because there's no database connection yet.
     private List<Citizen> getSomeCitizens() {
@@ -170,7 +217,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     // This code only serves to simulate a session citizen because session is not implemented.
     private Citizen getSessionCitizenTest() {
         List<Citizen.Role> roles = new ArrayList<>();
-        roles.add(Citizen.Role.SUPERUSER);
+        roles.add(Citizen.Role.ADMIN);
 
         return new Citizen("12345p", "David Admin", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.paciente@megamail.com", "pass", "https://blog.estantevirtual.com.br/wp-content/uploads/fernando-pessoa-1.jpg", "", roles);
     }
@@ -194,4 +241,15 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         return new Institution(11111, "Institution1", "Rua da Praça nº1 Lisboa", "", "");
     }
 
+    // This code only serves to simulate some institutions because there's no database connection yet.
+    private List<Doctor> getSomeDoctors() {
+        Doctor d1 = new Doctor(12345, "12345d", 11111, "123", "124");
+        Doctor d2 = new Doctor(12346, "12346d", 11111, "123", "124");
+
+        List<Doctor> doctors = new ArrayList<>();
+        doctors.add(d1);
+        doctors.add(d2);
+
+        return doctors;
+    }
 }

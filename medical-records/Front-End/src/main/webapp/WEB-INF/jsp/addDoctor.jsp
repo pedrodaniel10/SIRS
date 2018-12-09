@@ -5,7 +5,7 @@
 <tags:header title="Add Doctor"/>
 
 <body>
-<tags:citizen name="David Williams" image="/img/david_williams.jpg" citizenId="20" suser="true" admin="true">
+<tags:citizen citizen="${citizen}">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Add Doctor</h2>
