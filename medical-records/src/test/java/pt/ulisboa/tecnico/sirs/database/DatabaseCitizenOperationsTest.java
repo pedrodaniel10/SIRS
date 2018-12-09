@@ -3,6 +3,13 @@ package pt.ulisboa.tecnico.sirs.database;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -11,19 +18,21 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bouncycastle.operator.OperatorCreationException;
 import org.junit.Before;
 import org.junit.Test;
 
 import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
-import pt.ulisboa.tecnico.sirs.database.utils.DatabaseUtils;
 import pt.ulisboa.tecnico.sirs.dataobjects.Citizen;
 import pt.ulisboa.tecnico.sirs.dataobjects.Citizen.Gender;
 import pt.ulisboa.tecnico.sirs.dataobjects.Citizen.Role;
+import pt.ulisboa.tecnico.sirs.utils.DatabaseUtils;
 import pt.ulisboa.tecnico.sirs.dataobjects.DocPatRelation;
 import pt.ulisboa.tecnico.sirs.dataobjects.Institution;
 import pt.ulisboa.tecnico.sirs.dataobjects.MedicalRecord;
 import pt.ulisboa.tecnico.sirs.dataobjects.ReportInfo;
 import pt.ulisboa.tecnico.sirs.dataobjects.Session;
+import pt.ulisboa.tecnico.sirs.dataobjects.SignedMedicalRecord;
 
 public class DatabaseCitizenOperationsTest {
 	
@@ -111,7 +120,10 @@ public class DatabaseCitizenOperationsTest {
 	}
 	
 	@Test
-	public void verifyQuerySintax() throws SQLException {
+	public void verifyQuerySintax() throws SQLException, InvalidKeyException, NoSuchAlgorithmException, 
+	SignatureException, KeyStoreException, CertificateException, UnrecoverableEntryException, IOException, 
+	OperatorCreationException {
+		
 		DatabaseUtils.getAllInstitutions(conn);
 		DatabaseUtils.updateInstitution(conn, new Institution(1, "santa maria", "blabla", "bleble", "super"));
 		DatabaseUtils.getMedicalRecordsByPatientCitizenId(conn, "test_id");
@@ -125,8 +137,12 @@ public class DatabaseCitizenOperationsTest {
 		DatabaseUtils.setDoctorInstitutionId(conn, c1.getCitizenId(), 1, c1.getCitizenId());
 		ReportInfo ri = new ReportInfo(-1,-1,-1,-1,"heh","hah");
 		MedicalRecord mr = new MedicalRecord(0, Timestamp.valueOf("1922-11-1 22:22:22"),
-				c1.getCitizenId(), c1.getCitizenId(), 1, "hoh", ri);
+				c1.getCitizenId(), c1.getCitizenId(), 1, ri);
+		
 		DatabaseUtils.addMedicalRecord(conn, mr);
+		List<SignedMedicalRecord> records = DatabaseUtils.getMedicalRecordsByPatientCitizenId(conn, mr.getPatientCitizenId());
+		assertTrue(records.get(0).verifySignature());
+		
 		mr.getReportInfo().setHaemoglobin(10);
 		DatabaseUtils.updateMedicalRecord(conn, mr);
 		DatabaseUtils.getDoctorsByAdminId(conn, c1.getCitizenId());

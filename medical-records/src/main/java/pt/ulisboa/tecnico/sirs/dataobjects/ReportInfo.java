@@ -1,6 +1,9 @@
 package pt.ulisboa.tecnico.sirs.dataobjects;
 
-public class ReportInfo {
+import java.io.Serializable;
+
+public class ReportInfo implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int heartBeat;
 	private int bloodPressure;
 	private int sugar;

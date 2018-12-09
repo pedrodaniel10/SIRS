@@ -1,11 +1,20 @@
-package pt.ulisboa.tecnico.sirs.database.utils;
+package pt.ulisboa.tecnico.sirs.utils;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bouncycastle.operator.OperatorCreationException;
 
 import pt.ulisboa.tecnico.sirs.database.queries.Queries;
 import pt.ulisboa.tecnico.sirs.dataobjects.Citizen;
@@ -17,6 +26,7 @@ import pt.ulisboa.tecnico.sirs.dataobjects.Institution;
 import pt.ulisboa.tecnico.sirs.dataobjects.MedicalRecord;
 import pt.ulisboa.tecnico.sirs.dataobjects.Patient;
 import pt.ulisboa.tecnico.sirs.dataobjects.Session;
+import pt.ulisboa.tecnico.sirs.dataobjects.SignedMedicalRecord;
 
 public class DatabaseUtils {
 	
@@ -228,58 +238,73 @@ public class DatabaseUtils {
 		}
 	}
 	
-	public static List<MedicalRecord> getMedicalRecordsByPatientCitizenId(Connection conn, String citizenId) 
+	public static List<SignedMedicalRecord> getMedicalRecordsByPatientCitizenId(Connection conn, String citizenId) 
 			throws SQLException {
-		List<MedicalRecord> medicalRecords = new ArrayList<>();
+		List<SignedMedicalRecord> signedMedicalRecords = new ArrayList<>();
 		try (PreparedStatement statement = conn.prepareStatement(
 				Queries.GET_MEDICAL_RECORDS_BY_PATIENT_CITIZEN_ID_QUERY)) {
 			statement.setString(1, citizenId);
 			try (ResultSet rs = statement.executeQuery()) {
 				while (rs.next()) {
-					MedicalRecord medicalRecord = new MedicalRecord();
-					medicalRecord.setRecordId(rs.getInt("record_id"));
-					medicalRecord.getReportInfo().setHeartBeat(rs.getInt("heart_beat"));
-					medicalRecord.getReportInfo().setBloodPressure(rs.getInt("blood_pressure"));
-					medicalRecord.getReportInfo().setSugar(rs.getInt("sugar"));
-					medicalRecord.getReportInfo().setHaemoglobin(rs.getInt("haemoglobin"));
-					medicalRecord.setCreationDate(rs.getTimestamp("creation_date"));
-					medicalRecord.setDoctorCitizenId(rs.getString("doctor_citizen_id"));
-					medicalRecord.getReportInfo().setTreatment(rs.getString("treatment"));
-					medicalRecord.setPatientCitizenId(rs.getString("patient_citizen_id"));
-					medicalRecord.setInstitutionId(rs.getInt("institution_id"));
-					medicalRecord.getReportInfo().setGeneralReport(rs.getString("general_report"));
-					medicalRecord.setRecordSignature(rs.getString("record_signature"));
+					SignedMedicalRecord signedMedicalRecord = new SignedMedicalRecord();
+					signedMedicalRecord.getMedicalRecord().setRecordId(rs.getInt("record_id"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setHeartBeat(rs.getInt("heart_beat"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setBloodPressure(rs.getInt("blood_pressure"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setSugar(rs.getInt("sugar"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setHaemoglobin(rs.getInt("haemoglobin"));
+					signedMedicalRecord.getMedicalRecord().setCreationDate(rs.getTimestamp("creation_date"));
+					signedMedicalRecord.getMedicalRecord().setDoctorCitizenId(rs.getString("doctor_citizen_id"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setTreatment(rs.getString("treatment"));
+					signedMedicalRecord.getMedicalRecord().setPatientCitizenId(rs.getString("patient_citizen_id"));
+					signedMedicalRecord.getMedicalRecord().setInstitutionId(rs.getInt("institution_id"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setGeneralReport(rs.getString("general_report"));
+					signedMedicalRecord.setRecordSignature(rs.getString("record_signature"));
 					
-					medicalRecords.add(medicalRecord);
+					signedMedicalRecords.add(signedMedicalRecord);
 				}
 			}
 		}
-		return medicalRecords;
+		return signedMedicalRecords;
 	}
 	
-	public static void addMedicalRecord(Connection conn, MedicalRecord medicalRecord) throws SQLException {
+	public static void addMedicalRecord(Connection conn, MedicalRecord medicalRecord) 
+			throws SQLException, InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, 
+			CertificateException, OperatorCreationException, SignatureException, UnrecoverableEntryException, 
+			IOException {
+		
 		setMedicalRecord(conn, medicalRecord, Queries.ADD_MEDICAL_RECORD_QUERY);
 	}
 	
-	public static void updateMedicalRecord(Connection conn, MedicalRecord medicalRecord) throws SQLException {
+	public static void updateMedicalRecord(Connection conn, MedicalRecord medicalRecord) 
+			throws SQLException, InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, 
+			CertificateException, OperatorCreationException, SignatureException, UnrecoverableEntryException, 
+			IOException {
+		
 		setMedicalRecord(conn, medicalRecord, Queries.UPDATE_MEDICAL_RECORD_QUERY);
 	}
 	
-	private static void setMedicalRecord(Connection conn, MedicalRecord medicalRecord, String query) throws SQLException {
+	private static void setMedicalRecord(Connection conn, MedicalRecord medicalRecord, String query) 
+			throws SQLException, KeyStoreException, NoSuchAlgorithmException, CertificateException, 
+			OperatorCreationException, IOException, InvalidKeyException, SignatureException, 
+			UnrecoverableEntryException {
+		
+		KeyUtils.createKeyPair(medicalRecord.getDoctorCitizenId());
+		SignedMedicalRecord signedMedicalRecord = medicalRecord.getSignedMedicalRecord();
+		
 		try (PreparedStatement statement = conn.prepareStatement(query)) {
 			
-			setRecordData(statement, medicalRecord.getReportInfo().getHeartBeat(), 1);
-			setRecordData(statement, medicalRecord.getReportInfo().getBloodPressure(), 2);
-			setRecordData(statement, medicalRecord.getReportInfo().getSugar(), 3);
-			setRecordData(statement, medicalRecord.getReportInfo().getHaemoglobin(), 4);
-			statement.setString(5, medicalRecord.getDoctorCitizenId());
-			statement.setString(6, medicalRecord.getReportInfo().getTreatment());
-			statement.setString(7, medicalRecord.getPatientCitizenId());
-			statement.setInt(8, medicalRecord.getInstitutionId());
-			statement.setString(9, medicalRecord.getReportInfo().getGeneralReport());
-			statement.setString(10, medicalRecord.getRecordSignature());
+			setRecordData(statement, signedMedicalRecord.getMedicalRecord().getReportInfo().getHeartBeat(), 1);
+			setRecordData(statement, signedMedicalRecord.getMedicalRecord().getReportInfo().getBloodPressure(), 2);
+			setRecordData(statement, signedMedicalRecord.getMedicalRecord().getReportInfo().getSugar(), 3);
+			setRecordData(statement, signedMedicalRecord.getMedicalRecord().getReportInfo().getHaemoglobin(), 4);
+			statement.setString(5, signedMedicalRecord.getMedicalRecord().getDoctorCitizenId());
+			statement.setString(6, signedMedicalRecord.getMedicalRecord().getReportInfo().getTreatment());
+			statement.setString(7, signedMedicalRecord.getMedicalRecord().getPatientCitizenId());
+			statement.setInt(8, signedMedicalRecord.getMedicalRecord().getInstitutionId());
+			statement.setString(9, signedMedicalRecord.getMedicalRecord().getReportInfo().getGeneralReport());
+			statement.setString(10, signedMedicalRecord.getRecordSignature());
 			try {
-				statement.setInt(11, medicalRecord.getRecordId());
+				statement.setInt(11, signedMedicalRecord.getMedicalRecord().getRecordId());
 			} catch (SQLException e) {
 				//do nothing (this means it's an add operation)
 			}
@@ -386,6 +411,8 @@ public class DatabaseUtils {
 		}
 		return doctors;
 	}
+	
+	//TODO: return list of DoctorCitizenData
 	
 	public static void setDoctorInstitutionId(Connection conn, String doctorCitizenId, int institutionId, String adminCitizenId) 
 			throws SQLException {
