@@ -130,6 +130,12 @@ import Attributes.*
 						target clause Attributes.actionId == "create"
 						permit
 					}
+					
+					/* RULE: SuperUser can edit Citizens */
+					rule SuperUserCanEditCitizens {
+						target clause Attributes.actionId == "edit"
+						permit
+					}
 	
 					/* RULE: SuperUser cannot perform other actions in the citizens page */
 	                rule SuperUserCannotPerformOtherActions {

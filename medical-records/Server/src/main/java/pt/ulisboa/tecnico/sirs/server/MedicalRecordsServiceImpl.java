@@ -135,11 +135,11 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     @Override
     public List<Citizen> editCitizen(Citizen subject, Citizen citizenToEdit) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "citizensPage", citizenToEdit.getCitizenId());
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "citizensPage", ""/*citizenToEdit.getCitizenId()*/);
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                if (citizenToEdit!=null) DatabaseUtils.addCitizen(connection, citizenToEdit);
+                if (citizenToEdit != null) DatabaseUtils.updateCitizen(connection, citizenToEdit);
                 return DatabaseUtils.getAllCitizens(connection);
             } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());
@@ -226,30 +226,6 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
                 ServiceUtils.parseRoleList(subject.getRoles()), "edit", "doctorsPage", doctorToDelete);
         if (!authorization) return null;
         return getSomeDoctors();
-    }
-
-
-    // This code only serves to simulate some citizens because there's no database connection yet.
-    private List<Citizen> getSomeCitizens() {
-        List<Citizen.Role> roles1 = new ArrayList<>();
-        roles1.add(Citizen.Role.ADMIN);
-        Citizen c1 = new Citizen("12345", "David Silva", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.silva@megamail.com", "pass", "", "", roles1);
-        List<Citizen.Role> roles2 = new ArrayList<>();
-        roles2.add(Citizen.Role.DOCTOR);
-        Citizen c2 = new Citizen("12346", "Felipe Anderson", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "andersona@megamail.com", "pass", "", "", roles2);
-        List<Citizen> citizens = new ArrayList<>();
-        citizens.add(c1);
-        citizens.add(c2);
-
-        return citizens;
-    }
-
-    // This code only serves to simulate a citizen because there's no database connection yet.
-    private Citizen getACitizen() {
-        List<Citizen.Role> roles = new ArrayList<>();
-        roles.add(Citizen.Role.PATIENT);
-
-        return new Citizen("12345p", "David Paciente", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.paciente@megamail.com", "pass", "", "", roles);
     }
 
     // This code only serves to simulate a session citizen because session is not implemented.

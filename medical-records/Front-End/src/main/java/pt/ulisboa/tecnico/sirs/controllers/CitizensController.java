@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -71,6 +70,7 @@ public class CitizensController {
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
         List<Citizen> citizens = service.editCitizen(subject, null);
+        model.put("citizens", citizens);
         return (citizens != null)? "redirect:/citizens": "404";
     }
 
@@ -83,6 +83,8 @@ public class CitizensController {
         Citizen profile = service.getCitizen(subject, citizenId);
         if (subject == null)
             return "404";
+        if (subject.getCitizenId().equals(citizenId))
+            profile = subject;
         model.put("profile", profile);
         return "profile";
     }
