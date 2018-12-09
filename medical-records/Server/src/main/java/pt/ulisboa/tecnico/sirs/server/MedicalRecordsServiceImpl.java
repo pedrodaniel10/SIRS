@@ -103,7 +103,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     @Override
     public List<Citizen> addCitizen(Citizen subject, Citizen citizenToAdd) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "citizensPage", ""/*citizenToAdd.getCitizenId()*/);
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "citizensPage", ""/*citizenToAdd.getCitizenId()*/);
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();

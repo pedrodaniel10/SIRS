@@ -49,6 +49,7 @@ public class CitizensController {
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
         List<Citizen> citizens = service.addCitizen(subject, null);
+        model.put("citizens", citizens);
         return (citizens != null)? "citizens": "404";
     }
 
