@@ -23,8 +23,9 @@ public interface MedicalRecordsService {
 
     List<Institution> getInstitutions(Citizen subject);
     Boolean getAddInstitutionsPage(Citizen subject);
-    Institution editInstitution(Citizen subject, String institutionToEdit);
-    List<Institution> deleteInstitution(Citizen subject, String institutionToDelete);
+    List<Institution> addInstitution(Citizen subject, Institution institutionToAdd);
+    Institution getEditInstitutionPage(Citizen subject, String institutionToEdit);
+    List<Institution> editInstitution(Citizen subject, Institution institutionToEdit);
 
     List<Doctor> getDoctors(Citizen subject);
     List<Doctor> getDoctorsWithInstitution(Citizen subject, String adminId);

@@ -49,14 +49,9 @@ public class InstitutionsController {
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        /* change to a service that does a post? */
-        boolean authorization = service.getAddInstitutionsPage(subject);
-        if (authorization) {
-            List<Institution> institutions = service.getInstitutions(subject);
-            model.put("institutions", institutions);
-            return "institutions";
-        }
-        else return "404";
+        List<Institution> institutions = service.addInstitution(subject, null);
+        model.put("institutions", institutions);
+        return (institutions != null)? "institutions": "404";
     }
 
     @RequestMapping(value = "/institutions/{institutionId}/edit", method = RequestMethod.GET)
@@ -65,7 +60,7 @@ public class InstitutionsController {
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        Institution institutionToEdit = service.editInstitution(subject, institutionId);
+        Institution institutionToEdit = service.getEditInstitutionPage(subject, institutionId);
         model.put("institutionToEdit", institutionToEdit);
         return (institutionToEdit != null)? "editInstitution": "404";
     }
@@ -76,24 +71,8 @@ public class InstitutionsController {
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        Institution institutionToEdit = service.editInstitution(subject, institutionId);
-        model.put("institutionToEdit", institutionToEdit);
-        if (institutionToEdit != null) {
-            List<Institution> institutions = service.getInstitutions(subject);
-            model.put("institutions", institutions);
-            return "institutions";
-        }
-        else return "404";
-    }
-
-    @RequestMapping(value = "/institutions/{institutionId}/delete", method = RequestMethod.GET)
-    public String getRequestDeleteInstitution(Map<String, Object> model, @PathVariable String institutionId) {
-        log.info("Entering editInstitutions function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-        Citizen subject = service.getSessionCitizen();
-        model.put("citizen", subject);
-        List<Institution> institutions = service.deleteInstitution(subject, institutionId);
+        List<Institution> institutions = service.editInstitution(subject, null);
         model.put("institutions", institutions);
-        return (institutions != null) ? "institutions" : "404";
+        return (institutions != null)? "redirect:/institutions" : "404";
     }
 }

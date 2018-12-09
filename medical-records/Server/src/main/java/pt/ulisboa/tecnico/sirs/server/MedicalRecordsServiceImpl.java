@@ -62,6 +62,10 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         return getSessionCitizenTest();
     }
 
+    /* --------------------------------------------------------------------------------------------------------------*/
+    /* ------------------------------------------- CITIZENS SERVICES ------------------------------------------------*/
+    /* --------------------------------------------------------------------------------------------------------------*/
+
     @Override
     public Citizen getCitizen(Citizen subject, String citizenId) {
         try {
@@ -149,14 +153,23 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
 
     }
 
+    /* --------------------------------------------------------------------------------------------------------------*/
+    /* --------------------------------------- INSTITUTIONS SERVICES ------------------------------------------------*/
+    /* --------------------------------------------------------------------------------------------------------------*/
     @Override
     public List<Institution> getInstitutions(Citizen subject) {
-        //STATIC CODE
-        Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "view", "institutionsPage", "");
-        if (!authorization) return null;
+        try {
+            Connection connection = (new DatabaseConnector()).getConnection();
+            Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                    ServiceUtils.parseRoleList(subject.getRoles()), "view", "institutionsPage", "");
 
-        return getSomeInstitutions();
+            if (authorization) {
+                return DatabaseUtils.getAllInstitutions(connection);
+            }
+        } catch (DatabaseConnectionException | SQLException e ) {
+            log.error(e.getMessage());
+        }
+        return null;
     }
 
     @Override
@@ -166,22 +179,57 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public Institution editInstitution(Citizen subject, String institutionToEdit) {
-        //STATIC CODE
-        Institution i1 = getAInstitution(); //database get institutionbyid(institutionToEdit)
+    public List<Institution> addInstitution(Citizen subject, Institution institutionToAdd) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "institutionsPage", institutionToEdit);
-        return authorization? i1 : null;
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "institutionsPage", ""/*institutionToAdd.getInstitutionId()*/);
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
+                if (institutionToAdd != null) DatabaseUtils.addInstitution(connection, institutionToAdd);
+                return DatabaseUtils.getAllInstitutions(connection);
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
+            }
+        }
+        return null;
     }
 
     @Override
-    public List<Institution> deleteInstitution(Citizen subject, String institutionToDelete) {
-        //STATIC CODE
+    public Institution getEditInstitutionPage(Citizen subject, String institutionToEdit) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "institutionsPage", institutionToDelete);
-        if (!authorization) return null;
-        return getSomeInstitutions();
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "institutionsPage", "" /*institutionToEdit*/);
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
+                if (institutionToEdit != null)
+                    //return DatabaseUtils.getInstitutionById(connection, institutionToEdit);
+                    return getAInstitution();
+            } catch (DatabaseConnectionException /*| SQLException*/ e ) {
+                log.error(e.getMessage());
+            }
+        }
+        return null;
     }
+
+    @Override
+    public List<Institution> editInstitution(Citizen subject, Institution institutionToEdit) {
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "institutionsPage", ""/*institutionToEdit.getInstitutionId()*/);
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
+                if (institutionToEdit != null) DatabaseUtils.updateInstitution(connection, institutionToEdit);
+                return DatabaseUtils.getAllInstitutions(connection);
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    /* --------------------------------------------------------------------------------------------------------------*/
+    /* -------------------------------------------- DOCTORS SERVICES ------------------------------------------------*/
+    /* --------------------------------------------------------------------------------------------------------------*/
 
     @Override
     public List<Doctor> getDoctors(Citizen subject) {
