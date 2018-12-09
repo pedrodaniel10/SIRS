@@ -40,3 +40,5 @@ medical-records/Front-End/logs/
 medical-records/Server/target
 medical-records/API/target
 medical-records/Front-End/target
+
+medical-records/src/main/resources/citizens\.jks
