@@ -42,11 +42,11 @@
                             <div class="widget-head-color-box navy-bg p-lg text-center">
                                 <div class="m-b-md">
                                     <h2 class="font-bold no-margins">
-                                        ${citizen.citizenName}
+                                        ${profile.citizenName}
                                     </h2>
-                                    <small>${citizen.citizenName}</small>
+                                    <small>${profile.citizenName}</small>
                                 </div>
-                                <img src="${citizen.profilePic}" class="img-circle circle-border m-b-md" style="width:250px;height:250px;"\>
+                                <img src="${profile.profilePic}" class="img-circle circle-border m-b-md" style="width:250px;height:250px;"\>
                             </div>
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -59,7 +59,7 @@
                                             <strong>Roles:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                            <c:forEach var="role" items="${citizen.roles}">
+                                            <c:forEach var="role" items="${profile.roles}">
                                                 <span class="badge badge-success">${role.name()}</span>
                                             </c:forEach>
                                         </div>
@@ -69,7 +69,7 @@
                                             <strong>Citizen ID:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                            ${citizen.citizenId}
+                                            ${profile.citizenId}
                                         </div>
                                     </div>
                                     <div class="row wrapper border-bottom white-bg">
@@ -77,7 +77,7 @@
                                             <strong>Name:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                                ${citizen.citizenName}
+                                                ${profile.citizenName}
                                         </div>
                                     </div>
                                     <div class="row wrapper border-bottom white-bg">
@@ -85,7 +85,7 @@
                                             <strong>Born:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                                ${citizen.dateOfBirth}
+                                                ${profile.dateOfBirth}
                                         </div>
                                     </div>
                                     <div class="row wrapper border-bottom white-bg">
@@ -93,7 +93,7 @@
                                             <strong>Gender:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                                ${citizen.gender.name()}
+                                                ${profile.gender.name()}
                                         </div>
                                     </div>
                                     <div class="row wrapper white-bg">
@@ -101,7 +101,7 @@
                                             <strong>Email:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                                ${citizen.email}
+                                                ${profile.email}
                                         </div>
                                     </div>
                                 </div>
