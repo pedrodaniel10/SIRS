@@ -3,5 +3,5 @@ export MAVEN_OPTS="-Xmx128m"
 
 mvn install
 
-cd Server; mvn spring-boot:run &
+cd Server; mvn spring-boot:run -Dspring-boot.run.arguments="1099" &
 cd ../Front-End; mvn spring-boot:run
