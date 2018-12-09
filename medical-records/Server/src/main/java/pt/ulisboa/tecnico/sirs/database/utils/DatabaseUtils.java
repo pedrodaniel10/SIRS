@@ -7,16 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
 import pt.ulisboa.tecnico.sirs.database.queries.Queries;
-import pt.ulisboa.tecnico.sirs.dataobjects.Citizen;
-import pt.ulisboa.tecnico.sirs.dataobjects.Citizen.Gender;
-import pt.ulisboa.tecnico.sirs.dataobjects.Citizen.Role;
-import pt.ulisboa.tecnico.sirs.dataobjects.DocPatRelation;
-import pt.ulisboa.tecnico.sirs.dataobjects.Doctor;
-import pt.ulisboa.tecnico.sirs.dataobjects.Institution;
-import pt.ulisboa.tecnico.sirs.dataobjects.MedicalRecord;
-import pt.ulisboa.tecnico.sirs.dataobjects.Patient;
-import pt.ulisboa.tecnico.sirs.dataobjects.Session;
 
 public class DatabaseUtils {
 	
@@ -46,24 +38,24 @@ public class DatabaseUtils {
 					Citizen citizen = new Citizen();
 					citizen.setCitizenId(rs.getString("citizen_id"));
 					citizen.setCitizenName(rs.getString("citizen_name"));
-					citizen.setGender(Gender.valueOf(rs.getString("gender")));
+					citizen.setGender(Citizen.Gender.valueOf(rs.getString("gender")));
 					citizen.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
 					citizen.setEmail(rs.getString("email"));
 					citizen.setPassword(rs.getString("password"));
 					citizen.setProfilePic(rs.getString("profile_pic"));
 					citizen.setSuperuserCitizenId(rs.getString("superuser_citizen_id"));
 					
-					Role role;
-					if ((role = getRole(conn, citizen, Queries.GET_PATIENT_ROLE_QUERY, Role.PATIENT)) != null) {
+					Citizen.Role role;
+					if ((role = getRole(conn, citizen, Queries.GET_PATIENT_ROLE_QUERY, Citizen.Role.PATIENT)) != null) {
 						citizen.addRole(role);
 					}
-					if ((role = getRole(conn, citizen, Queries.GET_DOCTOR_ROLE_QUERY, Role.DOCTOR)) != null) {
+					if ((role = getRole(conn, citizen, Queries.GET_DOCTOR_ROLE_QUERY, Citizen.Role.DOCTOR)) != null) {
 						citizen.addRole(role);
 					}
-					if ((role = getRole(conn, citizen, Queries.GET_ADMIN_ROLE_QUERY, Role.ADMIN)) != null) {
+					if ((role = getRole(conn, citizen, Queries.GET_ADMIN_ROLE_QUERY, Citizen.Role.ADMIN)) != null) {
 						citizen.addRole(role);
 					}
-					if ((role = getRole(conn, citizen, Queries.GET_SUPERUSER_ROLE_QUERY, Role.SUPERUSER)) != null) {
+					if ((role = getRole(conn, citizen, Queries.GET_SUPERUSER_ROLE_QUERY, Citizen.Role.SUPERUSER)) != null) {
 						citizen.addRole(role);
 					}
 					
@@ -86,20 +78,20 @@ public class DatabaseUtils {
 			statement.setString(8, citizen.getSuperuserCitizenId());
 			statement.executeUpdate();
 			
-			if (citizen.getRoles().contains(Role.PATIENT)) {
-				addRole(conn, citizen, Role.PATIENT, Queries.ADD_PATIENT_ROLE_QUERY);
+			if (citizen.getRoles().contains(Citizen.Role.PATIENT)) {
+				addRole(conn, citizen, Citizen.Role.PATIENT, Queries.ADD_PATIENT_ROLE_QUERY);
 			}
 			
-			if (citizen.getRoles().contains(Role.DOCTOR)) {
-				addRole(conn, citizen, Role.DOCTOR, Queries.ADD_DOCTOR_ROLE_QUERY);
+			if (citizen.getRoles().contains(Citizen.Role.DOCTOR)) {
+				addRole(conn, citizen, Citizen.Role.DOCTOR, Queries.ADD_DOCTOR_ROLE_QUERY);
 			}
 
-			if (citizen.getRoles().contains(Role.ADMIN)) {
-				addRole(conn, citizen, Role.ADMIN, Queries.ADD_ADMIN_ROLE_QUERY);		
+			if (citizen.getRoles().contains(Citizen.Role.ADMIN)) {
+				addRole(conn, citizen, Citizen.Role.ADMIN, Queries.ADD_ADMIN_ROLE_QUERY);
 			}
 			
-			if (citizen.getRoles().contains(Role.SUPERUSER)) {
-				addRole(conn, citizen, Role.SUPERUSER, Queries.ADD_SUPERUSER_ROLE_QUERY);		
+			if (citizen.getRoles().contains(Citizen.Role.SUPERUSER)) {
+				addRole(conn, citizen, Citizen.Role.SUPERUSER, Queries.ADD_SUPERUSER_ROLE_QUERY);
 			}
 		}
 	}
@@ -116,21 +108,21 @@ public class DatabaseUtils {
 			statement.setString(8, citizen.getCitizenId());
 			statement.executeUpdate();
 			
-			updateRole(conn, citizen, Role.PATIENT, Queries.GET_PATIENT_ROLE_QUERY, 
+			updateRole(conn, citizen, Citizen.Role.PATIENT, Queries.GET_PATIENT_ROLE_QUERY,
 					Queries.ADD_PATIENT_ROLE_QUERY, Queries.REMOVE_PATIENT_ROLE_QUERY);
 			
-			updateRole(conn, citizen, Role.DOCTOR, Queries.GET_DOCTOR_ROLE_QUERY, 
+			updateRole(conn, citizen, Citizen.Role.DOCTOR, Queries.GET_DOCTOR_ROLE_QUERY,
 					Queries.ADD_DOCTOR_ROLE_QUERY, Queries.REMOVE_DOCTOR_ROLE_QUERY);
 			
-			updateRole(conn, citizen, Role.ADMIN, Queries.GET_ADMIN_ROLE_QUERY, 
+			updateRole(conn, citizen, Citizen.Role.ADMIN, Queries.GET_ADMIN_ROLE_QUERY,
 					Queries.ADD_ADMIN_ROLE_QUERY, Queries.REMOVE_ADMIN_ROLE_QUERY);
 			
-			updateRole(conn, citizen, Role.SUPERUSER, Queries.GET_SUPERUSER_ROLE_QUERY, 
+			updateRole(conn, citizen, Citizen.Role.SUPERUSER, Queries.GET_SUPERUSER_ROLE_QUERY,
 					Queries.ADD_SUPERUSER_ROLE_QUERY, Queries.REMOVE_SUPERUSER_ROLE_QUERY);
 		}
 	}
 	
-	private static Role getRole(Connection conn, Citizen citizen, String roleQuery, Role role) throws SQLException {
+	private static Citizen.Role getRole(Connection conn, Citizen citizen, String roleQuery, Citizen.Role role) throws SQLException {
 		try (PreparedStatement roleStatement = conn.prepareStatement(roleQuery)) {
 			roleStatement.setString(1, citizen.getCitizenId());
 			try (ResultSet roleRs = roleStatement.executeQuery()) {
@@ -142,10 +134,10 @@ public class DatabaseUtils {
 		return null;
 	}
 
-	private static void addRole(Connection conn, Citizen citizen, Role role, String roleQuery) throws SQLException {
+	private static void addRole(Connection conn, Citizen citizen, Citizen.Role role, String roleQuery) throws SQLException {
 		try (PreparedStatement roleStatement = conn.prepareStatement(roleQuery)) {
 			
-			if (role.equals(Role.PATIENT)) {
+			if (role.equals(Citizen.Role.PATIENT)) {
 				roleStatement.setString(1, citizen.getCitizenId());
 			}
 			else {
@@ -156,8 +148,8 @@ public class DatabaseUtils {
 		}
 	}
 	
-	private static void updateRole(Connection conn, Citizen citizen, Role role, String getRoleQuery, 
-			String addRoleQuery, String removeRoleQuery) throws SQLException {
+	private static void updateRole(Connection conn, Citizen citizen, Citizen.Role role, String getRoleQuery,
+								   String addRoleQuery, String removeRoleQuery) throws SQLException {
 		
 		if (citizen.getRoles().contains(role)) {
 			if (getRole(conn, citizen, getRoleQuery, role) == null) {
@@ -169,17 +161,17 @@ public class DatabaseUtils {
 		}
 	}
 	
-	private static void removeRole(Connection conn, Citizen citizen, Role role, String roleQuery) throws SQLException {
+	private static void removeRole(Connection conn, Citizen citizen, Citizen.Role role, String roleQuery) throws SQLException {
 		try (PreparedStatement roleStatement = conn.prepareStatement(roleQuery)) {
 			roleStatement.setString(1, citizen.getCitizenId());
 			roleStatement.executeUpdate();
 		}
 		
-		if (role.equals(Role.PATIENT)) {
+		if (role.equals(Citizen.Role.PATIENT)) {
 			List<DocPatRelation> docPatRelations = getDocPatRelationsByPatientId(conn, citizen.getCitizenId());
 			removeDocPatRelations(conn, docPatRelations);
 		
-		} else if (role.equals(Role.DOCTOR)) {
+		} else if (role.equals(Citizen.Role.DOCTOR)) {
 			List<DocPatRelation> docPatRelations = getDocPatRelationsByDoctorId(conn, citizen.getCitizenId());
 			removeDocPatRelations(conn, docPatRelations);
 		}

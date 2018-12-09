@@ -1,4 +1,4 @@
-package pt.ulisboa.tecnico.sirs.dataobjects;
+package pt.ulisboa.tecnico.sirs.api.dataobjects;
 
 public class Patient{
 	private int patientId;

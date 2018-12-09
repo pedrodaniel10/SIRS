@@ -14,16 +14,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
 import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
 import pt.ulisboa.tecnico.sirs.database.utils.DatabaseUtils;
-import pt.ulisboa.tecnico.sirs.dataobjects.Citizen;
-import pt.ulisboa.tecnico.sirs.dataobjects.Citizen.Gender;
-import pt.ulisboa.tecnico.sirs.dataobjects.Citizen.Role;
-import pt.ulisboa.tecnico.sirs.dataobjects.DocPatRelation;
-import pt.ulisboa.tecnico.sirs.dataobjects.Institution;
-import pt.ulisboa.tecnico.sirs.dataobjects.MedicalRecord;
-import pt.ulisboa.tecnico.sirs.dataobjects.ReportInfo;
-import pt.ulisboa.tecnico.sirs.dataobjects.Session;
 
 public class DatabaseCitizenOperationsTest {
 	
@@ -33,7 +26,7 @@ public class DatabaseCitizenOperationsTest {
 	@Before
 	public void setup() throws DatabaseConnectionException {
 		this.conn = (new DatabaseConnector()).getConnection();
-		this.c1 = new Citizen("test_id", "paulo", Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt", 
+		this.c1 = new Citizen("test_id", "paulo", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt",
 				"jálhedigo", "path", "super", new ArrayList<>());
 	}
 	
@@ -46,9 +39,9 @@ public class DatabaseCitizenOperationsTest {
 	
 	@Test
 	public void allRoles() throws DatabaseConnectionException, SQLException {
-		this.c1.addRole(Role.DOCTOR);
-		this.c1.addRole(Role.ADMIN);
-		this.c1.addRole(Role.SUPERUSER);
+		this.c1.addRole(Citizen.Role.DOCTOR);
+		this.c1.addRole(Citizen.Role.ADMIN);
+		this.c1.addRole(Citizen.Role.SUPERUSER);
 		DatabaseUtils.addCitizen(this.conn, this.c1);
 		Citizen result = DatabaseUtils.getCitizenById(this.conn, "test_id");
 		assertEquals(result.getCitizenId(), this.c1.getCitizenId());
@@ -56,29 +49,29 @@ public class DatabaseCitizenOperationsTest {
 	
 	@Test
 	public void updateCitizen() throws SQLException {
-		this.c1.addRole(Role.DOCTOR);
+		this.c1.addRole(Citizen.Role.DOCTOR);
 		DatabaseUtils.addCitizen(conn, c1);
 		
 		this.c1.setCitizenName("polo");
-		this.c1.addRole(Role.ADMIN);
-		this.c1.removeRole(Role.DOCTOR);
+		this.c1.addRole(Citizen.Role.ADMIN);
+		this.c1.removeRole(Citizen.Role.DOCTOR);
 		DatabaseUtils.updateCitizen(conn, c1);
 	}
 	
 	@Test
 	public void updateCitizenWithRelations() throws SQLException {
-		Citizen c2 = new Citizen("test_id2", "paulo", Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt", 
+		Citizen c2 = new Citizen("test_id2", "paulo", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt",
 				"jálhedigo", "path", "super", new ArrayList<>());
-		Citizen c3 = new Citizen("test_id3", "paulo", Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt", 
+		Citizen c3 = new Citizen("test_id3", "paulo", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt",
 				"jálhedigo", "path", "super", new ArrayList<>());
 		
-		c1.addRole(Role.PATIENT);
-		c1.addRole(Role.DOCTOR);
-		c1.addRole(Role.ADMIN);
-		c2.addRole(Role.PATIENT);
-		c2.addRole(Role.DOCTOR);
-		c3.addRole(Role.PATIENT);
-		c3.addRole(Role.DOCTOR);
+		c1.addRole(Citizen.Role.PATIENT);
+		c1.addRole(Citizen.Role.DOCTOR);
+		c1.addRole(Citizen.Role.ADMIN);
+		c2.addRole(Citizen.Role.PATIENT);
+		c2.addRole(Citizen.Role.DOCTOR);
+		c3.addRole(Citizen.Role.PATIENT);
+		c3.addRole(Citizen.Role.DOCTOR);
 		
 		DatabaseUtils.addCitizen(conn, c1);
 		DatabaseUtils.addCitizen(conn, c2);
@@ -99,9 +92,9 @@ public class DatabaseCitizenOperationsTest {
 		List<DocPatRelation> dprs = DatabaseUtils.getDocPatRelationsByAdminId(conn, c1.getCitizenId());
 		assertEquals(2, dprs.size());
 		
-		c3.removeRole(Role.PATIENT);
+		c3.removeRole(Citizen.Role.PATIENT);
 		DatabaseUtils.updateCitizen(conn, c3);
-		c2.removeRole(Role.DOCTOR);
+		c2.removeRole(Citizen.Role.DOCTOR);
 		DatabaseUtils.updateCitizen(conn, c2);
 		
 		dprs = DatabaseUtils.getDocPatRelationsByAdminId(conn, c1.getCitizenId());
@@ -116,10 +109,10 @@ public class DatabaseCitizenOperationsTest {
 		DatabaseUtils.updateInstitution(conn, new Institution(1, "santa maria", "blabla", "bleble", "super"));
 		DatabaseUtils.getMedicalRecordsByPatientCitizenId(conn, "test_id");
 		DatabaseUtils.addCitizen(conn, c1);
-		c1.addRole(Role.PATIENT);
-		c1.addRole(Role.DOCTOR);
-		c1.addRole(Role.ADMIN);
-		c1.addRole(Role.SUPERUSER);
+		c1.addRole(Citizen.Role.PATIENT);
+		c1.addRole(Citizen.Role.DOCTOR);
+		c1.addRole(Citizen.Role.ADMIN);
+		c1.addRole(Citizen.Role.SUPERUSER);
 		DatabaseUtils.updateCitizen(conn, c1);
 		DatabaseUtils.setAdminInstitutionId(conn, c1.getCitizenId(), 1);
 		DatabaseUtils.setDoctorInstitutionId(conn, c1.getCitizenId(), 1, c1.getCitizenId());

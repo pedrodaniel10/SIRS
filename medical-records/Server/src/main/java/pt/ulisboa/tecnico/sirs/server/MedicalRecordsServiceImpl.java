@@ -1,18 +1,25 @@
 package pt.ulisboa.tecnico.sirs.server;
 
+import org.apache.log4j.Logger;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Doctor;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Institution;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.ServiceUtils;
+import pt.ulisboa.tecnico.sirs.database.DatabaseConnector;
+import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
+import pt.ulisboa.tecnico.sirs.database.utils.DatabaseUtils;
 import pt.ulisboa.tecnico.sirs.pdp.PolicyEnforcementPoint;
 
-import javax.print.Doc;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MedicalRecordsServiceImpl implements MedicalRecordsService {
+
+    private static Logger log = Logger.getLogger(MedicalRecordsService.class);
 
     public Boolean requestEvaluation(String subjectId, List<String> roles, String action, String resourceName, String resourceId) {
         PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
@@ -57,31 +64,34 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
 
     @Override
     public Citizen getCitizen(Citizen subject, String citizenId) {
-        /* THIS IS THE CODE WHEN DATABASE IS MERGED - not tested obviously
-        Connection conn = (new DatabaseConnector()).getConnection();
-        Boolean authorization = requestEvaluation(subject.subjectId,
-                ServiceUtils.parseRoleList(subject.getRoles()), "view", "citizensPage", citizenId);
-        if (authorization) {
-         return DatabaseUtils.getCitizenById(conn, citizenId);
+        try {
+            Connection connection = (new DatabaseConnector()).getConnection();
+            Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                    ServiceUtils.parseRoleList(subject.getRoles()), "view", "citizensPage", citizenId);
+
+            if (authorization) {
+                return DatabaseUtils.getCitizenById(connection, citizenId);
+            }
+        } catch (DatabaseConnectionException | SQLException e ) {
+            log.error(e.getMessage());
         }
         return null;
-         */
-
-        //STATIC CODE
-        Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "view", "citizensPage", citizenId);
-        return authorization? getACitizen() : null;
     }
 
     @Override
     public List<Citizen> getCitizens(Citizen subject) {
-        //STATIC CODE
-        Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "view", "citizensPage", "");
-        if (!authorization) return null;
-        List<Citizen> citizens = getSomeCitizens();
+        try {
+            Connection connection = (new DatabaseConnector()).getConnection();
+            Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                    ServiceUtils.parseRoleList(subject.getRoles()), "view", "citizensPage", "");
 
-        return citizens;
+            if (authorization) {
+                return DatabaseUtils.getAllCitizens(connection);
+            }
+        } catch (DatabaseConnectionException | SQLException e ) {
+            log.error(e.getMessage());
+        }
+        return null;
     }
 
     @Override
@@ -217,7 +227,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     // This code only serves to simulate a session citizen because session is not implemented.
     private Citizen getSessionCitizenTest() {
         List<Citizen.Role> roles = new ArrayList<>();
-        roles.add(Citizen.Role.ADMIN);
+        roles.add(Citizen.Role.SUPERUSER);
 
         return new Citizen("12345p", "David Admin", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.paciente@megamail.com", "pass", "https://blog.estantevirtual.com.br/wp-content/uploads/fernando-pessoa-1.jpg", "", roles);
     }

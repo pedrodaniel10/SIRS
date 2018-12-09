@@ -1,35 +1,32 @@
-package pt.ulisboa.tecnico.sirs.dataobjects;
+package pt.ulisboa.tecnico.sirs.api.dataobjects;
 
-public class Doctor {
-	private int doctorId;
+public class Admin {
+	private int adminId;
 	private String citizenId;
 	private int institutionId;
 	private String superuserCitizenId;
-	private String adminCitizenId; //admin that set the institution
+
+	public Admin() {}
 	
-	public Doctor(int doctorId, String citizenId, int institutionId, String superuserCitizenId, String adminCitizenId) {
-		super();
-		this.doctorId = doctorId;
+	public Admin(int adminId, String citizenId, int institutionId, String superuserCitizenId) {
+		this.adminId = adminId;
 		this.citizenId = citizenId;
 		this.institutionId = institutionId;
 		this.superuserCitizenId = superuserCitizenId;
-		this.adminCitizenId = adminCitizenId;
 	}
 
-	public Doctor() {}
-
-	public int getDoctorId() {
-		return doctorId;
+	public int getAdminId() {
+		return adminId;
 	}
 	
-	public void setDoctorId(int doctorId) {
-		this.doctorId = doctorId;
+	public void setAdminId(int adminId) {
+		this.adminId = adminId;
 	}
 	
 	public String getCitizenId() {
 		return citizenId;
 	}
-	
+
 	public void setCitizenId(String citizenId) {
 		this.citizenId = citizenId;
 	}
@@ -37,7 +34,7 @@ public class Doctor {
 	public int getInstitutionId() {
 		return institutionId;
 	}
-	
+
 	public void setInstitutionId(int institutionId) {
 		this.institutionId = institutionId;
 	}
@@ -48,13 +45,5 @@ public class Doctor {
 
 	public void setSuperuserCitizenId(String superuserCitizenId) {
 		this.superuserCitizenId = superuserCitizenId;
-	}
-
-	public String getAdminCitizenId() {
-		return adminCitizenId;
-	}
-
-	public void setAdminCitizenId(String adminCitizenId) {
-		this.adminCitizenId = adminCitizenId;
 	}
 }

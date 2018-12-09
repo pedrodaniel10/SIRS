@@ -1,4 +1,4 @@
-package pt.ulisboa.tecnico.sirs.dataobjects;
+package pt.ulisboa.tecnico.sirs.api.dataobjects;
 
 public class ReportInfo {
 	private int heartBeat;
