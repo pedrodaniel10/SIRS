@@ -20,7 +20,6 @@ public interface MedicalRecordsService {
     Citizen getEditCitizensPage(Citizen subject, String citizenToEdit);
     List<Citizen> editCitizen(Citizen subject, Citizen citizenToEdit);
 
-
     List<Institution> getInstitutions(Citizen subject);
     Boolean getAddInstitutionsPage(Citizen subject);
     List<Institution> addInstitution(Citizen subject, Institution institutionToAdd);
@@ -28,8 +27,7 @@ public interface MedicalRecordsService {
     List<Institution> editInstitution(Citizen subject, Institution institutionToEdit);
 
     List<Doctor> getDoctors(Citizen subject);
-    List<Doctor> getDoctorsWithInstitution(Citizen subject, String adminId);
-    Boolean getAddDoctorPage(Citizen subject);
+    List<Doctor> getAddDoctorPage(Citizen subject);
     List<Doctor> addDoctor(Citizen subject, String doctorToAdd);
     List<Doctor> deleteDoctor(Citizen subject, String doctorToDelete);
 

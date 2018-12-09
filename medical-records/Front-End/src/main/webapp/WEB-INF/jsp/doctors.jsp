@@ -60,7 +60,7 @@
                                     <td class="center">Male</td>
                                     <td class="center">johnterry@hotmail.com</td>
                                     <td class="center">
-                                        <a href="/doctors/1/delete" class="btn btn-danger btn-circle" type="button">
+                                        <a href="/doctors/${doctor.citizenId}/delete" class="btn btn-danger btn-circle" type="button">
                                             <i class="fa fa-trash-o"></i>
                                         </a>
                                     </td>

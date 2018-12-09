@@ -27,7 +27,7 @@ public class DoctorsController {
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        List<Doctor> doctors = service.getDoctorsWithInstitution(subject, subject.getCitizenId());
+        List<Doctor> doctors = service.getDoctors(subject);
         model.put("doctors", doctors);
         return (doctors != null)? "doctors": "404";
     }
@@ -38,13 +38,9 @@ public class DoctorsController {
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        boolean authorization = service.getAddDoctorPage(subject);
-        if(authorization) {
-            List<Doctor> doctors = service.getDoctors(subject);
-            model.put("doctors", doctors);
-            return "addDoctor";
-        }
-        return "404";
+        List<Doctor> doctors = service.getAddDoctorPage(subject);
+        model.put("doctors", doctors);
+        return (doctors != null)? "addDoctor": "404";
     }
 
     @RequestMapping(value = "/doctors/{citizenId}/add", method = RequestMethod.GET)
@@ -53,14 +49,9 @@ public class DoctorsController {
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        /* change to a service that does a post? */
-        boolean authorization = service.getAddDoctorPage(subject);
-        if (authorization) {
-            List<Doctor> doctors = service.addDoctor(subject, citizenId);
-            model.put("doctors", doctors);
-            return "doctors";
-        }
-        else return "404";
+        List<Doctor> doctors = service.addDoctor(subject, citizenId);
+        model.put("doctors", doctors);
+        return (doctors != null)? "doctors": "404";
     }
 
     @RequestMapping(value = "/doctors/{citizenId}/delete", method = RequestMethod.GET)

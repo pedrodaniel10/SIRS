@@ -1,4 +1,6 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -49,6 +51,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <c:forEach var="doctor" items="${doctors}">
                                 <tr>
                                     <td class="center"><img src="/img/alex_smith.jpg" class="img-circle" style="width:50px;height:50px;"\></td>
                                     <td class="center">147258369
@@ -62,6 +65,7 @@
                                         </a>
                                     </td>
                                 </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>

@@ -233,69 +233,76 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
 
     @Override
     public List<Doctor> getDoctors(Citizen subject) {
-        //STATIC CODE
-        Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "view", "doctorsPage", "");
-        if (!authorization) return null;
+        try {
+            Connection connection = (new DatabaseConnector()).getConnection();
+            Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                    ServiceUtils.parseRoleList(subject.getRoles()), "view", "doctorsPage", "");
 
-        return getSomeDoctors();
+            if (authorization) {
+                return DatabaseUtils.getDoctorsByAdminId(connection, subject.getCitizenId());
+            }
+        } catch (DatabaseConnectionException | SQLException e ) {
+            log.error(e.getMessage());
+        }
+        return null;
     }
 
     @Override
-    public List<Doctor> getDoctorsWithInstitution(Citizen subject, String adminId) {
-        //STATIC CODE
-        Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "view", "doctorsPage", "");
-        if (!authorization) return null;
+    public List<Doctor> getAddDoctorPage(Citizen subject) {
+        try {
+            Connection connection = (new DatabaseConnector()).getConnection();
+            Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                    ServiceUtils.parseRoleList(subject.getRoles()), "create", "doctorsPage", "");
 
-        return getSomeDoctors();
-    }
-
-
-    @Override
-    public Boolean getAddDoctorPage(Citizen subject) {
-        return requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "create", "doctorsPage", "");
+            if (authorization) {
+                return DatabaseUtils.getAllDoctorsWithoutInstitution(connection);
+            }
+        } catch (DatabaseConnectionException | SQLException e ) {
+            log.error(e.getMessage());
+        }
+        return null;
     }
 
     @Override
     public List<Doctor> addDoctor(Citizen subject, String doctorToAdd) {
-        //STATIC CODE
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "create", "doctorsPage", doctorToAdd);
-        if (!authorization) return null;
-        return getSomeDoctors();
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "doctorsPage", ""/*doctorToAdd.getCitizenId()*/);
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
+                //String institutionId = DatabaseUtils.getAdminByCitizenId(subject.getCitizenId());
+                int institutionId = 1;
+                if (doctorToAdd != null) DatabaseUtils.setDoctorInstitutionId(connection, doctorToAdd, institutionId, subject.getCitizenId());
+                return DatabaseUtils.getDoctorsByAdminId(connection, subject.getCitizenId());
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
+            }
+        }
+        return null;
     }
 
     @Override
     public List<Doctor> deleteDoctor(Citizen subject, String doctorToDelete) {
-        //STATIC CODE
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
                 ServiceUtils.parseRoleList(subject.getRoles()), "edit", "doctorsPage", doctorToDelete);
-        if (!authorization) return null;
-        return getSomeDoctors();
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
+                if (doctorToDelete != null) DatabaseUtils.removeDoctorFromInstitution(connection, doctorToDelete, subject.getCitizenId());
+                return DatabaseUtils.getDoctorsByAdminId(connection, subject.getCitizenId());
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
+            }
+        }
+        return null;
     }
 
     // This code only serves to simulate a session citizen because session is not implemented.
     private Citizen getSessionCitizenTest() {
         List<Citizen.Role> roles = new ArrayList<>();
-        roles.add(Citizen.Role.SUPERUSER);
+        roles.add(Citizen.Role.ADMIN);
 
         return new Citizen("12345p", "David Admin", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.paciente@megamail.com", "pass", "https://blog.estantevirtual.com.br/wp-content/uploads/fernando-pessoa-1.jpg", "", roles);
-    }
-
-    // This code only serves to simulate some institutions because there's no database connection yet.
-    private List<Institution> getSomeInstitutions() {
-        Institution i1 = new Institution(11111, "Institution1", "Rua da Praça nº1 Lisboa", "", "");
-        Institution i2 = new Institution(11112, "Institution2", "Rua da Praça nº1 Lisboa", "", "");
-        Institution i3 = new Institution(11113, "Institution3", "Rua da Praça nº1 Lisboa", "", "");
-
-        List<Institution> institutions = new ArrayList<>();
-        institutions.add(i1);
-        institutions.add(i2);
-        institutions.add(i3);
-
-        return institutions;
     }
 
     // This code only serves to simulate some institutions because there's no database connection yet.
@@ -303,15 +310,4 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         return new Institution(11111, "Institution1", "Rua da Praça nº1 Lisboa", "", "");
     }
 
-    // This code only serves to simulate some institutions because there's no database connection yet.
-    private List<Doctor> getSomeDoctors() {
-        Doctor d1 = new Doctor(12345, "12345d", 11111, "123", "124");
-        Doctor d2 = new Doctor(12346, "12346d", 11111, "123", "124");
-
-        List<Doctor> doctors = new ArrayList<>();
-        doctors.add(d1);
-        doctors.add(d2);
-
-        return doctors;
-    }
 }
