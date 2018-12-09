@@ -1,11 +1,13 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 
 <html lang="en">
 <tags:header title="Institutions"/>
 
 <body>
-<tags:citizen name="David Williams" image="/img/david_williams.jpg" citizenId="20" suser="true">
+<tags:citizen citizen="${citizen}">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Institutions</h2>
@@ -40,16 +42,19 @@
                                 <thead>
                                 <tr>
                                     <th></th>
+                                    <th>Institution Id</th>
                                     <th>Name</th>
                                     <th>Address</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <c:forEach var="institution" items="${institutions}">
                                 <tr>
-                                    <td class="center"><img src="/img/royal_london_hospital.jpg" class="img-circle" style="width:50px;height:50px;"\></td>
-                                    <td class="center">Royal London Hospital</td>
-                                    <td class="center">Whitechapel Rd, Whitechapel, London E1 1BB, UK</td>
+                                    <td class="center"><img src=${institution.profilePic} class="img-circle" style="width:50px;height:50px;"\></td>
+                                    <td class="center">${institution.institutionId}</td>
+                                    <td class="center">${institution.institutionName}</td>
+                                    <td class="center">${institution.institutionAddress}</td>
                                     <td class="center">
                                         <a href="/institutions/20/edit" class="btn btn-success btn-circle" type="button">
                                             <i class="fa fa-pencil"></i>
@@ -59,6 +64,7 @@
                                         </a>
                                     </td>
                                 </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>

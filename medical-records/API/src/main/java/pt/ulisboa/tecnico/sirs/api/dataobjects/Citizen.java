@@ -6,7 +6,7 @@ import java.util.List;
 import java.io.Serializable;
 
 
-public class Citizen implements Serializable{
+public class Citizen implements Serializable {
 
     public enum Gender {
         MALE, FEMALE

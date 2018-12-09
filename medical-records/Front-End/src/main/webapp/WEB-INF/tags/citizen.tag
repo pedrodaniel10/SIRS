@@ -71,7 +71,7 @@
                             <li><a href="/citizens/add">Add citizen</a></li>
                         </ul>
                     </li>
-                
+
                     <li>
                         <a href="#"><i class="fa fa-hospital-o"></i> <span class="nav-label">Institutions</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">

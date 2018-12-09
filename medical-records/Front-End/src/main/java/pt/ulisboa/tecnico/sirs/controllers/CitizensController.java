@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import pt.ulisboa.tecnico.sirs.RmiServiceUtils;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
 
@@ -48,8 +49,13 @@ public class CitizensController {
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
         /* change to a service that does a post? */
-        boolean result = service.getAddCitizensPage(subject);
-        return result? "addCitizen": "404";
+        boolean authorization = service.getAddCitizensPage(subject);
+        if (authorization) {
+            List<Citizen> citizens = service.getCitizens(subject);
+            model.put("citizens", citizens);
+            return "citizens";
+        }
+        else return "404";
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/delete", method = RequestMethod.GET)
@@ -82,7 +88,12 @@ public class CitizensController {
         model.put("citizen", subject);
         /*change to a service that does a post?*/
         Citizen citizenToEdit = service.editCitizen(subject, citizenId);
-        return (citizenToEdit != null)? "redirect:/citizens": "404";
+        if (citizenToEdit != null) {
+            List<Citizen> citizens = service.getCitizens(subject);
+            model.put("citizens", citizens);
+            return "redirect:/citizens";
+        }
+        else return "404";
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/profile", method = RequestMethod.GET)

@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.sirs.server;
 
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.Institution;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.ServiceUtils;
 import pt.ulisboa.tecnico.sirs.pdp.PolicyEnforcementPoint;
 
@@ -94,8 +95,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
                 ServiceUtils.parseRoleList(subject.getRoles()), "edit", "citizensPage", citizenToDelete);
         if (!authorization) return null;
-        List<Citizen> citizens = getSomeCitizens();
-        return citizens;
+        return getSomeCitizens();
 
     }
 
@@ -109,10 +109,42 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
 
     }
 
-    /*
-    This code only serves to simulate some citizens because there's no database connection yet.
-    TO DELETE
-     */
+    @Override
+    public List<Institution> getInstitutions(Citizen subject) {
+        //STATIC CODE
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "institutionsPage", "");
+        if (!authorization) return null;
+
+        return getSomeInstitutions();
+    }
+
+    @Override
+    public Boolean getAddInstitutionsPage(Citizen subject) {
+        return requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "institutionsPage", "");
+    }
+
+    @Override
+    public Institution editInstitution(Citizen subject, String institutionToEdit) {
+        //STATIC CODE
+        Institution i1 = getAInstitution(); //database get institutionbyid(institutionToEdit)
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "institutionsPage", institutionToEdit);
+        return authorization? i1 : null;
+    }
+
+    @Override
+    public List<Institution> deleteInstitution(Citizen subject, String institutionToDelete) {
+        //STATIC CODE
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "institutionsPage", institutionToDelete);
+        if (!authorization) return null;
+        return getSomeInstitutions();
+    }
+
+
+    // This code only serves to simulate some citizens because there's no database connection yet.
     private List<Citizen> getSomeCitizens() {
         List<Citizen.Role> roles1 = new ArrayList<>();
         roles1.add(Citizen.Role.ADMIN);
@@ -127,28 +159,39 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         return citizens;
     }
 
-    /*
-    This code only serves to simulate a citizen because there's no database connection yet.
-    TO DELETE
-     */
+    // This code only serves to simulate a citizen because there's no database connection yet.
     private Citizen getACitizen() {
         List<Citizen.Role> roles = new ArrayList<>();
         roles.add(Citizen.Role.PATIENT);
-        Citizen c1 = new Citizen("12345p", "David Paciente", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.paciente@megamail.com", "pass", "", "", roles);
 
-        return c1;
+        return new Citizen("12345p", "David Paciente", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.paciente@megamail.com", "pass", "", "", roles);
     }
 
-    /*
-    This code only serves to simulate a session citizen because session is not implemented.
-    TO DELETE
-     */
+    // This code only serves to simulate a session citizen because session is not implemented.
     private Citizen getSessionCitizenTest() {
         List<Citizen.Role> roles = new ArrayList<>();
         roles.add(Citizen.Role.SUPERUSER);
-        Citizen c1 = new Citizen("12345p", "David Admin", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.paciente@megamail.com", "pass", "https://blog.estantevirtual.com.br/wp-content/uploads/fernando-pessoa-1.jpg", "", roles);
 
-        return c1;
+        return new Citizen("12345p", "David Admin", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.paciente@megamail.com", "pass", "https://blog.estantevirtual.com.br/wp-content/uploads/fernando-pessoa-1.jpg", "", roles);
+    }
+
+    // This code only serves to simulate some institutions because there's no database connection yet.
+    private List<Institution> getSomeInstitutions() {
+        Institution i1 = new Institution(11111, "Institution1", "Rua da Praça nº1 Lisboa", "", "");
+        Institution i2 = new Institution(11112, "Institution2", "Rua da Praça nº1 Lisboa", "", "");
+        Institution i3 = new Institution(11113, "Institution3", "Rua da Praça nº1 Lisboa", "", "");
+
+        List<Institution> institutions = new ArrayList<>();
+        institutions.add(i1);
+        institutions.add(i2);
+        institutions.add(i3);
+
+        return institutions;
+    }
+
+    // This code only serves to simulate some institutions because there's no database connection yet.
+    private Institution getAInstitution() {
+        return new Institution(11111, "Institution1", "Rua da Praça nº1 Lisboa", "", "");
     }
 
 }

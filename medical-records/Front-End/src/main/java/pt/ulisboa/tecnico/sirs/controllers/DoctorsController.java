@@ -23,7 +23,7 @@ public class DoctorsController {
     }
 
     @RequestMapping(value = "/doctors/{citizenId}/add", method = RequestMethod.GET)
-    public String postRequestAddDoctor(Map<String, Object> model) {
+    public String postRequestAddDoctor(Map<String, Object> model, @PathVariable String citizenId ) {
         return "doctors";
     }
 
