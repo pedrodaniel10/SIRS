@@ -16,8 +16,10 @@ public interface MedicalRecordsService {
     Citizen getCitizen(Citizen subject, String citizenId);
     List<Citizen> getCitizens(Citizen subject);
     Boolean getAddCitizensPage(Citizen subject);
-    List<Citizen> deleteCitizen(Citizen subject, String citizenToDelete);
-    Citizen editCitizen(Citizen subject, String citizenToEdit);
+    List<Citizen> addCitizen(Citizen subject, Citizen citizenToAdd);
+    Citizen getEditCitizensPage(Citizen subject, String citizenToEdit);
+    List<Citizen> editCitizen(Citizen subject, Citizen citizenToEdit);
+
 
     List<Institution> getInstitutions(Citizen subject);
     Boolean getAddInstitutionsPage(Citizen subject);

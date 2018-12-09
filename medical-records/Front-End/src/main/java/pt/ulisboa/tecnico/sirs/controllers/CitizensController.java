@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,24 +48,7 @@ public class CitizensController {
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        /* change to a service that does a post? */
-        boolean authorization = service.getAddCitizensPage(subject);
-        if (authorization) {
-            List<Citizen> citizens = service.getCitizens(subject);
-            model.put("citizens", citizens);
-            return "citizens";
-        }
-        else return "404";
-    }
-
-    @RequestMapping(value = "/citizens/{citizenId}/delete", method = RequestMethod.GET)
-    public String getRequestDeleteCitizen(Map<String, Object> model, @PathVariable String citizenId) {
-        log.info("Entering deleteCitizens function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-        Citizen subject = service.getSessionCitizen();
-        model.put("citizen", subject);
-        List<Citizen> citizens = service.deleteCitizen(subject, citizenId);
-        model.put("citizens", citizens);
+        List<Citizen> citizens = service.addCitizen(subject, null);
         return (citizens != null)? "citizens": "404";
     }
 
@@ -74,7 +58,7 @@ public class CitizensController {
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        Citizen citizenToEdit = service.editCitizen(subject, citizenId);
+        Citizen citizenToEdit = service.getEditCitizensPage(subject, citizenId);
         model.put("citizenToEdit", citizenToEdit);
         return (citizenToEdit != null)? "editCitizen": "404";
     }
@@ -85,14 +69,8 @@ public class CitizensController {
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        /*change to a service that does a post?*/
-        Citizen citizenToEdit = service.editCitizen(subject, citizenId);
-        if (citizenToEdit != null) {
-            List<Citizen> citizens = service.getCitizens(subject);
-            model.put("citizens", citizens);
-            return "redirect:/citizens";
-        }
-        else return "404";
+        List<Citizen> citizens = service.editCitizen(subject, null);
+        return (citizens != null)? "redirect:/citizens": "404";
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/profile", method = RequestMethod.GET)

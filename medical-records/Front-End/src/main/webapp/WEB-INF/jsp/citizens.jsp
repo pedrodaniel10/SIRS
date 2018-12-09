@@ -68,9 +68,6 @@
                                             <a href="/citizens/${citizen.citizenId}/edit" class="btn btn-success btn-circle" type="button">
                                                 <i class="fa fa-pencil"></i>
                                             </a>
-                                            <a class="btn btn-danger btn-circle" type="button">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
                                         </td>
                                     </tr>
                                 </c:forEach>

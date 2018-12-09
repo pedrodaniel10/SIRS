@@ -96,28 +96,56 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
 
     @Override
     public Boolean getAddCitizensPage(Citizen subject) {
-        //STATIC CODE
         return requestEvaluation(subject.getCitizenId(),
                 ServiceUtils.parseRoleList(subject.getRoles()), "create", "citizensPage", "");
     }
 
     @Override
-    public List<Citizen> deleteCitizen(Citizen subject, String citizenToDelete) {
-        //STATIC CODE
+    public List<Citizen> addCitizen(Citizen subject, Citizen citizenToAdd) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "citizensPage", citizenToDelete);
-        if (!authorization) return null;
-        return getSomeCitizens();
-
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "citizensPage", ""/*citizenToAdd.getCitizenId()*/);
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
+                if (citizenToAdd != null) DatabaseUtils.addCitizen(connection, citizenToAdd);
+                return DatabaseUtils.getAllCitizens(connection);
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
+            }
+        }
+        return null;
     }
 
     @Override
-    public Citizen editCitizen(Citizen subject, String citizenToEdit) {
-        //STATIC CODE
-        Citizen c1 = getACitizen(); //database get citizenbyid(citizenToEdit)
+    public Citizen getEditCitizensPage(Citizen subject, String citizenToEdit) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
                 ServiceUtils.parseRoleList(subject.getRoles()), "edit", "citizensPage", citizenToEdit);
-        return authorization? c1 : null;
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
+                if (citizenToEdit!=null)
+                    return DatabaseUtils.getCitizenById(connection, citizenToEdit);
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Citizen> editCitizen(Citizen subject, Citizen citizenToEdit) {
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "citizensPage", citizenToEdit.getCitizenId());
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
+                if (citizenToEdit!=null) DatabaseUtils.addCitizen(connection, citizenToEdit);
+                return DatabaseUtils.getAllCitizens(connection);
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
+            }
+        }
+        return null;
 
     }
 
