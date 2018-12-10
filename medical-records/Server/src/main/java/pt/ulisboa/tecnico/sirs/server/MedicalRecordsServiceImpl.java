@@ -17,7 +17,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
 
     private static Logger log = Logger.getLogger(MedicalRecordsService.class);
 
-    public Boolean requestEvaluation(String subjectId, List<String> roles, String action, String resourceName, String resourceId) {
+    private Boolean requestEvaluation(String subjectId, List<String> roles, String action, String resourceName, String resourceId) {
         PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 
         return policyEnforcementPoint.requestEvaluation(subjectId,
@@ -212,7 +212,6 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     public Institution getEditInstitutionPage(Citizen subject, int institutionToEdit) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
                 ServiceUtils.parseRoleList(subject.getRoles()), "edit", "institutionsPage", "2");
-        System.out.println(authorization);
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
@@ -297,14 +296,16 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     @Override
     public List<Doctor> addDoctor(Citizen subject, String doctorToAdd) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "create", "doctorsPage", ""/*doctorToAdd.getCitizenId()*/);
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "doctorsPage", doctorToAdd);
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                //String institutionId = DatabaseUtils.getAdminByCitizenId(subject.getCitizenId());
-                int institutionId = 1;
-                if (doctorToAdd != null) DatabaseUtils.setDoctorInstitutionId(connection, doctorToAdd, institutionId, subject.getCitizenId());
-                return DatabaseUtils.getDoctorsByAdminId(connection, subject.getCitizenId());
+                Admin admin = DatabaseUtils.getAdminByCitizenId(connection, subject.getCitizenId());
+                if (admin != null && doctorToAdd != null) {
+                    int institutionId = admin.getInstitutionId();
+                    DatabaseUtils.setDoctorInstitutionId(connection, doctorToAdd, institutionId, subject.getCitizenId());
+                    return DatabaseUtils.getDoctorsByAdminId(connection, subject.getCitizenId());
+                }
             } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());
             }

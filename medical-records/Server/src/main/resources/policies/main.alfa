@@ -148,9 +148,16 @@ import Attributes.*
 				policy DoctorActions {
 					target clause Attributes.subjectRole == "DOCTOR"
 					apply firstApplicable
-				
+					
+					/* RULE: Doctor cannot view citizens */
+					rule DoctorCannotViewCitizens {
+						target clause Attributes.actionId == "view"
+						and Attributes.resourceId == ""
+						deny
+					}
+					
 					/* RULE: Doctor can view his patients */
-					rule SuperUserCanViewPatients {
+					rule DoctorCanViewPatients {
 						target clause Attributes.actionId == "view"
 						and attributes.validRelation == true
 						permit

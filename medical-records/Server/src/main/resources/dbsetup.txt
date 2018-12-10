@@ -135,3 +135,7 @@ CREATE TABLE sessions(
     PRIMARY KEY (session_id),
     FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id)
 ) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=10;
+
+INSERT  INTO  citizens  VALUES  ("super","super","MALE","1900-1-1","superguy","aaaa","agaga",NULL);
+INSERT INTO institutions(institution_name,institution_address,profile_pic,superuser_citizen_id)
+    VALUES ("santa maria","blabla","bleble","super");

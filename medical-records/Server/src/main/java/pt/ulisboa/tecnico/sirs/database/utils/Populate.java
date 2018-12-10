@@ -72,9 +72,9 @@ public class Populate {
         DatabaseUtils.addCitizen(connection, admin2);
         DatabaseUtils.setAdminInstitutionId(connection, admin2.getCitizenId(), 2);
         DatabaseUtils.addCitizen(connection, doctor1);
-        DatabaseUtils.setDoctorInstitutionId(connection, doctor1.getCitizenId(), 1, admin1.getCitizenId());
+        DatabaseUtils.setDoctorInstitutionId(connection, doctor1.getCitizenId(), 1, admin2.getCitizenId());
         DatabaseUtils.addCitizen(connection, doctor2);
-        DatabaseUtils.setDoctorInstitutionId(connection, doctor2.getCitizenId(), 2, admin2.getCitizenId());
+        DatabaseUtils.setDoctorInstitutionId(connection, doctor2.getCitizenId(), 2, admin1.getCitizenId());
         DatabaseUtils.addCitizen(connection, doctor3);
         DatabaseUtils.addCitizen(connection, patient1);
         DatabaseUtils.addDocPatRelation(connection, dpr1);
