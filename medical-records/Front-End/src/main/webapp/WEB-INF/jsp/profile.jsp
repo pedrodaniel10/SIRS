@@ -11,7 +11,7 @@
         <!--Top panel-->
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>David Williams</h2>
+                <h2>${profile.citizenName}</h2>
                 <ol class="breadcrumb">
                     <li class="active">
                         <strong>Profile</strong>
@@ -60,7 +60,18 @@
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
                                             <c:forEach var="role" items="${profile.roles}">
-                                                <span class="badge badge-success">${role.name()}</span>
+                                                <c:if test="${role.name().equals(\"SUPERUSER\")}">
+                                                    <span class="badge badge-danger">${role.name()}</span>
+                                                </c:if>
+                                                <c:if test="${role.name().equals(\"ADMIN\")}">
+                                                    <span class="badge badge-warning-light">${role.name()}</span>
+                                                </c:if>
+                                                <c:if test="${role.name().equals(\"DOCTOR\")}">
+                                                    <span class="badge badge-success">${role.name()}</span>
+                                                </c:if>
+                                                <c:if test="${role.name().equals(\"PATIENT\")}">
+                                                    <span class="badge badge-secondary">${role.name()}</span>
+                                                </c:if>
                                             </c:forEach>
                                         </div>
                                     </div>

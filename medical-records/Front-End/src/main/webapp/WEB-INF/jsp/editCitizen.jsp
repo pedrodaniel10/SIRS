@@ -17,7 +17,7 @@
                     <a href="/citizens">Citizens</a>
                 </li>
                 <li>
-                    <a href="/citizens/${citizen.citizenId}/profile">${citizen.citizenName}</a>
+                    <a href="/citizens/${citizenToEdit.citizenId}/profile">${citizenToEdit.citizenName}</a>
                 </li>
                 <li class="active">
                     <strong>Edit</strong>
@@ -44,10 +44,10 @@
                     <div class="ibox-content">
                         <form method="post" class="form-horizontal">
                             <div class="form-group"><label class="col-sm-2 control-label">Roles:</label>&nbsp;&nbsp;
-                                <div class="checkbox-inline i-checks"><label> <input type="checkbox" disabled="" checked="" value="patient"> <i></i> Patient </label></div>
-                                <div class="checkbox-inline i-checks"><label> <input type="checkbox" value="doctor"> <i></i> Doctor </label></div>
-                                <div class="checkbox-inline i-checks"><label> <input type="checkbox" value="admin"> <i></i> Administrator </label></div>
-                                <div class="checkbox-inline i-checks"><label> <input type="checkbox" value="suser"> <i></i> Super User </label></div>
+                                <div class="checkbox-inline i-checks"><label> <input type="checkbox" disabled="" <c:if test="${citizenToEdit.hasRole(\"PATIENT\")}">checked </c:if> value="PATIENT"> <i></i> Patient </label></div>
+                                <div class="checkbox-inline i-checks"><label> <input type="checkbox" <c:if test="${citizenToEdit.hasRole(\"DOCTOR\")}">checked </c:if> value="DOCTOR"> <i></i> Doctor </label></div>
+                                <div class="checkbox-inline i-checks"><label> <input type="checkbox" <c:if test="${citizenToEdit.hasRole(\"ADMIN\")}">checked </c:if> value="ADMIN"> <i></i> Administrator </label></div>
+                                <div class="checkbox-inline i-checks"><label> <input type="checkbox" <c:if test="${citizenToEdit.hasRole(\"SUPERUSER\")}">checked </c:if> value="SUPERUSER"> <i></i> Super User </label></div>
                             </div>
                             <div class="hr-line-dashed"></div>
 

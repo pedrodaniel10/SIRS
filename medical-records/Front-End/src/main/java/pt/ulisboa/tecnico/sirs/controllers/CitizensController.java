@@ -81,7 +81,7 @@ public class CitizensController {
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
         Citizen profile = service.getCitizen(subject, citizenId);
-        if (subject == null)
+        if (subject == null || profile == null)
             return "404";
         if (subject.getCitizenId().equals(citizenId))
             profile = subject;
