@@ -63,4 +63,9 @@ public class DatabaseConnector {
 	public Connection getConnection() {
 		return this.connection;
 	}
+	
+	public void closeConnection() throws SQLException {
+		this.connection.close();
+	}
+	
 }

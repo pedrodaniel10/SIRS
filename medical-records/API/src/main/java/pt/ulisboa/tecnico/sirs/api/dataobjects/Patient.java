@@ -3,6 +3,7 @@ package pt.ulisboa.tecnico.sirs.api.dataobjects;
 public class Patient{
 	private int patientId;
 	private String citizenId;
+	private Citizen citizen;
 
 	public Patient() {
 	}
@@ -26,5 +27,13 @@ public class Patient{
 
 	public void setCitizenId(String citizenId) {
 		this.citizenId = citizenId;
+	}
+
+	public Citizen getCitizen() {
+		return citizen;
+	}
+
+	public void setCitizen(Citizen citizen) {
+		this.citizen = citizen;
 	}
 }

@@ -182,7 +182,7 @@ public class DatabaseUtils {
 		try (PreparedStatement statement = conn.prepareStatement(Queries.GET_INSTITUTION_BY_ID_QUERY)) {
 			statement.setInt(1, institutionId);
 			try (ResultSet rs = statement.executeQuery()) {
-				while (rs.next()) {
+				if (rs.next()) {
 					institution.setInstitutionId(rs.getInt("institution_id"));
 					institution.setInstitutionName(rs.getString("institution_name"));
 					institution.setInstitutionAddress(rs.getString("institution_address"));
@@ -191,12 +191,41 @@ public class DatabaseUtils {
 				}
 			}
 		}
+		institution.setAdminCitizenId(getAdminIdByInstitutionId(conn, institutionId));
 		return institution;
 	}
 	
+	private static String getAdminIdByInstitutionId(Connection conn, int institutionId) throws SQLException {
+		String adminCitizenId = null;
+		try (PreparedStatement statement = conn.prepareStatement(Queries.GET_ADMIN_ID_BY_INSTITUTION_ID_QUERY)) {
+			statement.setInt(1, institutionId);
+			try (ResultSet rs = statement.executeQuery()) {
+				if (rs.next()) {
+					adminCitizenId = rs.getString("citizen_id");
+				}
+			}
+		}
+		return adminCitizenId;
+	}
+	
+	public static Institution getInstitutionByDoctorId(Connection conn, String doctorCitizenId) throws SQLException {
+		List<Institution> institutions = getInstitutions(conn, Queries.GET_INSTITUTION_BY_DOCTOR_ID_QUERY, doctorCitizenId);
+		if (institutions.isEmpty()) {
+			return null;
+		}
+		return institutions.get(0);
+	}
+	
 	public static List<Institution> getAllInstitutions(Connection conn) throws SQLException {
+		return getInstitutions(conn, Queries.GET_ALL_INSTITUTIONS_QUERY, null);
+	}
+	
+	private static List<Institution> getInstitutions(Connection conn, String query, String id) throws SQLException {
 		List<Institution> institutions = new ArrayList<>();
-		try (PreparedStatement statement = conn.prepareStatement(Queries.GET_ALL_INSTITUTIONS_QUERY)) {
+		try (PreparedStatement statement = conn.prepareStatement(query)) {
+			if (id != null) {
+				statement.setString(1, id);
+			}
 			try (ResultSet rs = statement.executeQuery()) {
 				while (rs.next()) {
 					Institution institution = new Institution();
@@ -209,6 +238,9 @@ public class DatabaseUtils {
 					institutions.add(institution);
 				}
 			}
+		}
+		for (Institution institution : institutions) {
+			institution.setAdminCitizenId(getAdminIdByInstitutionId(conn, institution.getInstitutionId()));
 		}
 		return institutions;
 	}
@@ -235,6 +267,7 @@ public class DatabaseUtils {
 			
 			statement.executeUpdate();
 		}
+		setAdminInstitutionId(conn, institution.getAdminCitizenId(), institution.getInstitutionId());
 	}
 	
 	public static List<MedicalRecord> getMedicalRecordsByPatientCitizenId(Connection conn, String citizenId) 
@@ -393,6 +426,9 @@ public class DatabaseUtils {
 				}
 			}
 		}
+		for (Doctor doctor : doctors) {
+			doctor.setCitizen(getCitizenById(conn, doctor.getCitizenId()));
+		}
 		return doctors;
 	}
 	
@@ -442,7 +478,41 @@ public class DatabaseUtils {
 				}
 			}
 		}
+		for (Patient patient : patients) {
+			patient.setCitizen(getCitizenById(conn, patient.getCitizenId()));
+		}
 		return patients;
+	}
+	
+	public static Admin getAdminByCitizenId(Connection conn, String adminCitizenId) throws SQLException {
+		List<Admin> admins = getAdmins(conn, Queries.GET_ADMIN_BY_ID_QUERY, adminCitizenId);
+		if (admins.isEmpty()) {
+			return null;
+		}
+		return admins.get(0);
+	}
+	
+	private static List<Admin> getAdmins(Connection conn, String query, String id) throws SQLException {
+		List<Admin> admins = new ArrayList<>();
+		try (PreparedStatement statement = conn.prepareStatement(query)) {
+			statement.setString(1, id);
+			try (ResultSet rs = statement.executeQuery()) {
+				while (rs.next()) {
+					Admin admin = new Admin();
+					admin.setAdminId(rs.getInt("admin_id"));
+					admin.setCitizenId(rs.getString("citizen_id"));
+					admin.setInstitutionId(rs.getInt("institution_id"));
+					admin.setSuperuserCitizenId(rs.getString("superuser_citizen_id"));
+					
+					admins.add(admin);
+				}
+			}
+		}
+		
+		for (Admin admin : admins) {
+			admin.setCitizen(getCitizenById(conn, admin.getCitizenId()));
+		}
+		return admins;
 	}
 	
 	public static void setAdminInstitutionId(Connection conn, String adminCitizenId, int institutionId) 
