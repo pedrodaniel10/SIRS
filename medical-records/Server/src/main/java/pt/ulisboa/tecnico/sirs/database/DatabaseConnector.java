@@ -14,7 +14,7 @@ import org.springframework.core.io.ClassPathResource;
 import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
  
 public class DatabaseConnector {
-	private Connection connection = null;
+	private static Connection connection = null;
 	private String url;
 	private String username;
 	private String password;
@@ -27,11 +27,13 @@ public class DatabaseConnector {
 		} catch (IOException e) {
 			throw new DatabaseConnectionException(e.getMessage());
 		}
-    	try {
-			this.createConnection();
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
-			throw new DatabaseConnectionException(e.getMessage());
-		}
+    	if (connection == null) {
+	    	try {
+				this.createConnection();
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+				throw new DatabaseConnectionException(e.getMessage());
+			}
+    	}
     }
 	
 	private void setProperties() throws IOException {
@@ -44,7 +46,7 @@ public class DatabaseConnector {
 		this.password = props.getProperty("db.password");
 	}
 	
-	private void createConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+	public void createConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
 		this.connection = DriverManager.getConnection(this.url + "?user=" + this.username + "&password=" + this.password + "&allowMultiQueries=true");
 	}
