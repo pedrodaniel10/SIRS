@@ -7,7 +7,7 @@
 </tags:header>
 
 <body>
-<tags:citizen name="David Williams" image="/img/david_williams.jpg" citizenId="20">
+<tags:citizen citizen="${citizen}">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-9">
             <h2>Medical Record</h2>
@@ -16,10 +16,10 @@
                     <a href="/citizens">Citizens</a>
                 </li>
                 <li>
-                    <a href="/citizens/20/view">David Williams</a>
+                    <a href="/citizens/${citizen.citizenId}/view">${citizen.citizenName}</a>
                 </li>
                 <li class="active">
-                    <strong>#23</strong>
+                    <strong>#${record.recordId}</strong>
                 </li>
             </ol>
         </div>
@@ -34,22 +34,17 @@
                         <div>
                             <div>
                                 <span>Number:</span>
-                                <span class="pull-right">23</span>
+                                <span class="pull-right">${record.recordId}</span>
                             </div>
 
                             <div>
                                 <span>Creation Date:</span>
-                                <span class="pull-right">2018-11-19 11:26:53</span>
-                            </div>
-
-                            <div>
-                                <span>Last Modified:</span>
-                                <span class="pull-right">2018-11-19 11:26:53</span>
+                                <span class="pull-right">${record.creationDate}</span>
                             </div>
 
                             <div>
                                 <span>Treatment:</span>
-                                <span class="pull-right">X-Ray</span>
+                                <span class="pull-right">${record.reportInfo.treatment}</span>
                             </div>
 
                             <div>
@@ -77,9 +72,9 @@
                         <h2 class="font-bold no-margins">
                             Patient
                         </h2>
-                        <small>David Williams</small>
+                        <small>${citizen.citizenName}</small>
                     </div>
-                    <img src="/img/david_williams.jpg" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
+                    <img src="${citizen.profilePic}" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
                 </div>
             </div>
 
@@ -89,9 +84,9 @@
                         <h2 class="font-bold no-margins">
                             Doctor
                         </h2>
-                        <small>John Terry</small>
+                        <small>${doctor.citizenName}</small>
                     </div>
-                    <img src="/img/alex_smith.jpg" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
+                    <img src="${doctor.profilePic}" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
                 </div>
             </div>
 
@@ -101,9 +96,9 @@
                         <h2 class="font-bold no-margins">
                             Institution
                         </h2>
-                        <small>Royal London Hospital</small>
+                        <small>${institution.institutionName}</small>
                     </div>
-                    <img src="/img/royal_london_hospital.jpg" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
+                    <img src="${institution.profilePic}" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
                 </div>
             </div>
 
@@ -127,8 +122,7 @@
                             <div class="body">
                                 <div class="mypost-list">
                                     <div class="post-box">
-                                        <p>It is also used to identify any abnormal tissue in the uterine cavity, such as uterine fibroids, endometrial polyps, scar tissue, or retained pregnancy tissue, the presence of which may be suggested by history or previous tests such as a hysterosalpingogram (x-ray of the uterus and tubes). This procedure is done in the office here at IVF New England, and is done by one of the physicians.  </p>
-                                        <p>Approximately an hour before the exam we suggest that you take Ibuprofen 600 mg (Motrin/Advil) or a similar medication to minimize some mild to moderate cramping that you may experience during the procedure. </p>
+                                        <p>${record.reportInfo.generalReport}</p>
                                     </div>
                                     <hr>
                                     <div class="post-box">
@@ -136,19 +130,19 @@
                                         <hr>
                                         <h5>Heart Beat <span class="pull-right">85</span></h5>
                                         <div class="progress">
-                                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%"> <span class="sr-only">40% Complete (success)</span> </div>
+                                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow=${record.reportInfo.heartBeat} aria-valuemin="0" aria-valuemax="100" style="width: 40%"> <span class="sr-only">40% Complete (success)</span> </div>
                                         </div>
                                         <h5>Blood Pressure<span class="pull-right">93</span></h5>
                                         <div class="progress">
-                                            <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%;"> <span class="sr-only">50% Complete</span> </div>
+                                            <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow=${record.reportInfo.bloodPressure} aria-valuemin="0" aria-valuemax="100" style="width:90%;"> <span class="sr-only">50% Complete</span> </div>
                                         </div>
                                         <h5>Sugar<span class="pull-right">55</span></h5>
                                         <div class="progress">
-                                            <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%;"> <span class="sr-only">50% Complete</span> </div>
+                                            <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow=${record.reportInfo.sugar} aria-valuemin="0" aria-valuemax="100" style="width:50%;"> <span class="sr-only">50% Complete</span> </div>
                                         </div>
                                         <h5>Haemoglobin<span class="pull-right">78%</span></h5>
                                         <div class="progress">
-                                            <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%;"> <span class="sr-only">50% Complete</span> </div>
+                                            <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow=${record.reportInfo.haemoglobin} aria-valuemin="0" aria-valuemax="100" style="width:70%;"> <span class="sr-only">50% Complete</span> </div>
                                         </div>
                                     </div>
                                 </div>

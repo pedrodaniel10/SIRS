@@ -5,7 +5,7 @@
 <tags:header title="Edit Medical Record"/>
 
 <body>
-<tags:citizen name="David Williams" image="/img/david_williams.jpg" citizenId="20">
+<tags:citizen citizen="${citizen}">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-9">
             <h2>Medical Record</h2>
@@ -14,7 +14,7 @@
                     <a href="/citizens">Citizens</a>
                 </li>
                 <li>
-                    <a href="/citizens/20/profile">David Williams</a>
+                    <a href="/citizens/${citizen.citizenId}/profile">${citizen.citizenName}</a>
                 </li>
                 <li class="active">
                     <strong>Create Medical Record</strong>
@@ -42,9 +42,9 @@
                         <h2 class="font-bold no-margins">
                             Patient
                         </h2>
-                        <small>David Williams</small>
+                        <small>${patient.citizenName}</small>
                     </div>
-                    <img src="/img/david_williams.jpg" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
+                    <img src="${patient.profilePic}" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
                 </div>
             </div>
 
@@ -54,9 +54,9 @@
                         <h2 class="font-bold no-margins">
                             Doctor
                         </h2>
-                        <small>John Terry</small>
+                        <small>${doctor.citizenName}</small>
                     </div>
-                    <img src="/img/alex_smith.jpg" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
+                    <img src="${doctor.profilePic}" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
                 </div>
             </div>
 
@@ -66,9 +66,9 @@
                         <h2 class="font-bold no-margins">
                             Institution
                         </h2>
-                        <small>Royal London Hospital</small>
+                        <small>${institution.institutionName}</small>
                     </div>
-                    <img src="/img/royal_london_hospital.jpg" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
+                    <img src="${institution.profilePic}" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
                 </div>
             </div>
 

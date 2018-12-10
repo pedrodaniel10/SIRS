@@ -2,10 +2,7 @@ package pt.ulisboa.tecnico.sirs.server;
 
 import org.apache.log4j.Logger;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.Doctor;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.Institution;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.ServiceUtils;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
 import pt.ulisboa.tecnico.sirs.database.DatabaseConnector;
 import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
 import pt.ulisboa.tecnico.sirs.database.utils.DatabaseUtils;
@@ -153,9 +150,28 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
 
     }
 
+
     /* --------------------------------------------------------------------------------------------------------------*/
     /* --------------------------------------- INSTITUTIONS SERVICES ------------------------------------------------*/
     /* --------------------------------------------------------------------------------------------------------------*/
+
+    @Override
+    public Institution getInstitution(Citizen subject, int institutionId) {
+        try {
+            Connection connection = (new DatabaseConnector()).getConnection();
+            Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                    ServiceUtils.parseRoleList(subject.getRoles()), "view", "institutionsPage", Integer.toString(institutionId));
+
+            if (authorization) {
+                //return DatabaseUtils.getInstitutionById(connection, institutionId);
+                return getAInstitution();
+            }
+        } catch (DatabaseConnectionException /*| SQLException*/ e ) {
+            log.error(e.getMessage());
+        }
+        return null;
+    }
+
     @Override
     public List<Institution> getInstitutions(Citizen subject) {
         try {
@@ -232,6 +248,23 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     /* --------------------------------------------------------------------------------------------------------------*/
 
     @Override
+    public Doctor getDoctor(Citizen subject, String doctorCitizenId) {
+        try {
+            Connection connection = (new DatabaseConnector()).getConnection();
+            Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                    ServiceUtils.parseRoleList(subject.getRoles()), "view", "doctorsPage", doctorCitizenId);
+
+            if (authorization) {
+                //return DatabaseUtils.getDoctorByCitizenId(connection, doctorCitizenId);
+                return getADoctor();
+            }
+        } catch (DatabaseConnectionException /*| SQLException*/ e ) {
+            log.error(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
     public List<Doctor> getDoctors(Citizen subject) {
         try {
             Connection connection = (new DatabaseConnector()).getConnection();
@@ -297,10 +330,36 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         return null;
     }
 
+    /* --------------------------------------------------------------------------------------------------------------*/
+    /* --------------------------------------- MEDICAL RECORD SERVICES ----------------------------------------------*/
+    /* --------------------------------------------------------------------------------------------------------------*/
+
+
+    @Override
+    public MedicalRecord getMedicalRecord(Citizen subject, String citizenId, String idMedRec) {
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "medicalRecordsPage", citizenId);
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
+                return DatabaseUtils.getMedicalRecordsByPatientCitizenId(connection, citizenId).get(0); //this is wrong, we need to get one by id
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean getAddMedicalRecordPage(Citizen subject, String citizenId) {
+        return requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "medicalRecordsPage", citizenId);
+    }
+
     // This code only serves to simulate a session citizen because session is not implemented.
     private Citizen getSessionCitizenTest() {
         List<Citizen.Role> roles = new ArrayList<>();
-        roles.add(Citizen.Role.ADMIN);
+        roles.add(Citizen.Role.SUPERUSER);
 
         return new Citizen("12345p", "David Admin", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.paciente@megamail.com", "pass", "https://blog.estantevirtual.com.br/wp-content/uploads/fernando-pessoa-1.jpg", "", roles);
     }
@@ -308,6 +367,11 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     // This code only serves to simulate some institutions because there's no database connection yet.
     private Institution getAInstitution() {
         return new Institution(11111, "Institution1", "Rua da Praça nº1 Lisboa", "", "");
+    }
+
+    // This code only serves to simulate a doctor because there's no database connection yet.
+    private Doctor getADoctor() {
+        return new Doctor(12345, "12345d", 11111, "12345s", "12345a");
     }
 
 }
