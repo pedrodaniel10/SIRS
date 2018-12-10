@@ -358,10 +358,13 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
 
     // This code only serves to simulate a session citizen because session is not implemented.
     private Citizen getSessionCitizenTest() {
-        List<Citizen.Role> roles = new ArrayList<>();
-        roles.add(Citizen.Role.SUPERUSER);
-
-        return new Citizen("12345p", "David Admin", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "david.paciente@megamail.com", "pass", "https://blog.estantevirtual.com.br/wp-content/uploads/fernando-pessoa-1.jpg", "", roles);
+        try {
+            Connection connection = (new DatabaseConnector()).getConnection();
+            return DatabaseUtils.getCitizenById(connection, "2");
+        } catch (DatabaseConnectionException | SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // This code only serves to simulate some institutions because there's no database connection yet.
