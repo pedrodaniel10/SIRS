@@ -1,20 +1,35 @@
 package pt.ulisboa.tecnico.sirs.controllers;
 
+import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.DocPatRelation;
 
 @Controller
 public class AppointmentsController {
 
     private static Logger log = Logger.getLogger(AppointmentsController.class);
 
+    @Autowired
+    private ApplicationContext context;
+
     @RequestMapping(value = "/appointments", method = RequestMethod.GET)
     public String getRequestAppointments(Map<String, Object> model) {
-        return "appointments";
+        log.info("Entering getAppointments function");
+        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        Citizen subject = service.getSessionCitizen();
+        model.put("citizen", subject);
+        List<DocPatRelation> appointments = service.getAppointments(subject);
+        model.put("appointments", appointments);
+        return (appointments != null)? "appointments": "404";
     }
 
     @RequestMapping(value = "/appointments/add", method = RequestMethod.GET)

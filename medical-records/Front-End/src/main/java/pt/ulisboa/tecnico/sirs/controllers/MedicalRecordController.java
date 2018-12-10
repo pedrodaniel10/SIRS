@@ -32,7 +32,7 @@ public class MedicalRecordController {
         MedicalRecord record = service.getMedicalRecord(subject, citizenId, idMedRec);
         if (record == null)
             return "404";
-        Doctor doctor = service.getDoctor(subject, record.getDoctorCitizenId());
+        Citizen doctor = service.getCitizen(subject, record.getDoctorCitizenId());
         Institution institution = service.getInstitution(subject, record.getInstitutionId());
         model.put("record", record);
         model.put("doctor", doctor);

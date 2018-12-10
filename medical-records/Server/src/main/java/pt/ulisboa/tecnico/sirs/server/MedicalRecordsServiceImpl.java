@@ -10,7 +10,6 @@ import pt.ulisboa.tecnico.sirs.pdp.PolicyEnforcementPoint;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -210,16 +209,16 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public Institution getEditInstitutionPage(Citizen subject, String institutionToEdit) {
+    public Institution getEditInstitutionPage(Citizen subject, int institutionToEdit) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "institutionsPage", "" /*institutionToEdit*/);
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "institutionsPage", "2");
+        System.out.println(authorization);
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                if (institutionToEdit != null)
-                    //return DatabaseUtils.getInstitutionById(connection, institutionToEdit);
-                    return getAInstitution();
-            } catch (DatabaseConnectionException /*| SQLException*/ e ) {
+                return DatabaseUtils.getInstitutionById(connection, institutionToEdit);
+            } catch (DatabaseConnectionException | SQLException e ) {
+                e.printStackTrace();
                 log.error(e.getMessage());
             }
         }
@@ -330,9 +329,17 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     /* --------------------------------------------------------------------------------------------------------------*/
-    /* --------------------------------------- MEDICAL RECORD SERVICES ----------------------------------------------*/
+    /* ----------------------------------------- APPOINTMENTS SERVICES ----------------------------------------------*/
     /* --------------------------------------------------------------------------------------------------------------*/
 
+    @Override
+    public List<DocPatRelation> getAppointments(Citizen subject) {
+        return null;
+    }
+
+    /* --------------------------------------------------------------------------------------------------------------*/
+    /* --------------------------------------- MEDICAL RECORD SERVICES ----------------------------------------------*/
+    /* --------------------------------------------------------------------------------------------------------------*/
 
     @Override
     public MedicalRecord getMedicalRecord(Citizen subject, String citizenId, String idMedRec) {
@@ -355,20 +362,19 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
                 ServiceUtils.parseRoleList(subject.getRoles()), "create", "medicalRecordsPage", citizenId);
     }
 
+    /* --------------------------------------------------------------------------------------------------------------*/
+    /* ---------------------------------------------- UTILS SERVICES ------------------------------------------------*/
+    /* --------------------------------------------------------------------------------------------------------------*/
+
     // This code only serves to simulate a session citizen because session is not implemented.
     private Citizen getSessionCitizenTest() {
         try {
             Connection connection = (new DatabaseConnector()).getConnection();
-            return DatabaseUtils.getCitizenById(connection, "2");
+            return DatabaseUtils.getCitizenById(connection, "1");
         } catch (DatabaseConnectionException | SQLException e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    // This code only serves to simulate some institutions because there's no database connection yet.
-    private Institution getAInstitution() {
-        return new Institution(11111, "Institution1", "Rua da Praça nº1 Lisboa", "", "");
     }
 
     // This code only serves to simulate a doctor because there's no database connection yet.

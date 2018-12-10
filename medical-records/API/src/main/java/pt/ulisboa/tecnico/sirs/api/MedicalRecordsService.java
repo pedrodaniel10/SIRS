@@ -1,9 +1,6 @@
 package pt.ulisboa.tecnico.sirs.api;
 
-import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.Doctor;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.Institution;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.MedicalRecord;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
 
 import java.util.List;
 
@@ -25,7 +22,7 @@ public interface MedicalRecordsService {
     List<Institution> getInstitutions(Citizen subject);
     Boolean getAddInstitutionsPage(Citizen subject);
     List<Institution> addInstitution(Citizen subject, Institution institutionToAdd);
-    Institution getEditInstitutionPage(Citizen subject, String institutionToEdit);
+    Institution getEditInstitutionPage(Citizen subject, int institutionToEdit);
     List<Institution> editInstitution(Citizen subject, Institution institutionToEdit);
 
     Doctor getDoctor(Citizen subject, String doctorCitizenId);
@@ -36,4 +33,6 @@ public interface MedicalRecordsService {
 
     MedicalRecord getMedicalRecord(Citizen subject, String citizenId, String idMedRec);
     boolean getAddMedicalRecordPage(Citizen subject, String citizenId);
+
+    List<DocPatRelation> getAppointments(Citizen subject);
 }

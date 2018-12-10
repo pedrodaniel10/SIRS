@@ -80,12 +80,10 @@ public class CitizensController {
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        Citizen profile = service.getCitizen(subject, citizenId);
-        if (subject == null || profile == null)
-            return "404";
-        if (subject.getCitizenId().equals(citizenId))
-            profile = subject;
-        model.put("profile", profile);
-        return "profile";
+        if (subject != null && subject.getCitizenId().equals(citizenId)) {
+            model.put("profile", subject);
+            return "profile";
+        }
+        return "404";
     }
 }
