@@ -24,15 +24,15 @@ public class KeyUtils {
 	private static final String PASSWORD_FILE_NAME = "application.properties";
 	
 	public static void createKeyPair(String citizenId) throws IOException, KeyStoreException, NoSuchAlgorithmException, 
-	CertificateException, OperatorCreationException {
+	CertificateException, OperatorCreationException, InterruptedException {
 		
 		String pwd = getPwd();
-		//KeyStore keyStore = getKeystore(pwd);
 		String keyStoreFile = KEYSTORE_FILE_PATH + KEYSTORE_FILE_NAME;
 		
 		Runtime.getRuntime().exec("keytool -genkeypair -alias " + citizenId + " -keystore " + keyStoreFile
 				+ " -storepass " + pwd + " -validity 365 -keysize 2048 -sigalg SHA256withRSA -keyalg RSA -dname "
-				+ "CN=" + citizenId + " -noprompt -keypass " + pwd + " -ext bc:c=ca:false -storetype pkcs12");
+				+ "CN=" + citizenId + " -noprompt -keypass " + pwd + " -ext bc:c=ca:false -storetype pkcs12")
+				.waitFor();
 	}
 
 	private static KeyStore getKeystore(String pwd) throws KeyStoreException, IOException, NoSuchAlgorithmException,
@@ -49,7 +49,7 @@ public class KeyUtils {
 		ClassPathResource pwdResource = new ClassPathResource(PASSWORD_FILE_NAME);
 		InputStream pwdIS = pwdResource.getInputStream();
 		pwdProps.load(pwdIS);
-		String pwd = pwdProps.getProperty("server.ssl.key-store-password");
+		String pwd = pwdProps.getProperty("key-store-password");
 		return pwd;
 	}
 	
@@ -67,7 +67,6 @@ public class KeyUtils {
 		KeyPair keyPair = new KeyPair(publicKey, privateKey);
 		
 		return keyPair;
-		
 	}
 	
 }

@@ -252,7 +252,7 @@ public class DatabaseUtils {
 					signedMedicalRecord.getMedicalRecord().setPatientCitizenId(rs.getString("patient_citizen_id"));
 					signedMedicalRecord.getMedicalRecord().setInstitutionId(rs.getInt("institution_id"));
 					signedMedicalRecord.getMedicalRecord().getReportInfo().setGeneralReport(rs.getString("general_report"));
-					signedMedicalRecord.setRecordSignature(rs.getString("record_signature"));
+					signedMedicalRecord.setRecordSignature(rs.getBytes("record_signature"));
 					
 					signedMedicalRecords.add(signedMedicalRecord);
 				}
@@ -264,7 +264,7 @@ public class DatabaseUtils {
 	public static void addMedicalRecord(Connection conn, MedicalRecord medicalRecord) 
 			throws SQLException, InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, 
 			CertificateException, OperatorCreationException, SignatureException, UnrecoverableEntryException, 
-			IOException {
+			IOException, InterruptedException {
 		
 		setMedicalRecord(conn, medicalRecord, Queries.ADD_MEDICAL_RECORD_QUERY);
 	}
@@ -272,7 +272,7 @@ public class DatabaseUtils {
 	public static void updateMedicalRecord(Connection conn, MedicalRecord medicalRecord) 
 			throws SQLException, InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, 
 			CertificateException, OperatorCreationException, SignatureException, UnrecoverableEntryException, 
-			IOException {
+			IOException, InterruptedException {
 		
 		setMedicalRecord(conn, medicalRecord, Queries.UPDATE_MEDICAL_RECORD_QUERY);
 	}
@@ -280,7 +280,7 @@ public class DatabaseUtils {
 	private static void setMedicalRecord(Connection conn, MedicalRecord medicalRecord, String query) 
 			throws SQLException, KeyStoreException, NoSuchAlgorithmException, CertificateException, 
 			OperatorCreationException, IOException, InvalidKeyException, SignatureException, 
-			UnrecoverableEntryException {
+			UnrecoverableEntryException, InterruptedException {
 		
 		KeyUtils.createKeyPair(medicalRecord.getDoctorCitizenId());
 		SignedMedicalRecord signedMedicalRecord = medicalRecord.getSignedMedicalRecord();
@@ -296,7 +296,7 @@ public class DatabaseUtils {
 			statement.setString(7, signedMedicalRecord.getMedicalRecord().getPatientCitizenId());
 			statement.setInt(8, signedMedicalRecord.getMedicalRecord().getInstitutionId());
 			statement.setString(9, signedMedicalRecord.getMedicalRecord().getReportInfo().getGeneralReport());
-			statement.setString(10, signedMedicalRecord.getRecordSignature());
+			statement.setBytes(10, signedMedicalRecord.getRecordSignature());
 			try {
 				statement.setInt(11, signedMedicalRecord.getMedicalRecord().getRecordId());
 			} catch (SQLException e) {

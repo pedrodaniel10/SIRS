@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
+import pt.ulisboa.tecnico.sirs.api.utils.KeyUtils;
 import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
 import pt.ulisboa.tecnico.sirs.database.utils.DatabaseUtils;
 
@@ -114,7 +115,7 @@ public class DatabaseCitizenOperationsTest {
 	@Test
 	public void verifyQuerySintax() throws SQLException, InvalidKeyException, NoSuchAlgorithmException, 
 	SignatureException, KeyStoreException, CertificateException, UnrecoverableEntryException, IOException, 
-	OperatorCreationException {
+	OperatorCreationException, InterruptedException {
 		
 		DatabaseUtils.getAllInstitutions(conn);
 		DatabaseUtils.updateInstitution(conn, new Institution(1, "santa maria", "blabla", "bleble", "super"));
@@ -150,4 +151,12 @@ public class DatabaseCitizenOperationsTest {
 		DatabaseUtils.getSessionsByCitizenId(conn, c1.getCitizenId());
 		
 	}
+	
+	@Test
+	public void keyUtils() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, 
+	OperatorCreationException, IOException, UnrecoverableEntryException, InterruptedException {
+		KeyUtils.createKeyPair("hola");
+		KeyUtils.getKeyPair("hola");
+	}
+	
 }

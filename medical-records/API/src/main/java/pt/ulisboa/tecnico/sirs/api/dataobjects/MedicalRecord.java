@@ -104,8 +104,7 @@ public class MedicalRecord implements Serializable {
 		signature.initSign(privateKey);
 		signature.update(objBytes);
 		byte[] digitalSignature = signature.sign();
-		System.out.println(digitalSignature.toString());
 		
-		return new SignedMedicalRecord(this, digitalSignature.toString());
+		return new SignedMedicalRecord(this, digitalSignature);
 	}
 }

@@ -95,7 +95,7 @@ CREATE TABLE medical_records (
     patient_citizen_id VARCHAR(10) NOT NULL,
     institution_id INT NOT NULL,
     general_report VARCHAR(255) NOT NULL,
-    record_signature VARCHAR(255) NOT NULL,
+    record_signature BLOB(256) NOT NULL,
 
     CONSTRAINT heart_beat_ck CHECK (heart_beat BETWEEN 0 AND 200),
     CONSTRAINT blood_pressure_ck CHECK (blood_pressure BETWEEN 0 AND 100),

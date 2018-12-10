@@ -16,13 +16,13 @@ import pt.ulisboa.tecnico.sirs.api.utils.KeyUtils;
 
 public class SignedMedicalRecord {
 	private MedicalRecord medicalRecord;
-	private String recordSignature;
+	private byte[] recordSignature;
 	
 	public SignedMedicalRecord() {
 		this.medicalRecord = new MedicalRecord();
 	}
 	
-	public SignedMedicalRecord(MedicalRecord medicalRecord, String recordSignature) {
+	public SignedMedicalRecord(MedicalRecord medicalRecord, byte[] recordSignature) {
 		this.medicalRecord = medicalRecord;
 		this.recordSignature = recordSignature;
 	}
@@ -35,11 +35,11 @@ public class SignedMedicalRecord {
 		this.medicalRecord = medicalRecord;
 	}
 	
-	public String getRecordSignature() {
+	public byte[] getRecordSignature() {
 		return recordSignature;
 	}
 	
-	public void setRecordSignature(String recordSignature) {
+	public void setRecordSignature(byte[] recordSignature) {
 		this.recordSignature = recordSignature;
 	}
 	
@@ -49,7 +49,10 @@ public class SignedMedicalRecord {
 		RSAPublicKey publicKey = (RSAPublicKey) KeyUtils.getKeyPair(this.medicalRecord.getDoctorCitizenId()).getPublic();
 		
 		byte[] objBytes = convertToByteArray(this.medicalRecord);
-		byte[] sigBytes = convertToByteArray(this.recordSignature);
+		byte[] sigBytes = this.recordSignature;
+		
+		System.out.println("Object array len: " + objBytes.length);
+		System.out.println("Signature array len: " + sigBytes.length);
 		
 		Signature signature = Signature.getInstance("SHA256withRSA");
 		signature.initVerify(publicKey);
