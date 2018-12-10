@@ -32,12 +32,6 @@ public class DatabaseConnector {
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
 			throw new DatabaseConnectionException(e.getMessage());
 		}
-    	try {
-			this.setupTables();
-		} catch (SQLException | IOException e) {
-			throw new DatabaseConnectionException(e.getMessage());
-		}
-    	
     }
 	
 	private void setProperties() throws IOException {
@@ -56,7 +50,7 @@ public class DatabaseConnector {
 	}
 	
 	@SuppressWarnings("resource")
-	private void setupTables() throws IOException, SQLException {
+	public void setupTables() throws IOException, SQLException {
 		ClassPathResource resource = new ClassPathResource(DB_SETUP_FILE_NAME);
 		InputStream is = resource.getInputStream();
 		Scanner s = new Scanner(is).useDelimiter("\\A");
