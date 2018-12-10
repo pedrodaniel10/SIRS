@@ -3,6 +3,7 @@ package pt.ulisboa.tecnico.sirs.database;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -24,8 +25,10 @@ public class DatabaseCitizenOperationsTest {
 	private Citizen c1;
 	
 	@Before
-	public void setup() throws DatabaseConnectionException {
-		this.conn = (new DatabaseConnector()).getConnection();
+	public void setup() throws DatabaseConnectionException, IOException, SQLException {
+		DatabaseConnector dbConnector = new DatabaseConnector();
+		dbConnector.setupTables();
+		this.conn = dbConnector.getConnection();
 		this.c1 = new Citizen("test_id", "paulo", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt",
 				"jálhedigo", "path", "super", new ArrayList<>());
 	}
@@ -133,6 +136,7 @@ public class DatabaseCitizenOperationsTest {
 		DatabaseUtils.updateSession(conn, session);
 		DatabaseUtils.getSessionBySessionId(conn, session.getSessionId());
 		DatabaseUtils.getSessionsByCitizenId(conn, c1.getCitizenId());
+		DatabaseUtils.getInstitutionById(conn, 1);
 		
 	}
 }

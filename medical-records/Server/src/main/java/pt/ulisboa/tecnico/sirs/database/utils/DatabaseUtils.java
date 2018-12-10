@@ -177,6 +177,23 @@ public class DatabaseUtils {
 		}
 	}
 	
+	public static Institution getInstitutionById(Connection conn, int institutionId) throws SQLException {
+		Institution institution = new Institution();
+		try (PreparedStatement statement = conn.prepareStatement(Queries.GET_INSTITUTION_BY_ID_QUERY)) {
+			statement.setInt(1, institutionId);
+			try (ResultSet rs = statement.executeQuery()) {
+				while (rs.next()) {
+					institution.setInstitutionId(rs.getInt("institution_id"));
+					institution.setInstitutionName(rs.getString("institution_name"));
+					institution.setInstitutionAddress(rs.getString("institution_address"));
+					institution.setProfilePic(rs.getString("profile_pic"));
+					institution.setSuperuserCitizenId(rs.getString("superuser_citizen_id"));
+				}
+			}
+		}
+		return institution;
+	}
+	
 	public static List<Institution> getAllInstitutions(Connection conn) throws SQLException {
 		List<Institution> institutions = new ArrayList<>();
 		try (PreparedStatement statement = conn.prepareStatement(Queries.GET_ALL_INSTITUTIONS_QUERY)) {
