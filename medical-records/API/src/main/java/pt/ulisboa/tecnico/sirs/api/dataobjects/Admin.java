@@ -5,6 +5,7 @@ public class Admin {
 	private String citizenId;
 	private int institutionId;
 	private String superuserCitizenId;
+	private Citizen citizen;
 
 	public Admin() {}
 	
@@ -45,5 +46,13 @@ public class Admin {
 
 	public void setSuperuserCitizenId(String superuserCitizenId) {
 		this.superuserCitizenId = superuserCitizenId;
+	}
+
+	public Citizen getCitizen() {
+		return citizen;
+	}
+
+	public void setCitizen(Citizen citizen) {
+		this.citizen = citizen;
 	}
 }

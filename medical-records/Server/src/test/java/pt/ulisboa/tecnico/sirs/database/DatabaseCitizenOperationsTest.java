@@ -137,6 +137,7 @@ public class DatabaseCitizenOperationsTest {
 		DatabaseUtils.getSessionBySessionId(conn, session.getSessionId());
 		DatabaseUtils.getSessionsByCitizenId(conn, c1.getCitizenId());
 		DatabaseUtils.getInstitutionById(conn, 1);
-		
+		DatabaseUtils.getInstitutionByDoctorId(conn, c1.getCitizenId());
+		DatabaseUtils.getAdminByCitizenId(conn, c1.getCitizenId());
 	}
 }

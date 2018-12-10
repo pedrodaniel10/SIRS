@@ -8,6 +8,7 @@ public class Institution implements Serializable {
     private String institutionAddress;
     private String profilePic;
     private String superuserCitizenId;
+    private String adminCitizenId;
 
     public 	Institution() {}
 
@@ -59,4 +60,12 @@ public class Institution implements Serializable {
     public void setSuperuserCitizenId(String superuserCitizenId) {
         this.superuserCitizenId = superuserCitizenId;
     }
+
+	public String getAdminCitizenId() {
+		return adminCitizenId;
+	}
+
+	public void setAdminCitizenId(String adminCitizenId) {
+		this.adminCitizenId = adminCitizenId;
+	}
 }

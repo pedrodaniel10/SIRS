@@ -8,6 +8,7 @@ public class Doctor implements Serializable {
     private int institutionId;
     private String superuserCitizenId;
     private String adminCitizenId; //admin that set the institution
+    private Citizen citizen;
 
     public Doctor(int doctorId, String citizenId, int institutionId, String superuserCitizenId, String adminCitizenId) {
         super();
@@ -59,4 +60,12 @@ public class Doctor implements Serializable {
     public void setAdminCitizenId(String adminCitizenId) {
         this.adminCitizenId = adminCitizenId;
     }
+
+	public Citizen getCitizen() {
+		return citizen;
+	}
+
+	public void setCitizen(Citizen citizen) {
+		this.citizen = citizen;
+	}
 }
