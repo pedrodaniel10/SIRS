@@ -163,10 +163,9 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
                     ServiceUtils.parseRoleList(subject.getRoles()), "view", "institutionsPage", Integer.toString(institutionId));
 
             if (authorization) {
-                //return DatabaseUtils.getInstitutionById(connection, institutionId);
-                return getAInstitution();
+                return DatabaseUtils.getInstitutionById(connection, institutionId);
             }
-        } catch (DatabaseConnectionException /*| SQLException*/ e ) {
+        } catch (DatabaseConnectionException | SQLException e ) {
             log.error(e.getMessage());
         }
         return null;
