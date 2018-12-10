@@ -1,4 +1,6 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -51,21 +53,23 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <c:forEach var="appointment" items="${appointments}">
                                 <tr>
                                     <td class="center"><img src="/img/david_williams.jpg" class="img-circle" style="width:50px;height:50px;"\></td>
-                                    <td class="center">24786562</td>
+                                    <td class="center">${appointment.patientCitizenId}</td>
                                     <td class="center">David Edward Williams</td>
                                     <td class="center">20/08/1971</td>
                                     <td class="center">Male</td>
                                     <td class="center">John Terry</td>
-                                    <td class="center">20/08/2018</td>
-                                    <td class="center">21/08/2018</td>
+                                    <td class="center">${appointment.beginDate}</td>
+                                    <td class="center">${appointment.endDate}</td>
                                     <td class="center">
                                         <a href="/appointments/1/delete" class="btn btn-danger btn-circle" type="button">
                                             <i class="fa fa-trash-o"></i>
                                         </a>
                                     </td>
                                 </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>

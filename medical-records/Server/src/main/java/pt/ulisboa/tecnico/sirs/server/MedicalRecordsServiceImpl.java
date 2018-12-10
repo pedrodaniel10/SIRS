@@ -207,7 +207,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     @Override
     public Institution getEditInstitutionPage(Citizen subject, int institutionToEdit) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "institutionsPage", "2");
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "institutionsPage", Integer.toString(institutionToEdit));
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
@@ -328,6 +328,54 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
 
     @Override
     public List<DocPatRelation> getAppointments(Citizen subject) {
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "appointmentsPage", "");
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
+                return DatabaseUtils.getDocPatRelationsByAdminId(connection, subject.getCitizenId());
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Boolean getAddAppointmentsPage(Citizen subject) {
+        return requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "appointmentsPage", "");
+    }
+
+    @Override
+    public List<DocPatRelation> addAppointment(Citizen subject, DocPatRelation appointmentToAdd) {
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "appointmentsPage", ""/*appointmentToAdd.getAdminCitizenId()*/);
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
+                if (appointmentToAdd != null) DatabaseUtils.addDocPatRelation(connection, appointmentToAdd);
+                return DatabaseUtils.getDocPatRelationsByAdminId(connection, subject.getCitizenId());
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<DocPatRelation> deleteAppointment(Citizen subject, int appointmentId) {
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "appointmentsPage", Integer.toString(appointmentId));
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
+                DatabaseUtils.removeDocPatRelation(connection, appointmentId);
+                return DatabaseUtils.getDocPatRelationsByAdminId(connection, subject.getCitizenId());
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
+            }
+        }
         return null;
     }
 
@@ -351,7 +399,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public boolean getAddMedicalRecordPage(Citizen subject, String citizenId) {
+    public Boolean getAddMedicalRecordPage(Citizen subject, String citizenId) {
         return requestEvaluation(subject.getCitizenId(),
                 ServiceUtils.parseRoleList(subject.getRoles()), "create", "medicalRecordsPage", citizenId);
     }

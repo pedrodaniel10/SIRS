@@ -225,6 +225,56 @@ import Attributes.*
 				}
 			}
 		}
+
+		/* Resource: appointmentsPage */
+        		policyset appointmentsPage {
+        			target clause Attributes.resourceName == "appointmentsPage"
+        			apply firstApplicable
+
+        			/* Actions*/
+        			policyset ActionsAppointments {
+        				apply firstApplicable
+
+        				/* Admin actions */
+        				policy AdminActions {
+        					target clause Attributes.subjectRole == "ADMIN"
+        					apply firstApplicable
+
+        					/* RULE: Admin can view appointments */
+        					rule AdminCanViewAppointments {
+        						target clause Attributes.actionId == "view"
+        						permit
+        					}
+
+        					/* RULE: Admin can add appointments */
+        					rule AdminCanAddAppointments {
+        						target clause Attributes.actionId == "create"
+        						permit
+        					}
+
+        					/* RULE: Admin can edit Appointments (delete) */
+        					rule AdminCanEditAppointments {
+        						target clause Attributes.actionId == "edit"
+        						permit
+        					}
+
+        					/* RULE: Admin cannot perform other actions in the Appointments page */
+        	                rule AdminCannotPerformOtherActions {
+        	                    deny
+        	                }
+        				}
+
+        				/* Others actions */
+        				policy OthersActions {
+        					apply firstApplicable
+
+        					/* RULE: No one can perform other actions in the Appointments page (except ADMIN)*/
+        	                rule NoOneCanPerformActions {
+        	                    deny
+        	                }
+        				}
+        			}
+        		}
 		
 		/* Resource: patientsPage */
 		policyset patientsPage {
