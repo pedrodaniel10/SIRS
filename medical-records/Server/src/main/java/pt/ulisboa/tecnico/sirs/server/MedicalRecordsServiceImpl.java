@@ -64,32 +64,30 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
 
     @Override
     public Citizen getCitizen(Citizen subject, String citizenId) {
-        try {
-            Connection connection = (new DatabaseConnector()).getConnection();
-            Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                    ServiceUtils.parseRoleList(subject.getRoles()), "view", "citizensPage", citizenId);
-
-            if (authorization) {
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "citizensPage", citizenId);
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
                 return DatabaseUtils.getCitizenById(connection, citizenId);
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
             }
-        } catch (DatabaseConnectionException | SQLException e ) {
-            log.error(e.getMessage());
         }
         return null;
     }
 
     @Override
     public List<Citizen> getCitizens(Citizen subject) {
-        try {
-            Connection connection = (new DatabaseConnector()).getConnection();
-            Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                    ServiceUtils.parseRoleList(subject.getRoles()), "view", "citizensPage", "");
-
-            if (authorization) {
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "citizensPage", "");
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
                 return DatabaseUtils.getAllCitizens(connection);
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
             }
-        } catch (DatabaseConnectionException | SQLException e ) {
-            log.error(e.getMessage());
         }
         return null;
     }
@@ -156,32 +154,30 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
 
     @Override
     public Institution getInstitution(Citizen subject, int institutionId) {
-        try {
-            Connection connection = (new DatabaseConnector()).getConnection();
-            Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                    ServiceUtils.parseRoleList(subject.getRoles()), "view", "institutionsPage", Integer.toString(institutionId));
-
-            if (authorization) {
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "institutionsPage", Integer.toString(institutionId));
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
                 return DatabaseUtils.getInstitutionById(connection, institutionId);
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
             }
-        } catch (DatabaseConnectionException | SQLException e ) {
-            log.error(e.getMessage());
         }
         return null;
     }
 
     @Override
     public List<Institution> getInstitutions(Citizen subject) {
-        try {
-            Connection connection = (new DatabaseConnector()).getConnection();
-            Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                    ServiceUtils.parseRoleList(subject.getRoles()), "view", "institutionsPage", "");
-
-            if (authorization) {
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "institutionsPage", "");
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
                 return DatabaseUtils.getAllInstitutions(connection);
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
             }
-        } catch (DatabaseConnectionException | SQLException e ) {
-            log.error(e.getMessage());
         }
         return null;
     }
@@ -246,49 +242,46 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
 
     @Override
     public Doctor getDoctor(Citizen subject, String doctorCitizenId) {
-        try {
-            Connection connection = (new DatabaseConnector()).getConnection();
-            Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                    ServiceUtils.parseRoleList(subject.getRoles()), "view", "doctorsPage", doctorCitizenId);
-
-            if (authorization) {
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "doctorsPage", doctorCitizenId);
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
                 //return DatabaseUtils.getDoctorByCitizenId(connection, doctorCitizenId);
                 return getADoctor();
+            } catch (DatabaseConnectionException /*| SQLException*/ e) {
+                log.error(e.getMessage());
             }
-        } catch (DatabaseConnectionException /*| SQLException*/ e ) {
-            log.error(e.getMessage());
         }
         return null;
     }
 
     @Override
     public List<Doctor> getDoctors(Citizen subject) {
-        try {
-            Connection connection = (new DatabaseConnector()).getConnection();
-            Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                    ServiceUtils.parseRoleList(subject.getRoles()), "view", "doctorsPage", "");
-
-            if (authorization) {
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "doctorsPage", "");
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
                 return DatabaseUtils.getDoctorsByAdminId(connection, subject.getCitizenId());
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
             }
-        } catch (DatabaseConnectionException | SQLException e ) {
-            log.error(e.getMessage());
         }
         return null;
     }
 
     @Override
     public List<Doctor> getAddDoctorPage(Citizen subject) {
-        try {
-            Connection connection = (new DatabaseConnector()).getConnection();
-            Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                    ServiceUtils.parseRoleList(subject.getRoles()), "create", "doctorsPage", "");
-
-            if (authorization) {
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "doctorsPage", "");
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
                 return DatabaseUtils.getAllDoctorsWithoutInstitution(connection);
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
             }
-        } catch (DatabaseConnectionException | SQLException e ) {
-            log.error(e.getMessage());
         }
         return null;
     }
@@ -371,7 +364,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     private Citizen getSessionCitizenTest() {
         try {
             Connection connection = (new DatabaseConnector()).getConnection();
-            return DatabaseUtils.getCitizenById(connection, "1");
+            return DatabaseUtils.getCitizenById(connection, "2");
         } catch (DatabaseConnectionException | SQLException e) {
             e.printStackTrace();
         }
