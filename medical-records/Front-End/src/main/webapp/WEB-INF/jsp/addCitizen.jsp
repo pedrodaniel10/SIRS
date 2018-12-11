@@ -1,4 +1,5 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -38,71 +39,96 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <form method="post" class="form-horizontal">
-                            <div class="form-group"><label class="col-sm-2 control-label">Roles:</label>&nbsp;&nbsp;
-                                <div class="checkbox-inline i-checks"><label> <input type="checkbox" disabled="" checked="" value="patient"> <i></i> Patient </label></div>
-                                <div class="checkbox-inline i-checks"><label> <input type="checkbox" value="doctor"> <i></i> Doctor </label></div>
-                                <div class="checkbox-inline i-checks"><label> <input type="checkbox" value="admin"> <i></i> Administrator </label></div>
-                                <div class="checkbox-inline i-checks"><label> <input type="checkbox" value="suser"> <i></i> Super User </label></div>
+                        <div style="color: red">
+                            <b><p>${error}</p></b>
+                        </div>
+                        <form:form method="POST" class="form-horizontal" modelAttribute="newCitizen">
+                            <div class="form-group">
+                                <label path="roles" class="col-sm-2 control-label">Roles:</label>&nbsp;&nbsp;
+                                <div class="checkbox-inline i-checks">
+                                    <label> <form:checkbox disabled="true" path="roles" value="PATIENT"/> <i></i> Patient </label></div>
+                                <div class="checkbox-inline i-checks">
+                                    <label> <form:checkbox path="roles" value="DOCTOR"/> <i></i> Doctor </label></div>
+                                <div class="checkbox-inline i-checks">
+                                    <label> <form:checkbox path="roles"  value="ADMIN"/> <i></i> Administrator </label></div>
+                                <div class="checkbox-inline i-checks">
+                                    <label> <form:checkbox path="roles" value="SUPERUSER"/> <i></i> Super User </label></div>
                             </div>
+
                             <div class="hr-line-dashed"></div>
 
-                            <div class="form-group"><label class="col-sm-2 control-label">Citizen ID:</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-
-                            <div class="form-group"><label class="col-sm-2 control-label">Name:</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-
-                            <div class="form-group"><label class="col-sm-2 control-label">Date of Birth:</label>
-                                <div class="col-sm-10"><input type="date" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-
-                            <div class="form-group"><label class="col-sm-2 control-label">Gender:</label>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Profile Pic:</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b">
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                    </select>
+                                    <form:input path="profilePic" type="text" class="form-control"/></div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Citizen ID:</label>
+                                <div class="col-sm-10">
+                                    <form:input path="citizenId" type="text" class="form-control"/></div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Name:</label>
+                                <div class="col-sm-10">
+                                    <form:input path="citizenName" type="text" class="form-control"/></div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Date of Birth:</label>
+                                <div class="col-sm-10">
+                                    <form:input path="dateOfBirth" type="date" class="form-control"/></div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Gender:</label>
+                                <div class="col-sm-10">
+                                    <form:select  path="gender" class="form-control m-b">
+                                        <form:option value="MALE">Male</form:option>
+                                        <form:option value="FEMALE">Female</form:option>
+                                    </form:select>
                                 </div>
                             </div>
+
                             <div class="hr-line-dashed"></div>
 
-                            <div class="form-group"><label class="col-sm-2 control-label">Email:</label>
-
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Email:</label>
+                                <div class="col-sm-10">
+                                    <form:input path="email" type="text" class="form-control"/></div>
                             </div>
+
                             <div class="hr-line-dashed"></div>
 
-                            <div class="form-group"><label class="col-sm-2 control-label">Username:</label>
-
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Password:</label>
+                                <div class="col-sm-10"><form:input path="password" type="password" class="form-control"/></div>
                             </div>
+
                             <div class="hr-line-dashed"></div>
 
-                            <div class="form-group"><label class="col-sm-2 control-label">Password:</label>
-
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Confirm Password:</label>
                                 <div class="col-sm-10"><input type="password" class="form-control"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
-
-
-                            <div class="form-group"><label class="col-sm-2 control-label">Confirm Password:</label>
-
-                                <div class="col-sm-10"><input type="password" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
+                            <form:hidden path="superuserCitizenId"/>
 
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
                                     <button class="btn btn-primary" type="submit">Add Citizen</button>
                                 </div>
                             </div>
-                        </form>
+                        </form:form>
                     </div>
                 </div>
             </div>

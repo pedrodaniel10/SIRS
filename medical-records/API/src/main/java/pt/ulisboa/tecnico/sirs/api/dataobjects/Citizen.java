@@ -28,6 +28,18 @@ public class Citizen implements Serializable {
 
     public Citizen() {}
 
+    public Citizen(boolean dataobject) {
+        this.citizenId = "";
+        this.citizenName = "";
+        this.gender = Gender.MALE;
+        this.dateOfBirth = LocalDate.now();
+        this.email = "";
+        this.password = "";
+        this.profilePic = "";
+        this.superuserCitizenId = "";
+        this.roles.add(Role.PATIENT);
+    }
+
     public Citizen(String citizenId, String citizenName, Gender gender, LocalDate dateOfBirth, String email,
                    String password, String profilePic, String superuserCitizenId, List<Role> roles) {
         this.citizenId = citizenId;

@@ -3,6 +3,7 @@ package pt.ulisboa.tecnico.sirs.server;
 import org.apache.log4j.Logger;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
+import pt.ulisboa.tecnico.sirs.api.exceptions.CitizenException;
 import pt.ulisboa.tecnico.sirs.database.DatabaseConnector;
 import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
 import pt.ulisboa.tecnico.sirs.database.utils.DatabaseUtils;
@@ -99,7 +100,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public List<Citizen> addCitizen(Citizen subject, Citizen citizenToAdd) {
+    public List<Citizen> addCitizen(Citizen subject, Citizen citizenToAdd) throws CitizenException {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
                 ServiceUtils.parseRoleList(subject.getRoles()), "create", "citizensPage", ""/*citizenToAdd.getCitizenId()*/);
         if (authorization) {
@@ -107,8 +108,14 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
                 Connection connection = (new DatabaseConnector()).getConnection();
                 if (citizenToAdd != null) DatabaseUtils.addCitizen(connection, citizenToAdd);
                 return DatabaseUtils.getAllCitizens(connection);
-            } catch (DatabaseConnectionException | SQLException e ) {
+            } catch (DatabaseConnectionException e) {
                 log.error(e.getMessage());
+                System.exit(-1);
+            } catch (SQLException e) {
+                if(e.getErrorCode() == 1062)
+                    throw new CitizenException("Citizen Id " + citizenToAdd.getCitizenId() + " is already in use!");
+                else
+                    throw new CitizenException("Please correct your data");
             }
         }
         return null;
@@ -446,7 +453,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     private Citizen getSessionCitizenTest() {
         try {
             Connection connection = (new DatabaseConnector()).getConnection();
-            return DatabaseUtils.getCitizenById(connection, "7");
+            return DatabaseUtils.getCitizenById(connection, "1");
         } catch (DatabaseConnectionException | SQLException e) {
             e.printStackTrace();
         }
