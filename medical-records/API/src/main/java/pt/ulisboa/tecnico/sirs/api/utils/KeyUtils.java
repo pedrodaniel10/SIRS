@@ -23,8 +23,7 @@ public class KeyUtils {
 	private static final String KEYSTORE_FILE_NAME = "citizens.jks";
 	private static final String PASSWORD_FILE_NAME = "application.properties";
 	
-	public static void createKeyPair(String citizenId) throws IOException, KeyStoreException, NoSuchAlgorithmException, 
-	CertificateException, OperatorCreationException, InterruptedException {
+	public static void createKeyPair(String citizenId) throws IOException, InterruptedException {
 		
 		String pwd = getPwd();
 		String keyStoreFile = KEYSTORE_FILE_PATH + KEYSTORE_FILE_NAME;
@@ -36,7 +35,7 @@ public class KeyUtils {
 	}
 
 	private static KeyStore getKeystore(String pwd) throws KeyStoreException, IOException, NoSuchAlgorithmException,
-			CertificateException, FileNotFoundException {
+			CertificateException {
 		ClassPathResource keystoreResource = new ClassPathResource(KEYSTORE_FILE_NAME);
 		InputStream keyStoreIS = keystoreResource.getInputStream();
 		KeyStore keyStore = KeyStore.getInstance("PKCS12");

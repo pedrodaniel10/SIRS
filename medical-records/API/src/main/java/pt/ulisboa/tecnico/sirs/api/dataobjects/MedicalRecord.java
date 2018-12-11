@@ -99,9 +99,7 @@ public class MedicalRecord implements Serializable {
 		RSAPrivateKey privateKey = (RSAPrivateKey) KeyUtils.getKeyPair(this.doctorCitizenId).getPrivate();
 		
 		byte[] objBytes = this.toString().getBytes();
-		
-		System.out.println("Before: " + this.toString());
-		
+
 		Signature signature = Signature.getInstance("SHA256withRSA");
 		signature.initSign(privateKey);
 		signature.update(objBytes);

@@ -158,8 +158,8 @@ public class DatabaseCitizenOperationsTest {
 	}
 	
 	@Test
-	public void keyUtils() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, 
-	OperatorCreationException, IOException, UnrecoverableEntryException, InterruptedException {
+	public void keyUtils() throws KeyStoreException, NoSuchAlgorithmException, CertificateException,
+			IOException, UnrecoverableEntryException, InterruptedException {
 		KeyUtils.createKeyPair("hola");
 		KeyUtils.getKeyPair("hola");
 	}

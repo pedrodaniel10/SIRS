@@ -49,9 +49,7 @@ public class SignedMedicalRecord {
 		
 		byte[] objBytes = this.getMedicalRecord().toString().getBytes();
 		byte[] sigBytes = this.recordSignature;
-		
-		System.out.println("After: " + this.getMedicalRecord().toString());
-		
+
 		Signature signature = Signature.getInstance("SHA256withRSA");
 		signature.initVerify(publicKey);
 		signature.update(objBytes);

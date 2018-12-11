@@ -1,9 +1,13 @@
 package pt.ulisboa.tecnico.sirs.database.utils;
 
+import org.bouncycastle.operator.OperatorCreationException;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
 import pt.ulisboa.tecnico.sirs.database.DatabaseConnector;
 import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
 
+import java.io.IOException;
+import java.security.*;
+import java.security.cert.CertificateException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -91,8 +95,12 @@ public class Populate {
         MedicalRecord record2 = new MedicalRecord(0, doctor1.getCitizenId(), patient2.getCitizenId(), 1, report1);
         MedicalRecord record3 = new MedicalRecord(0, doctor1.getCitizenId(), patient1.getCitizenId(), 1, report1);
 
-        DatabaseUtils.addMedicalRecord(connection, record1);
-        DatabaseUtils.addMedicalRecord(connection, record2);
-        DatabaseUtils.addMedicalRecord(connection, record3);
+        try {
+            DatabaseUtils.addMedicalRecord(connection, record1);
+            DatabaseUtils.addMedicalRecord(connection, record2);
+            DatabaseUtils.addMedicalRecord(connection, record3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

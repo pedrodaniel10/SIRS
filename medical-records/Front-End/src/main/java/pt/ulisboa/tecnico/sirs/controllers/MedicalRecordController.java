@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.Doctor;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.Institution;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.MedicalRecord;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
 
 @Controller
 public class MedicalRecordController {
@@ -29,11 +26,11 @@ public class MedicalRecordController {
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        MedicalRecord record = service.getMedicalRecord(subject, citizenId, idMedRec);
+        SignedMedicalRecord record = service.getMedicalRecord(subject, citizenId, idMedRec);
         if (record == null)
             return "404";
-        Citizen doctor = service.getCitizen(subject, record.getDoctorCitizenId());
-        Institution institution = service.getInstitution(subject, record.getInstitutionId());
+        Citizen doctor = service.getCitizen(subject, record.getMedicalRecord().getDoctorCitizenId());
+        Institution institution = service.getInstitution(subject, record.getMedicalRecord().getInstitutionId());
         model.put("record", record);
         model.put("doctor", doctor);
         model.put("institution", institution);

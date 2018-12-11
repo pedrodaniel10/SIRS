@@ -10,9 +10,11 @@ public class DataObjectCreation {
 
     public static Citizen createCitizen(Citizen citizen, String superuserCitizenId) {
         citizen.addRole(Citizen.Role.PATIENT);
-        return new Citizen(citizen.getCitizenId(), citizen.getCitizenName(), citizen.getGender(),
-                citizen.getDateOfBirth(), citizen.getEmail(), citizen.getPassword(), citizen.getProfilePic(),
+        Citizen newCitizen = new Citizen(citizen.getCitizenId(), citizen.getCitizenName(), citizen.getGender(),
+                citizen.getDateOfBirth(), citizen.getEmail(), "", citizen.getProfilePic(),
                 superuserCitizenId, citizen.getRoles());
+        newCitizen.setPassword(citizen.getPassword());
+        return newCitizen;
     }
 
     public static Institution createInstitution(Institution institution, String superuserCitizenId) {

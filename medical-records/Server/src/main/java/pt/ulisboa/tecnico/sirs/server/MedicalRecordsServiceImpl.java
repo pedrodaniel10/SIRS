@@ -10,6 +10,9 @@ import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
 import pt.ulisboa.tecnico.sirs.database.utils.DatabaseUtils;
 import pt.ulisboa.tecnico.sirs.pdp.PolicyEnforcementPoint;
 
+import java.io.IOException;
+import java.security.*;
+import java.security.cert.CertificateException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -408,7 +411,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
                 return DatabaseUtils.getMedicalRecordsByPatientCitizenId(connection, citizenId).get(0); //this is wrong, we need to get one by id
-            } catch (DatabaseConnectionException | SQLException e ) {
+            } catch (DatabaseConnectionException | SQLException | InvalidKeyException | SignatureException | NoSuchAlgorithmException | KeyStoreException | CertificateException | UnrecoverableEntryException | IOException e ) {
                 log.error(e.getMessage());
             }
         }
@@ -429,7 +432,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
                 return DatabaseUtils.getMedicalRecordsByPatientCitizenId(connection, citizenId);
-            } catch (DatabaseConnectionException | SQLException e ) {
+            } catch (DatabaseConnectionException | SQLException | InvalidKeyException | SignatureException | NoSuchAlgorithmException | KeyStoreException | CertificateException | UnrecoverableEntryException | IOException e ) {
                 log.error(e.getMessage());
             }
         }

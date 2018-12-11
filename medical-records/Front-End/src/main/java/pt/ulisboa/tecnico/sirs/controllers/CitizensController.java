@@ -1,6 +1,5 @@
 package pt.ulisboa.tecnico.sirs.controllers;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.MedicalRecord;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.SignedMedicalRecord;
 import pt.ulisboa.tecnico.sirs.api.exceptions.CitizenException;
 import pt.ulisboa.tecnico.sirs.interfaces.DataObjectCreation;
 
@@ -99,14 +98,14 @@ public class CitizensController {
         if (subject != null) {
             if(subject.getCitizenId().equals(citizenId)) {
                 model.put("profile", subject);
-                List<MedicalRecord> records = service.getMedicalRecordsByCitizenId(subject, subject.getCitizenId());
+                List<SignedMedicalRecord> records = service.getMedicalRecordsByCitizenId(subject, subject.getCitizenId());
                 model.put("records", records);
                 return "profile";
             }
             Citizen profile = service.getCitizen(subject, citizenId);
             if(profile != null) {
                 model.put("profile", profile);
-                List<MedicalRecord> records = service.getMedicalRecordsByCitizenId(subject, profile.getCitizenId());
+                List<SignedMedicalRecord> records = service.getMedicalRecordsByCitizenId(subject, profile.getCitizenId());
                 model.put("records", records);
                 return (records != null)? "profile" : "404";
             }
