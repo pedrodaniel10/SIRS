@@ -15,6 +15,7 @@ import pt.ulisboa.tecnico.sirs.api.utils.KeyUtils;
 public class SignedMedicalRecord {
 	private MedicalRecord medicalRecord;
 	private byte[] recordSignature;
+	private boolean isVerified;
 	
 	public SignedMedicalRecord() {
 		this.medicalRecord = new MedicalRecord();
@@ -41,7 +42,7 @@ public class SignedMedicalRecord {
 		this.recordSignature = recordSignature;
 	}
 	
-	public boolean verifySignature() throws InvalidKeyException, SignatureException, NoSuchAlgorithmException, 
+	public void verifySignature() throws InvalidKeyException, SignatureException, NoSuchAlgorithmException, 
 	IOException, KeyStoreException, CertificateException, UnrecoverableEntryException {
 		
 		RSAPublicKey publicKey = (RSAPublicKey) KeyUtils.getKeyPair(this.medicalRecord.getDoctorCitizenId()).getPublic();
@@ -55,7 +56,12 @@ public class SignedMedicalRecord {
 		signature.initVerify(publicKey);
 		signature.update(objBytes);
 
-		return signature.verify(sigBytes);
+		this.isVerified = signature.verify(sigBytes);
+	}
+	
+
+	public boolean isVerified() {
+		return isVerified;
 	}
 	
 }

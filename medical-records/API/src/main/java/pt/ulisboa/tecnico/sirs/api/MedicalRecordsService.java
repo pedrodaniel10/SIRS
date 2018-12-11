@@ -36,9 +36,9 @@ public interface MedicalRecordsService {
     List<DocPatRelation> addAppointment(Citizen subject, DocPatRelation appointmentToAdd);
     List<DocPatRelation> deleteAppointment(Citizen subject, int appointmentId);
 
-    MedicalRecord getMedicalRecord(Citizen subject, String citizenId, String idMedRec);
+    SignedMedicalRecord getMedicalRecord(Citizen subject, String citizenId, String idMedRec);
     Boolean getAddMedicalRecordPage(Citizen subject, String citizenId);
-    List<MedicalRecord> getMedicalRecordsByCitizenId(Citizen subject, String citizenId);
+    List<SignedMedicalRecord> getMedicalRecordsByCitizenId(Citizen subject, String citizenId);
 
     List<Citizen> getPatients(Citizen subject);
 }

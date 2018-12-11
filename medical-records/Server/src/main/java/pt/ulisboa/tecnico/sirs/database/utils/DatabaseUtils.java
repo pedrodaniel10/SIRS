@@ -282,7 +282,9 @@ public class DatabaseUtils {
 		setAdminInstitutionId(conn, institution.getAdminCitizenId(), institution.getInstitutionId());
 	}
 	
-	public static SignedMedicalRecord getMedicalRecordById(Connection conn, int recordId) throws SQLException {
+	public static SignedMedicalRecord getMedicalRecordById(Connection conn, int recordId) throws SQLException, 
+	InvalidKeyException, SignatureException, NoSuchAlgorithmException, KeyStoreException, CertificateException, 
+	UnrecoverableEntryException, IOException {
 		SignedMedicalRecord signedMedicalRecord = new SignedMedicalRecord();
 		
 		try (PreparedStatement statement = conn.prepareStatement(
@@ -302,6 +304,7 @@ public class DatabaseUtils {
 					signedMedicalRecord.getMedicalRecord().setInstitutionId(rs.getInt("institution_id"));
 					signedMedicalRecord.getMedicalRecord().getReportInfo().setGeneralReport(rs.getString("general_report"));
 					signedMedicalRecord.setRecordSignature(rs.getBytes("record_signature"));
+					signedMedicalRecord.verifySignature();
 				}
 			}
 		}
@@ -309,7 +312,8 @@ public class DatabaseUtils {
 	}
 	
 	public static List<SignedMedicalRecord> getMedicalRecordsByPatientCitizenId(Connection conn, String citizenId) 
-			throws SQLException {
+			throws SQLException, InvalidKeyException, SignatureException, NoSuchAlgorithmException, 
+			KeyStoreException, CertificateException, UnrecoverableEntryException, IOException {
 		List<SignedMedicalRecord> signedMedicalRecords = new ArrayList<>();
 		try (PreparedStatement statement = conn.prepareStatement(
 				Queries.GET_MEDICAL_RECORDS_BY_PATIENT_CITIZEN_ID_QUERY)) {
@@ -329,6 +333,7 @@ public class DatabaseUtils {
 					signedMedicalRecord.getMedicalRecord().setInstitutionId(rs.getInt("institution_id"));
 					signedMedicalRecord.getMedicalRecord().getReportInfo().setGeneralReport(rs.getString("general_report"));
 					signedMedicalRecord.setRecordSignature(rs.getBytes("record_signature"));
+					signedMedicalRecord.verifySignature();
 					
 					signedMedicalRecords.add(signedMedicalRecord);
 				}

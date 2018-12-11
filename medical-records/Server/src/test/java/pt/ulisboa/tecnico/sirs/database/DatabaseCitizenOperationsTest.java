@@ -136,7 +136,7 @@ public class DatabaseCitizenOperationsTest {
 		
 		DatabaseUtils.addMedicalRecord(conn, mr);
 		List<SignedMedicalRecord> records = DatabaseUtils.getMedicalRecordsByPatientCitizenId(conn, mr.getPatientCitizenId());
-		assertTrue(records.get(0).verifySignature());
+		assertTrue(records.get(0).isVerified());
 		
 		mr.getReportInfo().setHaemoglobin(10);
 		DatabaseUtils.updateMedicalRecord(conn, mr);
