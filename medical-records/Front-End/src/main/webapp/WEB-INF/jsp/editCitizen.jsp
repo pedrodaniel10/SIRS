@@ -43,6 +43,9 @@
                         </div>
                     </div>
                     <div class="ibox-content">
+                        <div style="color: red">
+                            <b><p>${error}</p></b>
+                        </div>
                         <form:form method="POST" class="form-horizontal" modelAttribute="citizenToEdit">
                             <div class="form-group">
                                 <label path="roles" class="col-sm-2 control-label">Roles:</label>&nbsp;&nbsp;

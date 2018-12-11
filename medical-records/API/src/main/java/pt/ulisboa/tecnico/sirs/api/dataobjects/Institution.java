@@ -12,6 +12,15 @@ public class Institution implements Serializable {
 
     public 	Institution() {}
 
+    public Institution(boolean dataobject) {
+        this.institutionId = 0;
+        this.institutionName = "";
+        this.institutionAddress = "";
+        this.profilePic = "";
+        this.superuserCitizenId = "";
+        this.adminCitizenId = "";
+    }
+
     public Institution(int institutionId, String institutionName, String institutionAddress, String profilePic,
                        String superuserCitizenId) {
         this.institutionId = institutionId;

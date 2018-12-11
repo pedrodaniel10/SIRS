@@ -3,6 +3,7 @@ package pt.ulisboa.tecnico.sirs.server;
 import org.apache.log4j.Logger;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
+import pt.ulisboa.tecnico.sirs.api.exceptions.AdminException;
 import pt.ulisboa.tecnico.sirs.api.exceptions.CitizenException;
 import pt.ulisboa.tecnico.sirs.database.DatabaseConnector;
 import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
@@ -102,11 +103,11 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     @Override
     public List<Citizen> addCitizen(Citizen subject, Citizen citizenToAdd) throws CitizenException {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "create", "citizensPage", ""/*citizenToAdd.getCitizenId()*/);
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "citizensPage", citizenToAdd.getCitizenId());
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                if (citizenToAdd != null) DatabaseUtils.addCitizen(connection, citizenToAdd);
+                DatabaseUtils.addCitizen(connection, citizenToAdd);
                 return DatabaseUtils.getAllCitizens(connection);
             } catch (DatabaseConnectionException e) {
                 log.error(e.getMessage());
@@ -128,7 +129,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                if (citizenToEdit!=null)
+                if (citizenToEdit != null)
                     return DatabaseUtils.getCitizenById(connection, citizenToEdit);
             } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());
@@ -144,11 +145,9 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                if (citizenToEdit != null) {
-                    citizenToEdit.setCitizenId(citizenId);
-                    citizenToEdit.addRole(Citizen.Role.PATIENT);
-                    DatabaseUtils.updateCitizen(connection, citizenToEdit);
-                }
+                citizenToEdit.setCitizenId(citizenId);
+                citizenToEdit.addRole(Citizen.Role.PATIENT);
+                DatabaseUtils.updateCitizen(connection, citizenToEdit);
                 return DatabaseUtils.getAllCitizens(connection);
             } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());
@@ -200,13 +199,16 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public List<Institution> addInstitution(Citizen subject, Institution institutionToAdd) {
+    public List<Institution> addInstitution(Citizen subject, Institution institutionToAdd) throws AdminException {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "create", "institutionsPage", ""/*institutionToAdd.getInstitutionId()*/);
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "institutionsPage", Integer.toString(institutionToAdd.getInstitutionId()));
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                if (institutionToAdd != null) DatabaseUtils.addInstitution(connection, institutionToAdd);
+                Admin admin = DatabaseUtils.getAdminByCitizenId(connection, institutionToAdd.getAdminCitizenId());
+                if (admin == null)
+                    throw new AdminException("Citizen ID " + institutionToAdd.getAdminCitizenId() + " is not an admin");
+                DatabaseUtils.addInstitution(connection, institutionToAdd);
                 return DatabaseUtils.getAllInstitutions(connection);
             } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());
@@ -232,13 +234,17 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public List<Institution> editInstitution(Citizen subject, Institution institutionToEdit) {
+    public List<Institution> editInstitution(Citizen subject, int institutionId, Institution institutionToEdit) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "institutionsPage", ""/*institutionToEdit.getInstitutionId()*/);
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "institutionsPage", Integer.toString(institutionToEdit.getInstitutionId()));
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                if (institutionToEdit != null) DatabaseUtils.updateInstitution(connection, institutionToEdit);
+                if (institutionToEdit != null) {
+                    institutionToEdit.setInstitutionId(institutionId);
+                    DatabaseUtils.updateInstitution(connection, institutionToEdit);
+
+                }
                 return DatabaseUtils.getAllInstitutions(connection);
             } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());

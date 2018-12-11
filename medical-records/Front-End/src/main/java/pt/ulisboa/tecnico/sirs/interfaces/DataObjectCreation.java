@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.sirs.interfaces;
 
 import org.apache.log4j.Logger;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.Institution;
 
 public class DataObjectCreation {
 
@@ -12,5 +13,13 @@ public class DataObjectCreation {
         return new Citizen(citizen.getCitizenId(), citizen.getCitizenName(), citizen.getGender(),
                 citizen.getDateOfBirth(), citizen.getEmail(), citizen.getPassword(), citizen.getProfilePic(),
                 superuserCitizenId, citizen.getRoles());
-        }
+    }
+
+    public static Institution createInstitution(Institution institution, String superuserCitizenId) {
+        Institution newInstitution = new Institution(0, institution.getInstitutionName(), institution.getInstitutionAddress(),
+                institution.getProfilePic(), superuserCitizenId);
+        newInstitution.setAdminCitizenId(institution.getAdminCitizenId());
+        return newInstitution;
+    }
+
 }

@@ -1,6 +1,7 @@
 package pt.ulisboa.tecnico.sirs.api;
 
 import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
+import pt.ulisboa.tecnico.sirs.api.exceptions.AdminException;
 import pt.ulisboa.tecnico.sirs.api.exceptions.CitizenException;
 
 import java.util.List;
@@ -22,9 +23,9 @@ public interface MedicalRecordsService {
     Institution getInstitution(Citizen subject, int institutionId);
     List<Institution> getInstitutions(Citizen subject);
     Boolean getAddInstitutionsPage(Citizen subject);
-    List<Institution> addInstitution(Citizen subject, Institution institutionToAdd);
+    List<Institution> addInstitution(Citizen subject, Institution institutionToAdd) throws AdminException;
     Institution getEditInstitutionPage(Citizen subject, int institutionToEdit);
-    List<Institution> editInstitution(Citizen subject, Institution institutionToEdit);
+    List<Institution> editInstitution(Citizen subject, int institutionId, Institution institutionToEdit);
 
     Doctor getDoctor(Citizen subject, String doctorCitizenId);
     List<Doctor> getDoctors(Citizen subject);
