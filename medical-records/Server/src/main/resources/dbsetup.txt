@@ -89,7 +89,7 @@ CREATE TABLE medical_records (
     blood_pressure INT,
     sugar INT,
     haemoglobin INT,
-    creation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    creation_date DATETIME NOT NULL,
     doctor_citizen_id VARCHAR(10) NOT NULL,
     treatment VARCHAR(255) NOT NULL,
     patient_citizen_id VARCHAR(10) NOT NULL,

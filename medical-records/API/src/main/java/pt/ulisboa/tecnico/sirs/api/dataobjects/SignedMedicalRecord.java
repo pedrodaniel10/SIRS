@@ -1,8 +1,6 @@
 package pt.ulisboa.tecnico.sirs.api.dataobjects;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -48,11 +46,10 @@ public class SignedMedicalRecord {
 		
 		RSAPublicKey publicKey = (RSAPublicKey) KeyUtils.getKeyPair(this.medicalRecord.getDoctorCitizenId()).getPublic();
 		
-		byte[] objBytes = convertToByteArray(this.medicalRecord);
+		byte[] objBytes = this.getMedicalRecord().toString().getBytes();
 		byte[] sigBytes = this.recordSignature;
 		
-		System.out.println("Object array len: " + objBytes.length);
-		System.out.println("Signature array len: " + sigBytes.length);
+		System.out.println("After: " + this.getMedicalRecord().toString());
 		
 		Signature signature = Signature.getInstance("SHA256withRSA");
 		signature.initVerify(publicKey);
@@ -60,17 +57,5 @@ public class SignedMedicalRecord {
 
 		return signature.verify(sigBytes);
 	}
-
-	private byte[] convertToByteArray(Object obj) throws IOException {
-		byte[] objBytes;
-		try(ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream()){
-            try(ObjectOutputStream objectOutStream = new ObjectOutputStream(byteOutStream)){
-            	objectOutStream.writeObject(obj);
-            }
-            objBytes = byteOutStream.toByteArray();
-        }
-		return objBytes;
-	}
-	
 	
 }

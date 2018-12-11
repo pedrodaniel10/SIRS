@@ -286,32 +286,24 @@ public class DatabaseUtils {
 		SignedMedicalRecord signedMedicalRecord = medicalRecord.getSignedMedicalRecord();
 		
 		try (PreparedStatement statement = conn.prepareStatement(query)) {
-			
-			setRecordData(statement, signedMedicalRecord.getMedicalRecord().getReportInfo().getHeartBeat(), 1);
-			setRecordData(statement, signedMedicalRecord.getMedicalRecord().getReportInfo().getBloodPressure(), 2);
-			setRecordData(statement, signedMedicalRecord.getMedicalRecord().getReportInfo().getSugar(), 3);
-			setRecordData(statement, signedMedicalRecord.getMedicalRecord().getReportInfo().getHaemoglobin(), 4);
-			statement.setString(5, signedMedicalRecord.getMedicalRecord().getDoctorCitizenId());
-			statement.setString(6, signedMedicalRecord.getMedicalRecord().getReportInfo().getTreatment());
-			statement.setString(7, signedMedicalRecord.getMedicalRecord().getPatientCitizenId());
-			statement.setInt(8, signedMedicalRecord.getMedicalRecord().getInstitutionId());
-			statement.setString(9, signedMedicalRecord.getMedicalRecord().getReportInfo().getGeneralReport());
-			statement.setBytes(10, signedMedicalRecord.getRecordSignature());
+			statement.setInt(1, signedMedicalRecord.getMedicalRecord().getReportInfo().getHeartBeat());
+			statement.setInt(2, signedMedicalRecord.getMedicalRecord().getReportInfo().getBloodPressure());
+			statement.setInt(3, signedMedicalRecord.getMedicalRecord().getReportInfo().getSugar());
+			statement.setInt(4, signedMedicalRecord.getMedicalRecord().getReportInfo().getHaemoglobin());
+			statement.setTimestamp(5, signedMedicalRecord.getMedicalRecord().getCreationDate());
+			statement.setString(6, signedMedicalRecord.getMedicalRecord().getDoctorCitizenId());
+			statement.setString(7, signedMedicalRecord.getMedicalRecord().getReportInfo().getTreatment());
+			statement.setString(8, signedMedicalRecord.getMedicalRecord().getPatientCitizenId());
+			statement.setInt(9, signedMedicalRecord.getMedicalRecord().getInstitutionId());
+			statement.setString(10, signedMedicalRecord.getMedicalRecord().getReportInfo().getGeneralReport());
+			statement.setBytes(11, signedMedicalRecord.getRecordSignature());
 			try {
-				statement.setInt(11, signedMedicalRecord.getMedicalRecord().getRecordId());
+				statement.setInt(12, signedMedicalRecord.getMedicalRecord().getRecordId());
 			} catch (SQLException e) {
 				//do nothing (this means it's an add operation)
 			}
 			
 			statement.executeUpdate();
-		}
-	}
-
-	private static void setRecordData(PreparedStatement statement, int recordData, int index) throws SQLException {
-		if (recordData <= 200 && recordData > 0) {
-			statement.setInt(index, recordData);
-		} else {
-			statement.setInt(index, 0);
 		}
 	}
 	

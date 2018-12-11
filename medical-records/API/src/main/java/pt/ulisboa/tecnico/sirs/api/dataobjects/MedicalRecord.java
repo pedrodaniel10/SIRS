@@ -1,8 +1,6 @@
 package pt.ulisboa.tecnico.sirs.api.dataobjects;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
@@ -29,10 +27,11 @@ public class MedicalRecord implements Serializable {
 		this.reportInfo = new ReportInfo();
 	}
 	
-	public MedicalRecord(int recordId, Timestamp creationDate, String doctorCitizenId, String patientCitizenId, 
+	public MedicalRecord(int recordId, String doctorCitizenId, String patientCitizenId, 
 			int institutionId, ReportInfo reportInfo) {
+		this.creationDate = new Timestamp(System.currentTimeMillis());
+		this.creationDate.setNanos(0);
 		this.recordId = recordId;
-		this.creationDate = creationDate;
 		this.doctorCitizenId = doctorCitizenId;
 		this.patientCitizenId = patientCitizenId;
 		this.institutionId = institutionId;
@@ -87,18 +86,21 @@ public class MedicalRecord implements Serializable {
 		this.reportInfo = reportInfo;
 	}
 	
+	@Override
+	public String toString() {
+		return "MedicalRecord [creationDate=" + creationDate + ", doctorCitizenId="
+				+ doctorCitizenId + ", patientCitizenId=" + patientCitizenId + ", institutionId=" + institutionId
+				+ ", reportInfo=" + reportInfo + "]";
+	}
+
 	public SignedMedicalRecord getSignedMedicalRecord() throws NoSuchAlgorithmException, InvalidKeyException, 
 	IOException, SignatureException, KeyStoreException, CertificateException, UnrecoverableEntryException {
 		
 		RSAPrivateKey privateKey = (RSAPrivateKey) KeyUtils.getKeyPair(this.doctorCitizenId).getPrivate();
 		
-		byte[] objBytes;
-		try(ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream()){
-            try(ObjectOutputStream objectOutStream = new ObjectOutputStream(byteOutStream)){
-            	objectOutStream.writeObject(this);
-            }
-            objBytes = byteOutStream.toByteArray();
-        }
+		byte[] objBytes = this.toString().getBytes();
+		
+		System.out.println("Before: " + this.toString());
 		
 		Signature signature = Signature.getInstance("SHA256withRSA");
 		signature.initSign(privateKey);

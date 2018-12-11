@@ -54,11 +54,11 @@ public class Queries {
 			+ "WHERE patient_citizen_id=?";
 	
 	public static final String ADD_MEDICAL_RECORD_QUERY = "INSERT  INTO  medical_records(heart_beat,blood_pressure,sugar,"
-			+ "haemoglobin,doctor_citizen_id,treatment,patient_citizen_id,institution_id,general_report,record_signature) "
-			+ "VALUES  (?,?,?,?,?,?,?,?,?,?)";
+			+ "haemoglobin,creation_date,doctor_citizen_id,treatment,patient_citizen_id,institution_id,general_report,record_signature) "
+			+ "VALUES  (?,?,?,?,?,?,?,?,?,?,?)";
 	
 	public static final String UPDATE_MEDICAL_RECORD_QUERY = "UPDATE medical_records SET heart_beat=?,blood_pressure=?,"
-			+ "sugar=?,haemoglobin=?,doctor_citizen_id=?,treatment=?,patient_citizen_id=?,institution_id=?,general_report=?,"
+			+ "sugar=?,haemoglobin=?,creation_date=?,doctor_citizen_id=?,treatment=?,patient_citizen_id=?,institution_id=?,general_report=?,"
 			+ "record_signature=? WHERE record_id=?";
 
 	public static final String GET_ALL_DOC_PAT_RELATIONS_QUERY = "SELECT * FROM doc_pat_relations";

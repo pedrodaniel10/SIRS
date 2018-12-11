@@ -129,7 +129,7 @@ public class DatabaseCitizenOperationsTest {
 		DatabaseUtils.setAdminInstitutionId(conn, c1.getCitizenId(), 1);
 		DatabaseUtils.setDoctorInstitutionId(conn, c1.getCitizenId(), 1, c1.getCitizenId());
 		ReportInfo ri = new ReportInfo(-1,-1,-1,-1,"heh","hah");
-		MedicalRecord mr = new MedicalRecord(0, Timestamp.valueOf("1922-11-1 22:22:22"),
+		MedicalRecord mr = new MedicalRecord(0,
 				c1.getCitizenId(), c1.getCitizenId(), 1, ri);
 		
 		DatabaseUtils.addMedicalRecord(conn, mr);

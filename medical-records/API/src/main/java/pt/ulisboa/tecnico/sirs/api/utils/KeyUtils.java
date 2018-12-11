@@ -29,10 +29,10 @@ public class KeyUtils {
 		String pwd = getPwd();
 		String keyStoreFile = KEYSTORE_FILE_PATH + KEYSTORE_FILE_NAME;
 		
-		Runtime.getRuntime().exec("keytool -genkeypair -alias " + citizenId + " -keystore " + keyStoreFile
+		Process p = Runtime.getRuntime().exec("keytool -genkeypair -alias " + citizenId + " -keystore " + keyStoreFile
 				+ " -storepass " + pwd + " -validity 365 -keysize 2048 -sigalg SHA256withRSA -keyalg RSA -dname "
-				+ "CN=" + citizenId + " -noprompt -keypass " + pwd + " -ext bc:c=ca:false -storetype pkcs12")
-				.waitFor();
+				+ "CN=" + citizenId + " -noprompt -keypass " + pwd + " -ext bc:c=ca:false -storetype pkcs12");
+		p.waitFor();
 	}
 
 	private static KeyStore getKeystore(String pwd) throws KeyStoreException, IOException, NoSuchAlgorithmException,
