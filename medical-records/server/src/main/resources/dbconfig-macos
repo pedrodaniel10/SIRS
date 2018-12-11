@@ -1,3 +1,4 @@
+[mysqld]
 # File Key Management
 plugin_load_add = file_key_management.so
 file_key_management_filename = /usr/local/var/mysql/keys.enc

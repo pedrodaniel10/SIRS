@@ -1,0 +1,14 @@
+pt\ulisboa\tecnico\sirs\api\dataobjects\ReportInfo.class
+pt\ulisboa\tecnico\sirs\api\dataobjects\Citizen$Role.class
+pt\ulisboa\tecnico\sirs\api\dataobjects\Citizen.class
+pt\ulisboa\tecnico\sirs\api\dataobjects\Session.class
+pt\ulisboa\tecnico\sirs\api\dataobjects\Superuser.class
+pt\ulisboa\tecnico\sirs\api\dataobjects\Admin.class
+pt\ulisboa\tecnico\sirs\api\dataobjects\DocPatRelation.class
+pt\ulisboa\tecnico\sirs\api\dataobjects\Patient.class
+pt\ulisboa\tecnico\sirs\api\MedicalRecordsService.class
+pt\ulisboa\tecnico\sirs\api\dataobjects\Doctor.class
+pt\ulisboa\tecnico\sirs\api\dataobjects\MedicalRecord.class
+pt\ulisboa\tecnico\sirs\api\dataobjects\ServiceUtils.class
+pt\ulisboa\tecnico\sirs\api\dataobjects\Institution.class
+pt\ulisboa\tecnico\sirs\api\dataobjects\Citizen$Gender.class

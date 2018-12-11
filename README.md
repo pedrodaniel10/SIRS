@@ -61,7 +61,7 @@ properties **_server.http.port_** and **_server.port_** respectively.
 ### Windows 10:
 
 - Copy the files ***medical-records/server/src/main/resources/keys.enc*** and ***medical-records/server/src/main/resources/.key*** 
-to mysql config folder (usually **C:\Program Files\MariaDB X.X\data\**, where config file is located)
+to mysql config folder (usually ***C:\Program Files\MariaDB X.X\data\\***, where config file is located)
 
 - Copy ***dbconfig-windows*** file contents to mysql config file (usually **C:\Program Files\MariaDB X.X\data\my.ini**)
 
