@@ -16,8 +16,6 @@ import pt.ulisboa.tecnico.sirs.api.dataobjects.SignedMedicalRecord;
 import pt.ulisboa.tecnico.sirs.api.exceptions.CitizenException;
 import pt.ulisboa.tecnico.sirs.interfaces.DataObjectCreation;
 
-import javax.validation.Valid;
-
 @Controller
 public class CitizensController {
 
