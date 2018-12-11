@@ -1,14 +1,17 @@
 package pt.ulisboa.tecnico.sirs.api.dataobjects;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class DocPatRelation {
+public class DocPatRelation implements Serializable {
 	private int docPatRelationId;
 	private Date beginDate;
 	private Date endDate;
 	private String doctorCitizenId;
 	private String patientCitizenId;
 	private String adminCitizenId;
+	private Citizen doctor;
+	private Citizen patient;
 	
 	public DocPatRelation() {}
 
@@ -68,5 +71,21 @@ public class DocPatRelation {
 
 	public void setAdminCitizenId(String adminCitizenId) {
 		this.adminCitizenId = adminCitizenId;
+	}
+
+	public Citizen getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Citizen doctor) {
+		this.doctor = doctor;
+	}
+
+	public Citizen getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Citizen patient) {
+		this.patient = patient;
 	}
 }

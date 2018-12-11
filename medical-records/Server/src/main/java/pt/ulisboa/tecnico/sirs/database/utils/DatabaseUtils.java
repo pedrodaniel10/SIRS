@@ -189,9 +189,55 @@ public class DatabaseUtils {
 		}
 	}
 	
+	public static Institution getInstitutionById(Connection conn, int institutionId) throws SQLException {
+		Institution institution = new Institution();
+		try (PreparedStatement statement = conn.prepareStatement(Queries.GET_INSTITUTION_BY_ID_QUERY)) {
+			statement.setInt(1, institutionId);
+			try (ResultSet rs = statement.executeQuery()) {
+				if (rs.next()) {
+					institution.setInstitutionId(rs.getInt("institution_id"));
+					institution.setInstitutionName(rs.getString("institution_name"));
+					institution.setInstitutionAddress(rs.getString("institution_address"));
+					institution.setProfilePic(rs.getString("profile_pic"));
+					institution.setSuperuserCitizenId(rs.getString("superuser_citizen_id"));
+				}
+			}
+		}
+		institution.setAdminCitizenId(getAdminIdByInstitutionId(conn, institutionId));
+		return institution;
+	}
+	
+	private static String getAdminIdByInstitutionId(Connection conn, int institutionId) throws SQLException {
+		String adminCitizenId = null;
+		try (PreparedStatement statement = conn.prepareStatement(Queries.GET_ADMIN_ID_BY_INSTITUTION_ID_QUERY)) {
+			statement.setInt(1, institutionId);
+			try (ResultSet rs = statement.executeQuery()) {
+				if (rs.next()) {
+					adminCitizenId = rs.getString("citizen_id");
+				}
+			}
+		}
+		return adminCitizenId;
+	}
+	
+	public static Institution getInstitutionByDoctorId(Connection conn, String doctorCitizenId) throws SQLException {
+		List<Institution> institutions = getInstitutions(conn, Queries.GET_INSTITUTION_BY_DOCTOR_ID_QUERY, doctorCitizenId);
+		if (institutions.isEmpty()) {
+			return null;
+		}
+		return institutions.get(0);
+	}
+	
 	public static List<Institution> getAllInstitutions(Connection conn) throws SQLException {
+		return getInstitutions(conn, Queries.GET_ALL_INSTITUTIONS_QUERY, null);
+	}
+	
+	private static List<Institution> getInstitutions(Connection conn, String query, String id) throws SQLException {
 		List<Institution> institutions = new ArrayList<>();
-		try (PreparedStatement statement = conn.prepareStatement(Queries.GET_ALL_INSTITUTIONS_QUERY)) {
+		try (PreparedStatement statement = conn.prepareStatement(query)) {
+			if (id != null) {
+				statement.setString(1, id);
+			}
 			try (ResultSet rs = statement.executeQuery()) {
 				while (rs.next()) {
 					Institution institution = new Institution();
@@ -204,6 +250,9 @@ public class DatabaseUtils {
 					institutions.add(institution);
 				}
 			}
+		}
+		for (Institution institution : institutions) {
+			institution.setAdminCitizenId(getAdminIdByInstitutionId(conn, institution.getInstitutionId()));
 		}
 		return institutions;
 	}
@@ -230,6 +279,33 @@ public class DatabaseUtils {
 			
 			statement.executeUpdate();
 		}
+		setAdminInstitutionId(conn, institution.getAdminCitizenId(), institution.getInstitutionId());
+	}
+	
+	public static SignedMedicalRecord getMedicalRecordById(Connection conn, int recordId) throws SQLException {
+		SignedMedicalRecord signedMedicalRecord = new SignedMedicalRecord();
+		
+		try (PreparedStatement statement = conn.prepareStatement(
+				Queries.GET_MEDICAL_RECORDS_BY_ID_QUERY)) {
+			statement.setInt(1, recordId);
+			try (ResultSet rs = statement.executeQuery()) {
+				if (rs.next()) {
+					signedMedicalRecord.getMedicalRecord().setRecordId(rs.getInt("record_id"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setHeartBeat(rs.getInt("heart_beat"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setBloodPressure(rs.getInt("blood_pressure"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setSugar(rs.getInt("sugar"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setHaemoglobin(rs.getInt("haemoglobin"));
+					signedMedicalRecord.getMedicalRecord().setCreationDate(rs.getTimestamp("creation_date"));
+					signedMedicalRecord.getMedicalRecord().setDoctorCitizenId(rs.getString("doctor_citizen_id"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setTreatment(rs.getString("treatment"));
+					signedMedicalRecord.getMedicalRecord().setPatientCitizenId(rs.getString("patient_citizen_id"));
+					signedMedicalRecord.getMedicalRecord().setInstitutionId(rs.getInt("institution_id"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setGeneralReport(rs.getString("general_report"));
+					signedMedicalRecord.setRecordSignature(rs.getBytes("record_signature"));
+				}
+			}
+		}
+		return signedMedicalRecord;
 	}
 	
 	public static List<SignedMedicalRecord> getMedicalRecordsByPatientCitizenId(Connection conn, String citizenId) 
@@ -339,6 +415,12 @@ public class DatabaseUtils {
 				}
 			}
 		}
+		
+		for (DocPatRelation docPatRelation : docPatRelations) {
+			docPatRelation.setDoctor(getCitizenById(conn, docPatRelation.getDoctorCitizenId()));
+			docPatRelation.setPatient(getCitizenById(conn, docPatRelation.getPatientCitizenId()));
+		}
+		
 		return docPatRelations;
 	}
 	
@@ -395,10 +477,11 @@ public class DatabaseUtils {
 				}
 			}
 		}
+		for (Doctor doctor : doctors) {
+			doctor.setCitizen(getCitizenById(conn, doctor.getCitizenId()));
+		}
 		return doctors;
 	}
-	
-	//TODO: return list of DoctorCitizenData
 	
 	public static void setDoctorInstitutionId(Connection conn, String doctorCitizenId, int institutionId, String adminCitizenId) 
 			throws SQLException {
@@ -446,7 +529,41 @@ public class DatabaseUtils {
 				}
 			}
 		}
+		for (Patient patient : patients) {
+			patient.setCitizen(getCitizenById(conn, patient.getCitizenId()));
+		}
 		return patients;
+	}
+	
+	public static Admin getAdminByCitizenId(Connection conn, String adminCitizenId) throws SQLException {
+		List<Admin> admins = getAdmins(conn, Queries.GET_ADMIN_BY_ID_QUERY, adminCitizenId);
+		if (admins.isEmpty()) {
+			return null;
+		}
+		return admins.get(0);
+	}
+	
+	private static List<Admin> getAdmins(Connection conn, String query, String id) throws SQLException {
+		List<Admin> admins = new ArrayList<>();
+		try (PreparedStatement statement = conn.prepareStatement(query)) {
+			statement.setString(1, id);
+			try (ResultSet rs = statement.executeQuery()) {
+				while (rs.next()) {
+					Admin admin = new Admin();
+					admin.setAdminId(rs.getInt("admin_id"));
+					admin.setCitizenId(rs.getString("citizen_id"));
+					admin.setInstitutionId(rs.getInt("institution_id"));
+					admin.setSuperuserCitizenId(rs.getString("superuser_citizen_id"));
+					
+					admins.add(admin);
+				}
+			}
+		}
+		
+		for (Admin admin : admins) {
+			admin.setCitizen(getCitizenById(conn, admin.getCitizenId()));
+		}
+		return admins;
 	}
 	
 	public static void setAdminInstitutionId(Connection conn, String adminCitizenId, int institutionId) 

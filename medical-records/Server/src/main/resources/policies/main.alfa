@@ -122,6 +122,7 @@ import Attributes.*
 					/* RULE: SuperUser can view Citizens */
 					rule SuperUserCanViewCitizens {
 						target clause Attributes.actionId == "view"
+						and Attributes.resourceId == ""
 						permit
 					}
 					
@@ -130,11 +131,37 @@ import Attributes.*
 						target clause Attributes.actionId == "create"
 						permit
 					}
+					
+					/* RULE: SuperUser can edit Citizens */
+					rule SuperUserCanEditCitizens {
+						target clause Attributes.actionId == "edit"
+						permit
+					}
 	
 					/* RULE: SuperUser cannot perform other actions in the citizens page */
 	                rule SuperUserCannotPerformOtherActions {
 	                    deny
 	                }
+				}
+				
+				/* Doctor actions */
+				policy DoctorActions {
+					target clause Attributes.subjectRole == "DOCTOR"
+					apply firstApplicable
+					
+					/* RULE: Doctor cannot view citizens */
+					rule DoctorCannotViewCitizens {
+						target clause Attributes.actionId == "view"
+						and Attributes.resourceId == ""
+						deny
+					}
+					
+					/* RULE: Doctor can view his patients */
+					rule DoctorCanViewPatients {
+						target clause Attributes.actionId == "view"
+						and attributes.validRelation == true
+						permit
+					}
 				}
 				
 				/* Others actions */
@@ -198,6 +225,56 @@ import Attributes.*
 				}
 			}
 		}
+
+		/* Resource: appointmentsPage */
+        		policyset appointmentsPage {
+        			target clause Attributes.resourceName == "appointmentsPage"
+        			apply firstApplicable
+
+        			/* Actions*/
+        			policyset ActionsAppointments {
+        				apply firstApplicable
+
+        				/* Admin actions */
+        				policy AdminActions {
+        					target clause Attributes.subjectRole == "ADMIN"
+        					apply firstApplicable
+
+        					/* RULE: Admin can view appointments */
+        					rule AdminCanViewAppointments {
+        						target clause Attributes.actionId == "view"
+        						permit
+        					}
+
+        					/* RULE: Admin can add appointments */
+        					rule AdminCanAddAppointments {
+        						target clause Attributes.actionId == "create"
+        						permit
+        					}
+
+        					/* RULE: Admin can edit Appointments (delete) */
+        					rule AdminCanEditAppointments {
+        						target clause Attributes.actionId == "edit"
+        						permit
+        					}
+
+        					/* RULE: Admin cannot perform other actions in the Appointments page */
+        	                rule AdminCannotPerformOtherActions {
+        	                    deny
+        	                }
+        				}
+
+        				/* Others actions */
+        				policy OthersActions {
+        					apply firstApplicable
+
+        					/* RULE: No one can perform other actions in the Appointments page (except ADMIN)*/
+        	                rule NoOneCanPerformActions {
+        	                    deny
+        	                }
+        				}
+        			}
+        		}
 		
 		/* Resource: patientsPage */
 		policyset patientsPage {

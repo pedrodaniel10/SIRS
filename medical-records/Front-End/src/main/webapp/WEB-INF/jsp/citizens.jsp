@@ -56,7 +56,18 @@
                                         <td class="center"><img src=${citizen.profilePic} class="img-circle" style="width:50px;height:50px;"\></td>
                                         <td class="center">
                                             <c:forEach var="role" items="${citizen.roles}">
-                                            <span class="badge badge-success">${role.name()}</span>
+                                                <c:if test="${role.name().equals(\"SUPERUSER\")}">
+                                                    <span class="badge badge-danger">${role.name()}</span><br>
+                                                </c:if>
+                                                <c:if test="${role.name().equals(\"ADMIN\")}">
+                                                    <span class="badge badge-warning-light">${role.name()}</span><br>
+                                                </c:if>
+                                                <c:if test="${role.name().equals(\"DOCTOR\")}">
+                                                    <span class="badge badge-success">${role.name()}</span><br>
+                                                </c:if>
+                                                <c:if test="${role.name().equals(\"PATIENT\")}">
+                                                    <span class="badge badge-secondary">${role.name()}</span><br>
+                                                </c:if>
                                             </c:forEach>
                                         </td>
                                         <td class="center">${citizen.citizenId}</td>

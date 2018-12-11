@@ -1,11 +1,13 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 
 <html lang="en">
 <tags:header title="Patients"/>
 
 <body>
-<tags:citizen name="David Williams" image="/img/david_williams.jpg" citizenId="20" doctor="true">
+<tags:citizen citizen="${citizen}">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
             <h2>Patients</h2>
@@ -47,6 +49,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <c:forEach var="citizen" items="${citizens}">
                                 <tr>
                                     <td class="center"><img src="/img/david_williams.jpg" class="img-circle" style="width:50px;height:50px;"\></td>
                                     <td class="center">24786562</td>
@@ -60,6 +63,7 @@
                                         </a>
                                     </td>
                                 </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>

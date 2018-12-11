@@ -32,14 +32,14 @@ public class TestCitizensRequest {
 	}
 
 	@Test
-	public void superUserCannotDeleteCitizens() {
+	public void superUserCanEditCitizens() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
 		ArrayList<String> roles = new ArrayList<>();
 		roles.add("SUPERUSER");
 		boolean result = policyEnforcementPoint.requestEvaluation("",
 				roles, "edit", "citizensPage", "");
-		assertFalse(result);
+		assertTrue(result);
 	}
 
 	@Test

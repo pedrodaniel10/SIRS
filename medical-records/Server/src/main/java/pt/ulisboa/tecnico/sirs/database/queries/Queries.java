@@ -53,6 +53,9 @@ public class Queries {
 	public static final String GET_MEDICAL_RECORDS_BY_PATIENT_CITIZEN_ID_QUERY = "SELECT * FROM medical_records "
 			+ "WHERE patient_citizen_id=?";
 	
+	public static final String GET_MEDICAL_RECORDS_BY_ID_QUERY = "SELECT * FROM medical_records "
+			+ "WHERE record_id=?";
+	
 	public static final String ADD_MEDICAL_RECORD_QUERY = "INSERT  INTO  medical_records(heart_beat,blood_pressure,sugar,"
 			+ "haemoglobin,creation_date,doctor_citizen_id,treatment,patient_citizen_id,institution_id,general_report,record_signature) "
 			+ "VALUES  (?,?,?,?,?,?,?,?,?,?,?)";
@@ -108,4 +111,16 @@ public class Queries {
 
 	public static final String GET_DOCTORS_BY_ADMIN_ID_QUERY = "SELECT * FROM doctors WHERE institution_id IN "
 			+ "(SELECT institution_id FROM admins WHERE citizen_id=?)";
+
+	public static final String GET_INSTITUTION_BY_ID_QUERY = "SELECT * FROM institutions WHERE institution_id=?";
+
+	public static final String GET_INSTITUTION_BY_DOCTOR_ID_QUERY = "SELECT * FROM institutions WHERE institution_id IN "
+			+ "(SELECT institution_id FROM doctors WHERE citizen_id=?)";
+
+	public static final String GET_ADMIN_BY_ID_QUERY = "SELECT * FROM admins WHERE citizen_id=?";
+
+	public static final String GET_ADMIN_BY_INSTITUTION_ID_QUERY = "SELECT * FROM admins WHERE institution_id=?";
+
+	public static final String GET_ADMIN_ID_BY_INSTITUTION_ID_QUERY = "SELECT citizen_id FROM admins WHERE institution_id=?";
+	
 }

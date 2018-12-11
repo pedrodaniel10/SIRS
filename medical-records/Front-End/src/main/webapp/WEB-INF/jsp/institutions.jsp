@@ -56,11 +56,8 @@
                                     <td class="center">${institution.institutionName}</td>
                                     <td class="center">${institution.institutionAddress}</td>
                                     <td class="center">
-                                        <a href="/institutions/20/edit" class="btn btn-success btn-circle" type="button">
+                                        <a href="/institutions/${institution.institutionId}/edit" class="btn btn-success btn-circle" type="button">
                                             <i class="fa fa-pencil"></i>
-                                        </a>
-                                        <a href="/institutions/20/delete" class="btn btn-danger btn-circle" type="button">
-                                            <i class="fa fa-trash-o"></i>
                                         </a>
                                     </td>
                                 </tr>

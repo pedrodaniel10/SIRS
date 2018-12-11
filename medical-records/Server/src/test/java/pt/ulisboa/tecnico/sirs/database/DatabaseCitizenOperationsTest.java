@@ -33,8 +33,10 @@ public class DatabaseCitizenOperationsTest {
 	private Citizen c1;
 	
 	@Before
-	public void setup() throws DatabaseConnectionException {
-		this.conn = (new DatabaseConnector()).getConnection();
+	public void setup() throws DatabaseConnectionException, IOException, SQLException {
+		DatabaseConnector dbConnector = new DatabaseConnector();
+		dbConnector.setupTables();
+		this.conn = dbConnector.getConnection();
 		this.c1 = new Citizen("test_id", "paulo", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt",
 				"jálhedigo", "path", "super", new ArrayList<>());
 	}
@@ -149,7 +151,10 @@ public class DatabaseCitizenOperationsTest {
 		DatabaseUtils.updateSession(conn, session);
 		DatabaseUtils.getSessionBySessionId(conn, session.getSessionId());
 		DatabaseUtils.getSessionsByCitizenId(conn, c1.getCitizenId());
-		
+		DatabaseUtils.getInstitutionById(conn, 1);
+		DatabaseUtils.getInstitutionByDoctorId(conn, c1.getCitizenId());
+		DatabaseUtils.getAdminByCitizenId(conn, c1.getCitizenId());
+		DatabaseUtils.getMedicalRecordById(conn, mr.getRecordId());
 	}
 	
 	@Test

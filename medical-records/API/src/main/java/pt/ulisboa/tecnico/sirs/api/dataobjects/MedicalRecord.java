@@ -10,10 +10,10 @@ import java.security.SignatureException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 import java.security.interfaces.RSAPrivateKey;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import pt.ulisboa.tecnico.sirs.api.utils.KeyUtils;
-
 public class MedicalRecord implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int recordId;

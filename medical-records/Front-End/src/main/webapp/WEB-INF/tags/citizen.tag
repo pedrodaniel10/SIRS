@@ -19,12 +19,6 @@
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear">
                                 <span class="block m-t-xs"> <strong class="font-bold">${citizen.citizenName}</strong></span>
-                                <span class="text-muted text-xs block">
-                                     <c:forEach var="role" items="${citizen.roles}">
-                                        ${role.name()} &nbsp;&nbsp;
-                                     </c:forEach>
-                                    <b class="caret"></b>
-                                </span>
                             </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">

@@ -1,4 +1,6 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -49,19 +51,21 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <c:forEach var="doctor" items="${doctors}">
                                 <tr>
-                                    <td class="center"><img src="/img/alex_smith.jpg" class="img-circle" style="width:50px;height:50px;"\></td>
-                                    <td class="center">147258369
-                                    <td class="center">John Terry</td>
-                                    <td class="center">20/08/1971</td>
-                                    <td class="center">Male</td>
-                                    <td class="center">johnterry@hotmail.com</td>
+                                    <td class="center"><img src="${doctor.citizen.profilePic}" class="img-circle" style="width:50px;height:50px;"\></td>
+                                    <td class="center">${doctor.citizen.citizenId}</td>
+                                    <td class="center">${doctor.citizen.citizenName}</td>
+                                    <td class="center">${doctor.citizen.dateOfBirth}</td>
+                                    <td class="center">${doctor.citizen.gender}</td>
+                                    <td class="center">${doctor.citizen.email}</td>
                                     <td class="center">
-                                        <a href="/doctors/1/add" class="btn btn-info btn-circle" type="button">
+                                        <a href="/doctors/${doctor.citizenId}/add" class="btn btn-info btn-circle" type="button">
                                             <i class="fa fa-plus"></i>
                                         </a>
                                     </td>
                                 </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
