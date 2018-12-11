@@ -73,6 +73,7 @@
             <version>${spring-boot-starter-test.version}</version>
             <scope>test</scope>
         </dependency>
+        
         <!-- JUnit -->
         <dependency>
             <groupId>junit</groupId>
@@ -80,7 +81,21 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
+        
+        <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
+		<dependency>
+		    <groupId>org.bouncycastle</groupId>
+		    <artifactId>bcprov-jdk15on</artifactId>
+		    <version>1.60</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on -->
+		<dependency>
+		    <groupId>org.bouncycastle</groupId>
+		    <artifactId>bcpkix-jdk15on</artifactId>
+		    <version>1.60</version>
+		</dependency>
+        
     </dependencies>
 
     <build>

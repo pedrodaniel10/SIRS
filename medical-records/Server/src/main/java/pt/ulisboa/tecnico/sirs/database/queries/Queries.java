@@ -53,12 +53,15 @@ public class Queries {
 	public static final String GET_MEDICAL_RECORDS_BY_PATIENT_CITIZEN_ID_QUERY = "SELECT * FROM medical_records "
 			+ "WHERE patient_citizen_id=?";
 	
+	public static final String GET_MEDICAL_RECORDS_BY_ID_QUERY = "SELECT * FROM medical_records "
+			+ "WHERE record_id=?";
+	
 	public static final String ADD_MEDICAL_RECORD_QUERY = "INSERT  INTO  medical_records(heart_beat,blood_pressure,sugar,"
-			+ "haemoglobin,doctor_citizen_id,treatment,patient_citizen_id,institution_id,general_report,record_signature) "
-			+ "VALUES  (?,?,?,?,?,?,?,?,?,?)";
+			+ "haemoglobin,creation_date,doctor_citizen_id,treatment,patient_citizen_id,institution_id,general_report,record_signature) "
+			+ "VALUES  (?,?,?,?,?,?,?,?,?,?,?)";
 	
 	public static final String UPDATE_MEDICAL_RECORD_QUERY = "UPDATE medical_records SET heart_beat=?,blood_pressure=?,"
-			+ "sugar=?,haemoglobin=?,doctor_citizen_id=?,treatment=?,patient_citizen_id=?,institution_id=?,general_report=?,"
+			+ "sugar=?,haemoglobin=?,creation_date=?,doctor_citizen_id=?,treatment=?,patient_citizen_id=?,institution_id=?,general_report=?,"
 			+ "record_signature=? WHERE record_id=?";
 
 	public static final String GET_ALL_DOC_PAT_RELATIONS_QUERY = "SELECT * FROM doc_pat_relations";
@@ -110,6 +113,8 @@ public class Queries {
 			+ "(SELECT institution_id FROM admins WHERE citizen_id=?)";
 
 	public static final String GET_INSTITUTION_BY_ID_QUERY = "SELECT * FROM institutions WHERE institution_id=?";
+	
+	public static final String GET_INSTITUTION_ID_BY_NAME_QUERY = "SELECT institution_id FROM institutions WHERE institution_name=?";
 
 	public static final String GET_INSTITUTION_BY_DOCTOR_ID_QUERY = "SELECT * FROM institutions WHERE institution_id IN "
 			+ "(SELECT institution_id FROM doctors WHERE citizen_id=?)";

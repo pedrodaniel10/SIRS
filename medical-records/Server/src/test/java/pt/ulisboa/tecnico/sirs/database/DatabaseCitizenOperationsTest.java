@@ -4,6 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -12,10 +18,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bouncycastle.operator.OperatorCreationException;
 import org.junit.Before;
 import org.junit.Test;
 
 import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
+import pt.ulisboa.tecnico.sirs.api.utils.KeyUtils;
 import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
 import pt.ulisboa.tecnico.sirs.database.utils.DatabaseUtils;
 
@@ -25,7 +33,7 @@ public class DatabaseCitizenOperationsTest {
 	private Citizen c1;
 	
 	@Before
-	public void setup() throws DatabaseConnectionException, IOException, SQLException {
+	public void setup() throws DatabaseConnectionException, IOException, SQLException, NoSuchAlgorithmException {
 		DatabaseConnector dbConnector = new DatabaseConnector();
 		dbConnector.setupTables();
 		this.conn = dbConnector.getConnection();
@@ -62,7 +70,7 @@ public class DatabaseCitizenOperationsTest {
 	}
 	
 	@Test
-	public void updateCitizenWithRelations() throws SQLException {
+	public void updateCitizenWithRelations() throws SQLException, NoSuchAlgorithmException {
 		Citizen c2 = new Citizen("test_id2", "paulo", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt",
 				"jálhedigo", "path", "super", new ArrayList<>());
 		Citizen c3 = new Citizen("test_id3", "paulo", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt",
@@ -107,7 +115,10 @@ public class DatabaseCitizenOperationsTest {
 	}
 	
 	@Test
-	public void verifyQuerySintax() throws SQLException {
+	public void verifyQuerySintax() throws SQLException, InvalidKeyException, NoSuchAlgorithmException, 
+	SignatureException, KeyStoreException, CertificateException, UnrecoverableEntryException, IOException, 
+	OperatorCreationException, InterruptedException {
+		
 		DatabaseUtils.getAllInstitutions(conn);
 		DatabaseUtils.updateInstitution(conn, new Institution(1, "santa maria", "blabla", "bleble", "super"));
 		DatabaseUtils.getMedicalRecordsByPatientCitizenId(conn, "test_id");
@@ -120,9 +131,13 @@ public class DatabaseCitizenOperationsTest {
 		DatabaseUtils.setAdminInstitutionId(conn, c1.getCitizenId(), 1);
 		DatabaseUtils.setDoctorInstitutionId(conn, c1.getCitizenId(), 1, c1.getCitizenId());
 		ReportInfo ri = new ReportInfo(-1,-1,-1,-1,"heh","hah");
-		MedicalRecord mr = new MedicalRecord(0, Timestamp.valueOf("1922-11-1 22:22:22"),
-				c1.getCitizenId(), c1.getCitizenId(), 1, "hoh", ri);
+		MedicalRecord mr = new MedicalRecord(0,
+				c1.getCitizenId(), c1.getCitizenId(), 1, ri);
+		
 		DatabaseUtils.addMedicalRecord(conn, mr);
+		List<SignedMedicalRecord> records = DatabaseUtils.getMedicalRecordsByPatientCitizenId(conn, mr.getPatientCitizenId());
+		assertTrue(records.get(0).isVerified());
+		
 		mr.getReportInfo().setHaemoglobin(10);
 		DatabaseUtils.updateMedicalRecord(conn, mr);
 		DatabaseUtils.getDoctorsByAdminId(conn, c1.getCitizenId());
@@ -139,5 +154,14 @@ public class DatabaseCitizenOperationsTest {
 		DatabaseUtils.getInstitutionById(conn, 1);
 		DatabaseUtils.getInstitutionByDoctorId(conn, c1.getCitizenId());
 		DatabaseUtils.getAdminByCitizenId(conn, c1.getCitizenId());
+		DatabaseUtils.getMedicalRecordById(conn, mr.getRecordId());
 	}
+	
+	@Test
+	public void keyUtils() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, 
+	OperatorCreationException, IOException, UnrecoverableEntryException, InterruptedException {
+		KeyUtils.createKeyPair("hola");
+		KeyUtils.getKeyPair("hola");
+	}
+	
 }

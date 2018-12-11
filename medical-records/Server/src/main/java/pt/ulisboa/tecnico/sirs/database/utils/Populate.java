@@ -87,12 +87,9 @@ public class Populate {
         //Add Medical Records
         ReportInfo report1 = new ReportInfo(50,40,10,10,"Blood Test","The results of the first" +
                 "tests were inconclusive. Requested more blood tests.");
-        MedicalRecord record1 = new MedicalRecord(0, Timestamp.valueOf("2018-12-12 22:22:22"),
-                doctor1.getCitizenId(), patient1.getCitizenId(), 1, doctor1.getCitizenName(), report1);
-        MedicalRecord record2 = new MedicalRecord(0, Timestamp.valueOf("2018-12-8 10:00:00"),
-                doctor1.getCitizenId(), patient2.getCitizenId(), 1, doctor1.getCitizenName(), report1);
-        MedicalRecord record3 = new MedicalRecord(0, Timestamp.valueOf("2018-12-5 13:45:00"),
-                doctor1.getCitizenId(), patient1.getCitizenId(), 1, doctor1.getCitizenName(), report1);
+        MedicalRecord record1 = new MedicalRecord(0, doctor1.getCitizenId(), patient1.getCitizenId(), 1, report1);
+        MedicalRecord record2 = new MedicalRecord(0, doctor1.getCitizenId(), patient2.getCitizenId(), 1, report1);
+        MedicalRecord record3 = new MedicalRecord(0, doctor1.getCitizenId(), patient1.getCitizenId(), 1, report1);
 
         DatabaseUtils.addMedicalRecord(connection, record1);
         DatabaseUtils.addMedicalRecord(connection, record2);

@@ -1,5 +1,12 @@
 package pt.ulisboa.tecnico.sirs.database.utils;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,8 +14,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
+import org.bouncycastle.operator.OperatorCreationException;
+
 import pt.ulisboa.tecnico.sirs.database.queries.Queries;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen.Gender;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen.Role;
+import pt.ulisboa.tecnico.sirs.api.utils.KeyUtils;
 
 public class DatabaseUtils {
 	
@@ -38,24 +50,24 @@ public class DatabaseUtils {
 					Citizen citizen = new Citizen();
 					citizen.setCitizenId(rs.getString("citizen_id"));
 					citizen.setCitizenName(rs.getString("citizen_name"));
-					citizen.setGender(Citizen.Gender.valueOf(rs.getString("gender")));
+					citizen.setGender(Gender.valueOf(rs.getString("gender")));
 					citizen.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
 					citizen.setEmail(rs.getString("email"));
-					citizen.setPassword(rs.getString("password"));
+					citizen.setPassword(rs.getBytes("password"));
 					citizen.setProfilePic(rs.getString("profile_pic"));
 					citizen.setSuperuserCitizenId(rs.getString("superuser_citizen_id"));
 					
-					Citizen.Role role;
-					if ((role = getRole(conn, citizen, Queries.GET_PATIENT_ROLE_QUERY, Citizen.Role.PATIENT)) != null) {
+					Role role;
+					if ((role = getRole(conn, citizen, Queries.GET_PATIENT_ROLE_QUERY, Role.PATIENT)) != null) {
 						citizen.addRole(role);
 					}
-					if ((role = getRole(conn, citizen, Queries.GET_DOCTOR_ROLE_QUERY, Citizen.Role.DOCTOR)) != null) {
+					if ((role = getRole(conn, citizen, Queries.GET_DOCTOR_ROLE_QUERY, Role.DOCTOR)) != null) {
 						citizen.addRole(role);
 					}
-					if ((role = getRole(conn, citizen, Queries.GET_ADMIN_ROLE_QUERY, Citizen.Role.ADMIN)) != null) {
+					if ((role = getRole(conn, citizen, Queries.GET_ADMIN_ROLE_QUERY, Role.ADMIN)) != null) {
 						citizen.addRole(role);
 					}
-					if ((role = getRole(conn, citizen, Queries.GET_SUPERUSER_ROLE_QUERY, Citizen.Role.SUPERUSER)) != null) {
+					if ((role = getRole(conn, citizen, Queries.GET_SUPERUSER_ROLE_QUERY, Role.SUPERUSER)) != null) {
 						citizen.addRole(role);
 					}
 					
@@ -73,25 +85,25 @@ public class DatabaseUtils {
 			statement.setString(3, citizen.getGender().toString());
 			statement.setString(4, citizen.getDateOfBirth().toString());
 			statement.setString(5, citizen.getEmail());
-			statement.setString(6, citizen.getPassword());
+			statement.setBytes(6, citizen.getPassword());
 			statement.setString(7, citizen.getProfilePic());
 			statement.setString(8, citizen.getSuperuserCitizenId());
 			statement.executeUpdate();
 			
-			if (citizen.getRoles().contains(Citizen.Role.PATIENT)) {
-				addRole(conn, citizen, Citizen.Role.PATIENT, Queries.ADD_PATIENT_ROLE_QUERY);
+			if (citizen.getRoles().contains(Role.PATIENT)) {
+				addRole(conn, citizen, Role.PATIENT, Queries.ADD_PATIENT_ROLE_QUERY);
 			}
 			
-			if (citizen.getRoles().contains(Citizen.Role.DOCTOR)) {
-				addRole(conn, citizen, Citizen.Role.DOCTOR, Queries.ADD_DOCTOR_ROLE_QUERY);
+			if (citizen.getRoles().contains(Role.DOCTOR)) {
+				addRole(conn, citizen, Role.DOCTOR, Queries.ADD_DOCTOR_ROLE_QUERY);
 			}
 
-			if (citizen.getRoles().contains(Citizen.Role.ADMIN)) {
-				addRole(conn, citizen, Citizen.Role.ADMIN, Queries.ADD_ADMIN_ROLE_QUERY);
+			if (citizen.getRoles().contains(Role.ADMIN)) {
+				addRole(conn, citizen, Role.ADMIN, Queries.ADD_ADMIN_ROLE_QUERY);		
 			}
 			
-			if (citizen.getRoles().contains(Citizen.Role.SUPERUSER)) {
-				addRole(conn, citizen, Citizen.Role.SUPERUSER, Queries.ADD_SUPERUSER_ROLE_QUERY);
+			if (citizen.getRoles().contains(Role.SUPERUSER)) {
+				addRole(conn, citizen, Role.SUPERUSER, Queries.ADD_SUPERUSER_ROLE_QUERY);		
 			}
 		}
 	}
@@ -102,27 +114,27 @@ public class DatabaseUtils {
 			statement.setString(2, citizen.getGender().toString());
 			statement.setString(3, citizen.getDateOfBirth().toString());
 			statement.setString(4, citizen.getEmail());
-			statement.setString(5, citizen.getPassword());
+			statement.setBytes(5, citizen.getPassword());
 			statement.setString(6, citizen.getProfilePic());
 			statement.setString(7, citizen.getSuperuserCitizenId());
 			statement.setString(8, citizen.getCitizenId());
 			statement.executeUpdate();
 			
-			updateRole(conn, citizen, Citizen.Role.PATIENT, Queries.GET_PATIENT_ROLE_QUERY,
+			updateRole(conn, citizen, Role.PATIENT, Queries.GET_PATIENT_ROLE_QUERY, 
 					Queries.ADD_PATIENT_ROLE_QUERY, Queries.REMOVE_PATIENT_ROLE_QUERY);
 			
-			updateRole(conn, citizen, Citizen.Role.DOCTOR, Queries.GET_DOCTOR_ROLE_QUERY,
+			updateRole(conn, citizen, Role.DOCTOR, Queries.GET_DOCTOR_ROLE_QUERY, 
 					Queries.ADD_DOCTOR_ROLE_QUERY, Queries.REMOVE_DOCTOR_ROLE_QUERY);
 			
-			updateRole(conn, citizen, Citizen.Role.ADMIN, Queries.GET_ADMIN_ROLE_QUERY,
+			updateRole(conn, citizen, Role.ADMIN, Queries.GET_ADMIN_ROLE_QUERY, 
 					Queries.ADD_ADMIN_ROLE_QUERY, Queries.REMOVE_ADMIN_ROLE_QUERY);
 			
-			updateRole(conn, citizen, Citizen.Role.SUPERUSER, Queries.GET_SUPERUSER_ROLE_QUERY,
+			updateRole(conn, citizen, Role.SUPERUSER, Queries.GET_SUPERUSER_ROLE_QUERY, 
 					Queries.ADD_SUPERUSER_ROLE_QUERY, Queries.REMOVE_SUPERUSER_ROLE_QUERY);
 		}
 	}
 	
-	private static Citizen.Role getRole(Connection conn, Citizen citizen, String roleQuery, Citizen.Role role) throws SQLException {
+	private static Role getRole(Connection conn, Citizen citizen, String roleQuery, Role role) throws SQLException {
 		try (PreparedStatement roleStatement = conn.prepareStatement(roleQuery)) {
 			roleStatement.setString(1, citizen.getCitizenId());
 			try (ResultSet roleRs = roleStatement.executeQuery()) {
@@ -134,10 +146,10 @@ public class DatabaseUtils {
 		return null;
 	}
 
-	private static void addRole(Connection conn, Citizen citizen, Citizen.Role role, String roleQuery) throws SQLException {
+	private static void addRole(Connection conn, Citizen citizen, Role role, String roleQuery) throws SQLException {
 		try (PreparedStatement roleStatement = conn.prepareStatement(roleQuery)) {
 			
-			if (role.equals(Citizen.Role.PATIENT)) {
+			if (role.equals(Role.PATIENT)) {
 				roleStatement.setString(1, citizen.getCitizenId());
 			}
 			else {
@@ -148,8 +160,8 @@ public class DatabaseUtils {
 		}
 	}
 	
-	private static void updateRole(Connection conn, Citizen citizen, Citizen.Role role, String getRoleQuery,
-								   String addRoleQuery, String removeRoleQuery) throws SQLException {
+	private static void updateRole(Connection conn, Citizen citizen, Role role, String getRoleQuery, 
+			String addRoleQuery, String removeRoleQuery) throws SQLException {
 		
 		if (citizen.getRoles().contains(role)) {
 			if (getRole(conn, citizen, getRoleQuery, role) == null) {
@@ -161,17 +173,17 @@ public class DatabaseUtils {
 		}
 	}
 	
-	private static void removeRole(Connection conn, Citizen citizen, Citizen.Role role, String roleQuery) throws SQLException {
+	private static void removeRole(Connection conn, Citizen citizen, Role role, String roleQuery) throws SQLException {
 		try (PreparedStatement roleStatement = conn.prepareStatement(roleQuery)) {
 			roleStatement.setString(1, citizen.getCitizenId());
 			roleStatement.executeUpdate();
 		}
 		
-		if (role.equals(Citizen.Role.PATIENT)) {
+		if (role.equals(Role.PATIENT)) {
 			List<DocPatRelation> docPatRelations = getDocPatRelationsByPatientId(conn, citizen.getCitizenId());
 			removeDocPatRelations(conn, docPatRelations);
 		
-		} else if (role.equals(Citizen.Role.DOCTOR)) {
+		} else if (role.equals(Role.DOCTOR)) {
 			List<DocPatRelation> docPatRelations = getDocPatRelationsByDoctorId(conn, citizen.getCitizenId());
 			removeDocPatRelations(conn, docPatRelations);
 		}
@@ -267,74 +279,127 @@ public class DatabaseUtils {
 			
 			statement.executeUpdate();
 		}
-		setAdminInstitutionId(conn, institution.getAdminCitizenId(), institution.getInstitutionId());
+		
+		setAdminInstitutionId(conn, institution.getAdminCitizenId(), 
+				DatabaseUtils.getInstitutionIdByName(conn, institution.getInstitutionName()));
 	}
 	
-	public static List<MedicalRecord> getMedicalRecordsByPatientCitizenId(Connection conn, String citizenId) 
-			throws SQLException {
-		List<MedicalRecord> medicalRecords = new ArrayList<>();
+	private static int getInstitutionIdByName(Connection conn, String institutionName) throws SQLException {
+		int institutionId = -1;
+		try (PreparedStatement statement = conn.prepareStatement(Queries.GET_INSTITUTION_ID_BY_NAME_QUERY)) {
+			statement.setString(1, institutionName);
+			try (ResultSet rs = statement.executeQuery()) {
+				if (rs.next()) {
+					institutionId = rs.getInt("institution_id");
+				}
+			}
+		}
+		return institutionId;
+	}
+	
+	public static SignedMedicalRecord getMedicalRecordById(Connection conn, int recordId) throws SQLException, 
+	InvalidKeyException, SignatureException, NoSuchAlgorithmException, KeyStoreException, CertificateException, 
+	UnrecoverableEntryException, IOException {
+		SignedMedicalRecord signedMedicalRecord = new SignedMedicalRecord();
+		
+		try (PreparedStatement statement = conn.prepareStatement(
+				Queries.GET_MEDICAL_RECORDS_BY_ID_QUERY)) {
+			statement.setInt(1, recordId);
+			try (ResultSet rs = statement.executeQuery()) {
+				if (rs.next()) {
+					signedMedicalRecord.getMedicalRecord().setRecordId(rs.getInt("record_id"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setHeartBeat(rs.getInt("heart_beat"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setBloodPressure(rs.getInt("blood_pressure"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setSugar(rs.getInt("sugar"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setHaemoglobin(rs.getInt("haemoglobin"));
+					signedMedicalRecord.getMedicalRecord().setCreationDate(rs.getTimestamp("creation_date"));
+					signedMedicalRecord.getMedicalRecord().setDoctorCitizenId(rs.getString("doctor_citizen_id"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setTreatment(rs.getString("treatment"));
+					signedMedicalRecord.getMedicalRecord().setPatientCitizenId(rs.getString("patient_citizen_id"));
+					signedMedicalRecord.getMedicalRecord().setInstitutionId(rs.getInt("institution_id"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setGeneralReport(rs.getString("general_report"));
+					signedMedicalRecord.setRecordSignature(rs.getBytes("record_signature"));
+					signedMedicalRecord.verifySignature();
+				}
+			}
+		}
+		return signedMedicalRecord;
+	}
+	
+	public static List<SignedMedicalRecord> getMedicalRecordsByPatientCitizenId(Connection conn, String citizenId) 
+			throws SQLException, InvalidKeyException, SignatureException, NoSuchAlgorithmException, 
+			KeyStoreException, CertificateException, UnrecoverableEntryException, IOException {
+		List<SignedMedicalRecord> signedMedicalRecords = new ArrayList<>();
 		try (PreparedStatement statement = conn.prepareStatement(
 				Queries.GET_MEDICAL_RECORDS_BY_PATIENT_CITIZEN_ID_QUERY)) {
 			statement.setString(1, citizenId);
 			try (ResultSet rs = statement.executeQuery()) {
 				while (rs.next()) {
-					MedicalRecord medicalRecord = new MedicalRecord();
-					medicalRecord.setRecordId(rs.getInt("record_id"));
-					medicalRecord.getReportInfo().setHeartBeat(rs.getInt("heart_beat"));
-					medicalRecord.getReportInfo().setBloodPressure(rs.getInt("blood_pressure"));
-					medicalRecord.getReportInfo().setSugar(rs.getInt("sugar"));
-					medicalRecord.getReportInfo().setHaemoglobin(rs.getInt("haemoglobin"));
-					medicalRecord.setCreationDate(rs.getTimestamp("creation_date"));
-					medicalRecord.setDoctorCitizenId(rs.getString("doctor_citizen_id"));
-					medicalRecord.getReportInfo().setTreatment(rs.getString("treatment"));
-					medicalRecord.setPatientCitizenId(rs.getString("patient_citizen_id"));
-					medicalRecord.setInstitutionId(rs.getInt("institution_id"));
-					medicalRecord.getReportInfo().setGeneralReport(rs.getString("general_report"));
-					medicalRecord.setRecordSignature(rs.getString("record_signature"));
+					SignedMedicalRecord signedMedicalRecord = new SignedMedicalRecord();
+					signedMedicalRecord.getMedicalRecord().setRecordId(rs.getInt("record_id"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setHeartBeat(rs.getInt("heart_beat"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setBloodPressure(rs.getInt("blood_pressure"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setSugar(rs.getInt("sugar"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setHaemoglobin(rs.getInt("haemoglobin"));
+					signedMedicalRecord.getMedicalRecord().setCreationDate(rs.getTimestamp("creation_date"));
+					signedMedicalRecord.getMedicalRecord().setDoctorCitizenId(rs.getString("doctor_citizen_id"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setTreatment(rs.getString("treatment"));
+					signedMedicalRecord.getMedicalRecord().setPatientCitizenId(rs.getString("patient_citizen_id"));
+					signedMedicalRecord.getMedicalRecord().setInstitutionId(rs.getInt("institution_id"));
+					signedMedicalRecord.getMedicalRecord().getReportInfo().setGeneralReport(rs.getString("general_report"));
+					signedMedicalRecord.setRecordSignature(rs.getBytes("record_signature"));
+					signedMedicalRecord.verifySignature();
 					
-					medicalRecords.add(medicalRecord);
+					signedMedicalRecords.add(signedMedicalRecord);
 				}
 			}
 		}
-		return medicalRecords;
+		return signedMedicalRecords;
 	}
 	
-	public static void addMedicalRecord(Connection conn, MedicalRecord medicalRecord) throws SQLException {
+	public static void addMedicalRecord(Connection conn, MedicalRecord medicalRecord) 
+			throws SQLException, InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, 
+			CertificateException, OperatorCreationException, SignatureException, UnrecoverableEntryException, 
+			IOException, InterruptedException {
+		
 		setMedicalRecord(conn, medicalRecord, Queries.ADD_MEDICAL_RECORD_QUERY);
 	}
 	
-	public static void updateMedicalRecord(Connection conn, MedicalRecord medicalRecord) throws SQLException {
+	public static void updateMedicalRecord(Connection conn, MedicalRecord medicalRecord) 
+			throws SQLException, InvalidKeyException, KeyStoreException, NoSuchAlgorithmException, 
+			CertificateException, OperatorCreationException, SignatureException, UnrecoverableEntryException, 
+			IOException, InterruptedException {
+		
 		setMedicalRecord(conn, medicalRecord, Queries.UPDATE_MEDICAL_RECORD_QUERY);
 	}
 	
-	private static void setMedicalRecord(Connection conn, MedicalRecord medicalRecord, String query) throws SQLException {
+	private static void setMedicalRecord(Connection conn, MedicalRecord medicalRecord, String query) 
+			throws SQLException, KeyStoreException, NoSuchAlgorithmException, CertificateException, 
+			OperatorCreationException, IOException, InvalidKeyException, SignatureException, 
+			UnrecoverableEntryException, InterruptedException {
+		
+		KeyUtils.createKeyPair(medicalRecord.getDoctorCitizenId());
+		SignedMedicalRecord signedMedicalRecord = medicalRecord.getSignedMedicalRecord();
+		
 		try (PreparedStatement statement = conn.prepareStatement(query)) {
-			
-			setRecordData(statement, medicalRecord.getReportInfo().getHeartBeat(), 1);
-			setRecordData(statement, medicalRecord.getReportInfo().getBloodPressure(), 2);
-			setRecordData(statement, medicalRecord.getReportInfo().getSugar(), 3);
-			setRecordData(statement, medicalRecord.getReportInfo().getHaemoglobin(), 4);
-			statement.setString(5, medicalRecord.getDoctorCitizenId());
-			statement.setString(6, medicalRecord.getReportInfo().getTreatment());
-			statement.setString(7, medicalRecord.getPatientCitizenId());
-			statement.setInt(8, medicalRecord.getInstitutionId());
-			statement.setString(9, medicalRecord.getReportInfo().getGeneralReport());
-			statement.setString(10, medicalRecord.getRecordSignature());
+			statement.setInt(1, signedMedicalRecord.getMedicalRecord().getReportInfo().getHeartBeat());
+			statement.setInt(2, signedMedicalRecord.getMedicalRecord().getReportInfo().getBloodPressure());
+			statement.setInt(3, signedMedicalRecord.getMedicalRecord().getReportInfo().getSugar());
+			statement.setInt(4, signedMedicalRecord.getMedicalRecord().getReportInfo().getHaemoglobin());
+			statement.setTimestamp(5, signedMedicalRecord.getMedicalRecord().getCreationDate());
+			statement.setString(6, signedMedicalRecord.getMedicalRecord().getDoctorCitizenId());
+			statement.setString(7, signedMedicalRecord.getMedicalRecord().getReportInfo().getTreatment());
+			statement.setString(8, signedMedicalRecord.getMedicalRecord().getPatientCitizenId());
+			statement.setInt(9, signedMedicalRecord.getMedicalRecord().getInstitutionId());
+			statement.setString(10, signedMedicalRecord.getMedicalRecord().getReportInfo().getGeneralReport());
+			statement.setBytes(11, signedMedicalRecord.getRecordSignature());
 			try {
-				statement.setInt(11, medicalRecord.getRecordId());
+				statement.setInt(12, signedMedicalRecord.getMedicalRecord().getRecordId());
 			} catch (SQLException e) {
 				//do nothing (this means it's an add operation)
 			}
 			
 			statement.executeUpdate();
-		}
-	}
-
-	private static void setRecordData(PreparedStatement statement, int recordData, int index) throws SQLException {
-		if (recordData <= 200 && recordData > 0) {
-			statement.setInt(index, recordData);
-		} else {
-			statement.setInt(index, 0);
 		}
 	}
 	
@@ -370,6 +435,12 @@ public class DatabaseUtils {
 				}
 			}
 		}
+		
+		for (DocPatRelation docPatRelation : docPatRelations) {
+			docPatRelation.setDoctor(getCitizenById(conn, docPatRelation.getDoctorCitizenId()));
+			docPatRelation.setPatient(getCitizenById(conn, docPatRelation.getPatientCitizenId()));
+		}
+		
 		return docPatRelations;
 	}
 	

@@ -3,6 +3,7 @@ package pt.ulisboa.tecnico.sirs.api.dataobjects;
 import java.io.Serializable;
 
 public class ReportInfo implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int heartBeat;
 	private int bloodPressure;
 	private int sugar;
@@ -14,12 +15,20 @@ public class ReportInfo implements Serializable {
 	
 	public ReportInfo(int heartBeat, int bloodPressure, int sugar, int haemoglobin, String treatment,
 			String generalReport) {
-		this.heartBeat = heartBeat;
-		this.bloodPressure = bloodPressure;
-		this.sugar = sugar;
-		this.haemoglobin = haemoglobin;
+		this.heartBeat = verifyRecordData(heartBeat);
+		this.bloodPressure = verifyRecordData(bloodPressure);
+		this.sugar = verifyRecordData(sugar);
+		this.haemoglobin = verifyRecordData(haemoglobin);
 		this.treatment = treatment;
 		this.generalReport = generalReport;
+	}
+	
+	private int verifyRecordData(int recordData) {
+		if (recordData <= 200 && recordData > 0) {
+			return recordData;
+		} else {
+			return 0;
+		}
 	}
 
 	public int getHeartBeat() {
@@ -69,4 +78,12 @@ public class ReportInfo implements Serializable {
 	public void setGeneralReport(String generalReport) {
 		this.generalReport = generalReport;
 	}
+	
+	@Override
+	public String toString() {
+		return "ReportInfo [heartBeat=" + heartBeat + ", bloodPressure=" + bloodPressure + ", sugar=" + sugar
+				+ ", haemoglobin=" + haemoglobin + ", treatment=" + treatment + ", generalReport=" + generalReport
+				+ "]";
+	}
+	
 }

@@ -401,7 +401,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     /* --------------------------------------------------------------------------------------------------------------*/
 
     @Override
-    public MedicalRecord getMedicalRecord(Citizen subject, String citizenId, String idMedRec) {
+    public SignedMedicalRecord getMedicalRecord(Citizen subject, String citizenId, String idMedRec) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
                 ServiceUtils.parseRoleList(subject.getRoles()), "view", "medicalRecordsPage", citizenId);
         if (authorization) {
@@ -422,7 +422,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public List<MedicalRecord> getMedicalRecordsByCitizenId(Citizen subject, String citizenId) {
+    public List<SignedMedicalRecord> getMedicalRecordsByCitizenId(Citizen subject, String citizenId) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
                 ServiceUtils.parseRoleList(subject.getRoles()), "view", "medicalRecordsPage", citizenId);
         if (authorization) {
