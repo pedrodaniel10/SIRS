@@ -19,6 +19,9 @@
 *.tar.gz
 *.rar
 
+
+**/.settings*/**
+**/target/**
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
@@ -34,11 +37,13 @@ medical-records/bin/
 
 medical-records/src/main/resources/database/.properties
 
-medical-records/Server/logs/
-medical-records/API/logs
-medical-records/Front-End/logs/
-medical-records/Server/target
-medical-records/API/target
-medical-records/Front-End/target
+medical-records/server/logs/
+medical-records/server-client/logs
+medical-records/front-end/logs/
+medical-records/server/target
+medical-records/server-client/target
+medical-records/front-end/target
 
-medical-records/Server/src/main/resources/database/.properties
+medical-records/server/src/main/resources/database/.properties
+
+medical-records/server/src/main/resources/database\.properties

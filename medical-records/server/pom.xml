@@ -10,14 +10,14 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>Server</artifactId>
+    <artifactId>server</artifactId>
     <name>medical-records Server</name>
 
     <dependencies>
         <!-- Services Interface -->
         <dependency>
             <groupId>pt.ulisboa.tecnico.sirs</groupId>
-            <artifactId>API</artifactId>
+            <artifactId>server-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
