@@ -16,7 +16,6 @@ public class TestLoginRegisterRequest {
 	public void anyoneViewLoginRegister() throws IOException {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
-		System.out.println("HEY:" + policyEnforcementPoint.toString());
 		boolean result = policyEnforcementPoint.requestEvaluation("", new ArrayList<>(), "view", "loginRegisterPage", "");
 		assertTrue(result);
 	}

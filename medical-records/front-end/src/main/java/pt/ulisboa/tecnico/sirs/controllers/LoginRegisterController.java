@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
 import pt.ulisboa.tecnico.sirs.utils.AuthenticationTokenUtils;
 
 @Controller
@@ -32,8 +33,10 @@ public class LoginRegisterController {
         authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
         response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
-        boolean result = service.getLoginPage();
-        return result? "login": "404";
+        Citizen subject = service.getSessionCitizen(authTokenCookie);
+
+        Citizen result = service.getLoginPage(subject);
+        return result==null? "login": "404";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -46,8 +49,10 @@ public class LoginRegisterController {
         authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
         response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
-        boolean result = service.postLoginPage();
-        return result? "login": "404";
+        Citizen subject = service.getSessionCitizen(authTokenCookie);
+
+        Citizen result = service.postLoginPage(subject);
+        return result==null? "login": "404";
     }
 
 }

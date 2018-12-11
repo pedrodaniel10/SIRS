@@ -44,6 +44,6 @@ medical-records/server/target
 medical-records/server-client/target
 medical-records/front-end/target
 
-medical-records/server/src/main/resources/database/.properties
+medical-records/Server/src/main/resources/database\.properties
 
 medical-records/server/src/main/resources/database\.properties

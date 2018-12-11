@@ -33,7 +33,9 @@ public class IndexPageController {
 		authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
 		response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
-		boolean result = service.getWelcomePage();
-		return result? "welcome": "404";
+		Citizen subject = service.getSessionCitizen(authTokenCookie);
+
+		Citizen result = service.getWelcomePage(subject);
+		return result==null? "welcome": "404";
 	}
 }

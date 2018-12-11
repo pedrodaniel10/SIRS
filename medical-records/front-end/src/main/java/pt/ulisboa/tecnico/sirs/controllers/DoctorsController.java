@@ -30,12 +30,13 @@ public class DoctorsController {
                                     Map<String, Object> model,
                                     @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
         log.info("Entering getDoctors function");
+        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
 
         authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
         response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen(authTokenCookie);
+
         model.put("citizen", subject);
         List<Doctor> doctors = service.getDoctors(subject);
         model.put("doctors", doctors);
@@ -47,12 +48,13 @@ public class DoctorsController {
                                       Map<String, Object> model,
                                       @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
         log.info("Entering addDoctor function");
+        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
 
         authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
         response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen(authTokenCookie);
+
         model.put("citizen", subject);
         List<Doctor> doctors = service.getAddDoctorPage(subject);
         model.put("doctors", doctors);

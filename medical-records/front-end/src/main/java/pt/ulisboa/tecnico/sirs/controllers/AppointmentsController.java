@@ -32,12 +32,13 @@ public class AppointmentsController {
                                          Map<String, Object> model,
                                          @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
         log.info("Entering getAppointments function");
+        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
 
         authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
         response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen(authTokenCookie);
+
         model.put("citizen", subject);
         List<DocPatRelation> appointments = service.getAppointments(subject);
         model.put("appointments", appointments);
@@ -49,12 +50,13 @@ public class AppointmentsController {
                                            Map<String, Object> model,
                                            @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
         log.info("Entering addAppointments function");
+        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
 
         authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
         response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen(authTokenCookie);
+
         model.put("citizen", subject);
         boolean result = service.getAddAppointmentsPage(subject);
         return result? "addAppointment": "404";
@@ -65,12 +67,13 @@ public class AppointmentsController {
                                             Map<String, Object> model,
                                             @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
         log.info("Entering addAppointments function");
+        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
 
         authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
         response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen(authTokenCookie);
+
         model.put("citizen", subject);
         List<DocPatRelation> appointments = service.addAppointment(subject, null);
         model.put("appointments", appointments);
@@ -82,12 +85,13 @@ public class AppointmentsController {
                                               Map<String, Object> model, @PathVariable String appointmentId,
                                               @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
         log.info("Entering deleteAppointments function");
+        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
 
         authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
         response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen(authTokenCookie);
+
         model.put("citizen", subject);
         List<DocPatRelation> appointments = service.deleteAppointment(subject, NumberUtils.toInt(appointmentId));
         model.put("appointments", appointments);

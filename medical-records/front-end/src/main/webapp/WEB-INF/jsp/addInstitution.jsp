@@ -1,4 +1,6 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -36,21 +38,39 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <form method="post" class="form-horizontal">
+                        <div style="color: red">
+                            <b><p>${error}</p></b>
+                        </div>
+                        <form:form method="POST" class="form-horizontal" modelAttribute="newInstitution">
+                            <div class="form-group"><label class="col-sm-2 control-label">Profile Pic:</label>
+                                <div class="col-sm-10">
+                                    <form:input path="profilePic" type="text" class="form-control"/>
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
 
                             <div class="form-group"><label class="col-sm-2 control-label">Name:</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                                <div class="col-sm-10">
+                                    <form:input path="institutionName" type="text" class="form-control"/>
+                                </div>
                             </div>
+
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group"><label class="col-sm-2 control-label">Address:</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                                <div class="col-sm-10">
+                                    <form:input path="institutionAddress" type="text" class="form-control"/>
+                                </div>
                             </div>
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group"><label class="col-sm-2 control-label">Admin Citizen ID:</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                                <div class="col-sm-10">
+                                    <form:input path="adminCitizenId" type="text" class="form-control"/>
+                                </div>
                             </div>
+                            <form:hidden path="superuserCitizenId"/>
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group">
@@ -58,7 +78,7 @@
                                     <button class="btn btn-primary" type="submit">Add Institution</button>
                                 </div>
                             </div>
-                        </form>
+                    </form:form>
                     </div>
                 </div>
             </div>

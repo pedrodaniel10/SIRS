@@ -1,15 +1,19 @@
 package pt.ulisboa.tecnico.sirs.server;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import org.apache.log4j.Logger;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
+import pt.ulisboa.tecnico.sirs.api.exceptions.AdminException;
+import pt.ulisboa.tecnico.sirs.api.exceptions.CitizenException;
 import pt.ulisboa.tecnico.sirs.database.DatabaseConnector;
 import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
 import pt.ulisboa.tecnico.sirs.database.utils.DatabaseUtils;
 import pt.ulisboa.tecnico.sirs.pdp.PolicyEnforcementPoint;
 
+import java.io.IOException;
+import java.security.*;
+import java.security.cert.CertificateException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -86,6 +90,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         return new Citizen();
     }
 
+
     /* --------------------------------------------------------------------------------------------------------------*/
     /* ------------------------------------------- CITIZENS SERVICES ------------------------------------------------*/
     /* --------------------------------------------------------------------------------------------------------------*/
@@ -127,16 +132,22 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public List<Citizen> addCitizen(Citizen subject, Citizen citizenToAdd) {
+    public List<Citizen> addCitizen(Citizen subject, Citizen citizenToAdd) throws CitizenException {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "create", "citizensPage", ""/*citizenToAdd.getCitizenId()*/);
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "citizensPage", citizenToAdd.getCitizenId());
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                if (citizenToAdd != null) DatabaseUtils.addCitizen(connection, citizenToAdd);
+                DatabaseUtils.addCitizen(connection, citizenToAdd);
                 return DatabaseUtils.getAllCitizens(connection);
-            } catch (DatabaseConnectionException | SQLException e ) {
+            } catch (DatabaseConnectionException e) {
                 log.error(e.getMessage());
+                System.exit(-1);
+            } catch (SQLException e) {
+                if(e.getErrorCode() == 1062)
+                    throw new CitizenException("Citizen Id " + citizenToAdd.getCitizenId() + " is already in use!");
+                else
+                    throw new CitizenException("Please correct your data");
             }
         }
         return null;
@@ -149,7 +160,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                if (citizenToEdit!=null)
+                if (citizenToEdit != null)
                     return DatabaseUtils.getCitizenById(connection, citizenToEdit);
             } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());
@@ -159,13 +170,15 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public List<Citizen> editCitizen(Citizen subject, Citizen citizenToEdit) {
+    public List<Citizen> editCitizen(Citizen subject, String citizenId, Citizen citizenToEdit) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "citizensPage", ""/*citizenToEdit.getCitizenId()*/);
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "citizensPage", citizenToEdit.getCitizenId());
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                if (citizenToEdit != null) DatabaseUtils.updateCitizen(connection, citizenToEdit);
+                citizenToEdit.setCitizenId(citizenId);
+                citizenToEdit.addRole(Citizen.Role.PATIENT);
+                DatabaseUtils.updateCitizen(connection, citizenToEdit);
                 return DatabaseUtils.getAllCitizens(connection);
             } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());
@@ -217,13 +230,16 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public List<Institution> addInstitution(Citizen subject, Institution institutionToAdd) {
+    public List<Institution> addInstitution(Citizen subject, Institution institutionToAdd) throws AdminException {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "create", "institutionsPage", ""/*institutionToAdd.getInstitutionId()*/);
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "institutionsPage", Integer.toString(institutionToAdd.getInstitutionId()));
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                if (institutionToAdd != null) DatabaseUtils.addInstitution(connection, institutionToAdd);
+                Admin admin = DatabaseUtils.getAdminByCitizenId(connection, institutionToAdd.getAdminCitizenId());
+                if (admin == null)
+                    throw new AdminException("Citizen ID " + institutionToAdd.getAdminCitizenId() + " is not an admin");
+                DatabaseUtils.addInstitution(connection, institutionToAdd);
                 return DatabaseUtils.getAllInstitutions(connection);
             } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());
@@ -249,13 +265,17 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public List<Institution> editInstitution(Citizen subject, Institution institutionToEdit) {
+    public List<Institution> editInstitution(Citizen subject, int institutionId, Institution institutionToEdit) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "institutionsPage", ""/*institutionToEdit.getInstitutionId()*/);
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "institutionsPage", Integer.toString(institutionToEdit.getInstitutionId()));
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                if (institutionToEdit != null) DatabaseUtils.updateInstitution(connection, institutionToEdit);
+                if (institutionToEdit != null) {
+                    institutionToEdit.setInstitutionId(institutionId);
+                    DatabaseUtils.updateInstitution(connection, institutionToEdit);
+
+                }
                 return DatabaseUtils.getAllInstitutions(connection);
             } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());
@@ -412,14 +432,14 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     /* --------------------------------------------------------------------------------------------------------------*/
 
     @Override
-    public MedicalRecord getMedicalRecord(Citizen subject, String citizenId, String idMedRec) {
+    public SignedMedicalRecord getMedicalRecord(Citizen subject, String citizenId, String idMedRec) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
                 ServiceUtils.parseRoleList(subject.getRoles()), "view", "medicalRecordsPage", citizenId);
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
                 return DatabaseUtils.getMedicalRecordsByPatientCitizenId(connection, citizenId).get(0); //this is wrong, we need to get one by id
-            } catch (DatabaseConnectionException | SQLException e ) {
+            } catch (DatabaseConnectionException | SQLException | InvalidKeyException | SignatureException | NoSuchAlgorithmException | KeyStoreException | CertificateException | UnrecoverableEntryException | IOException e ) {
                 log.error(e.getMessage());
             }
         }
@@ -433,14 +453,14 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public List<MedicalRecord> getMedicalRecordsByCitizenId(Citizen subject, String citizenId) {
+    public List<SignedMedicalRecord> getMedicalRecordsByCitizenId(Citizen subject, String citizenId) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
                 ServiceUtils.parseRoleList(subject.getRoles()), "view", "medicalRecordsPage", citizenId);
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
                 return DatabaseUtils.getMedicalRecordsByPatientCitizenId(connection, citizenId);
-            } catch (DatabaseConnectionException | SQLException e ) {
+            } catch (DatabaseConnectionException | SQLException | InvalidKeyException | SignatureException | NoSuchAlgorithmException | KeyStoreException | CertificateException | UnrecoverableEntryException | IOException e ) {
                 log.error(e.getMessage());
             }
         }
@@ -474,7 +494,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     private Citizen getSessionCitizenTest() {
         try {
             Connection connection = (new DatabaseConnector()).getConnection();
-            return DatabaseUtils.getCitizenById(connection, "7");
+            return DatabaseUtils.getCitizenById(connection, "1");
         } catch (DatabaseConnectionException | SQLException e) {
             e.printStackTrace();
         }

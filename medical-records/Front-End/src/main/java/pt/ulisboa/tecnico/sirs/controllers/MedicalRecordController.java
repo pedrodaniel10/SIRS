@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.Doctor;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.Institution;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.MedicalRecord;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
 import pt.ulisboa.tecnico.sirs.utils.AuthenticationTokenUtils;
 
 @Controller
@@ -40,11 +37,11 @@ public class MedicalRecordController {
         Citizen subject = service.getSessionCitizen(authTokenCookie);
 
         model.put("citizen", subject);
-        MedicalRecord record = service.getMedicalRecord(subject, citizenId, idMedRec);
+        SignedMedicalRecord record = service.getMedicalRecord(subject, citizenId, idMedRec);
         if (record == null)
             return "404";
-        Citizen doctor = service.getCitizen(subject, record.getDoctorCitizenId());
-        Institution institution = service.getInstitution(subject, record.getInstitutionId());
+        Citizen doctor = service.getCitizen(subject, record.getMedicalRecord().getDoctorCitizenId());
+        Institution institution = service.getInstitution(subject, record.getMedicalRecord().getInstitutionId());
         model.put("record", record);
         model.put("doctor", doctor);
         model.put("institution", institution);
@@ -84,6 +81,13 @@ public class MedicalRecordController {
     public String postRequestCreateMedicalRecord(HttpServletResponse response,
                                                  Map<String, Object> model, @PathVariable String citizenId,
                                                  @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+
+        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
+        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
+
+        Citizen subject = service.getSessionCitizen(authTokenCookie);
+
         return "medicalRecord";
     }
 
