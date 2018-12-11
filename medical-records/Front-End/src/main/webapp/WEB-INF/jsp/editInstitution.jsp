@@ -52,8 +52,8 @@
                             </div>
                             <div class="hr-line-dashed"></div>
 
-                            <div class="form-group"><label class="col-sm-2 control-label">Citizen ID:</label>
-                                <div class="col-sm-10"><input type="text" class="form-control" ${institutionToEdit.institutionId}></div>
+                            <div class="form-group"><label class="col-sm-2 control-label">Admin Citizen ID:</label>
+                                <div class="col-sm-10"><input type="text" class="form-control" value="${institutionToEdit.adminCitizenId}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
 

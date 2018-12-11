@@ -1,7 +1,6 @@
 package pt.ulisboa.tecnico.sirs.controllers;
 
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -9,10 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Institution;
+
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class InstitutionsController {
@@ -60,7 +61,7 @@ public class InstitutionsController {
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        Institution institutionToEdit = service.getEditInstitutionPage(subject, institutionId);
+        Institution institutionToEdit = service.getEditInstitutionPage(subject, NumberUtils.toInt(institutionId));
         model.put("institutionToEdit", institutionToEdit);
         return (institutionToEdit != null)? "editInstitution": "404";
     }

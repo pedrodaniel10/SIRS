@@ -1,8 +1,9 @@
 package pt.ulisboa.tecnico.sirs.api.dataobjects;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class MedicalRecord {
+public class MedicalRecord implements Serializable {
 	private int recordId;
 	private Timestamp creationDate;
 	private String doctorCitizenId;
@@ -11,7 +12,9 @@ public class MedicalRecord {
 	private String recordSignature;
 	private ReportInfo reportInfo;
 	
-	public MedicalRecord() {}
+	public MedicalRecord() {
+		this.reportInfo = new ReportInfo();
+	}
 	
 	public MedicalRecord(int recordId, Timestamp creationDate, String doctorCitizenId, String patientCitizenId, int institutionId, 
 			String recordSignature, ReportInfo reportInfo) {

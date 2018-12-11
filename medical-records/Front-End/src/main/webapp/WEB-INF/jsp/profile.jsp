@@ -11,7 +11,7 @@
         <!--Top panel-->
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>David Williams</h2>
+                <h2>${profile.citizenName}</h2>
                 <ol class="breadcrumb">
                     <li class="active">
                         <strong>Profile</strong>
@@ -60,7 +60,18 @@
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
                                             <c:forEach var="role" items="${profile.roles}">
-                                                <span class="badge badge-success">${role.name()}</span>
+                                                <c:if test="${role.name().equals(\"SUPERUSER\")}">
+                                                    <span class="badge badge-danger">${role.name()}</span>
+                                                </c:if>
+                                                <c:if test="${role.name().equals(\"ADMIN\")}">
+                                                    <span class="badge badge-warning-light">${role.name()}</span>
+                                                </c:if>
+                                                <c:if test="${role.name().equals(\"DOCTOR\")}">
+                                                    <span class="badge badge-success">${role.name()}</span>
+                                                </c:if>
+                                                <c:if test="${role.name().equals(\"PATIENT\")}">
+                                                    <span class="badge badge-secondary">${role.name()}</span>
+                                                </c:if>
                                             </c:forEach>
                                         </div>
                                     </div>
@@ -125,10 +136,13 @@
                     <div class="ibox-content">
                         <div class="panel-body">
                             <!-- content here -->
-                            <a href="/citizens/20/medrec/create" class="btn btn-info" type="button"><i class="fa fa-plus"></i>&nbsp;&nbsp;<span class="bold">Create Record</span></a>
+                            <c:if test="${citizen.hasRole(\"DOCTOR\")}">
+                            <a href="/citizens/${profile.citizenId}/medrec/create" class="btn btn-info" type="button"><i class="fa fa-plus"></i>&nbsp;&nbsp;<span class="bold">Create Record</span></a>
+                            </c:if>
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover dataTables-example" style="text-align: center;">
                                     <thead>
+
                                     <tr>
                                         <th>Date</th>
                                         <th>Doctor</th>
@@ -137,54 +151,16 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    <c:forEach var="record" items="${records}">
                                     <tr>
-                                        <td>11/05/2017</td>
+                                        <td>${record.creationDate}</td>
                                         <td>Dr.Rajesh</td>
-                                        <td>Check up</td>
-                                        <td><a href="javascript:void(0)" class="" data-toggle="tooltip" title="View">
+                                        <td>${record.reportInfo.treatment}</td>
+                                        <td><a href="/citizens/${citizen.citizenId}/medrec/${record.recordId}/view" class="" data-toggle="tooltip" title="View">
                                             <i class="fa fa-chevron-circle-right"></i></a>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>13/05/2017</td>
-                                        <td>Dr.Rajesh</td>
-                                        <td>X-Ray</td>
-                                        <td><a href="javascript:void(0)" class="" data-toggle="tooltip" title="View">
-                                            <i class="fa fa-chevron-circle-right"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>13/05/2017</td>
-                                        <td>Dr.Rajesh</td>
-                                        <td>Blood Test</td>
-                                        <td><a href="javascript:void(0)" class="" data-toggle="tooltip" title="View">
-                                            <i class="fa fa-chevron-circle-right"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>14/05/2017</td>
-                                        <td>Dr.Rajesh</td>
-                                        <td>Admit</td>
-                                        <td><a href="javascript:void(0)" class="" data-toggle="tooltip" title="View">
-                                            <i class="fa fa-chevron-circle-right"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>15/05/2017</td>
-                                        <td>Dr.Rajesh</td>
-                                        <td>Operation</td>
-                                        <td><a href="javascript:void(0)" class="" data-toggle="tooltip" title="View">
-                                            <i class="fa fa-chevron-circle-right"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>18/05/2017</td>
-                                        <td>Dr.Rajesh</td>
-                                        <td>Discharge</td>
-                                        <td><a href="javascript:void(0)" class="" data-toggle="tooltip" title="View">
-                                            <i class="fa fa-chevron-circle-right"></i></a>
-                                        </td>
-                                    </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
