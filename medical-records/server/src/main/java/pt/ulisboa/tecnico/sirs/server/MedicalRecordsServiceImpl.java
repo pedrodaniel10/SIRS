@@ -1,5 +1,7 @@
 package pt.ulisboa.tecnico.sirs.server;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import org.apache.log4j.Logger;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
@@ -25,37 +27,63 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public Boolean getWelcomePage() {
+    public Citizen getWelcomePage(Citizen citizen) {
+        List<String> roles = new ArrayList<>();
 
-        ArrayList<String> roles = new ArrayList<>();
-        return requestEvaluation("",
-                roles, "view", "indexPage", "");
+        if (requestEvaluation("", roles, "view", "indexPage", "")) {
+            if (citizen.getCitizenId() == null) {
+                return null;
+            }
+            return citizen;
+        }
+
+        return null;
     }
 
     @Override
-    public Boolean getLoginRegisterPage() {
+    public Citizen getLoginPage(Citizen citizen) {
+        List<String> roles = new ArrayList<>();
 
-        ArrayList<String> roles = new ArrayList<>();
-        return requestEvaluation("",
-                roles, "view", "loginRegisterPage", "");
+        if (requestEvaluation("", roles, "view", "loginRegisterPage", "")){
+            if (citizen.getCitizenId() == null) {
+                return null;
+            }
+            return citizen;
+        }
+
+        return null;
     }
 
     @Override
-    public Boolean postLoginRegisterPage() {
+    public Citizen postLoginPage(Citizen citizen) {
+        List<String> roles = new ArrayList<>();
 
-        ArrayList<String> roles = new ArrayList<>();
-        return requestEvaluation("",
-                roles, "edit", "loginRegisterPage", "");
+        if (requestEvaluation("", roles, "edit", "loginRegisterPage", "")){
+            if (citizen.getCitizenId() == null) {
+                return null;
+            }
+            return citizen;
+        }
+
+        return null;
     }
 
     @Override
-    public Citizen getSessionCitizen() {
-        /*
-        GET SESSION CITIZEN TODO
-         */
+    public Citizen getSessionCitizen(String authToken) {
+        try {
+            Connection connection = (new DatabaseConnector()).getConnection();
+            Session session = DatabaseUtils.getSessionBySessionId(connection, authToken);
 
-        //STATIC CODE
-        return getSessionCitizenTest();
+            if (session == null || session.getEndTime().getTime() < new Date().getTime()) {
+                return new Citizen();
+            }
+
+            return DatabaseUtils.getCitizenById(connection, session.getCitizenId());
+
+        } catch (DatabaseConnectionException | SQLException e ) {
+            log.error(e.getMessage());
+        }
+        return new Citizen();
     }
 
     /* --------------------------------------------------------------------------------------------------------------*/

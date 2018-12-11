@@ -1,14 +1,18 @@
 package pt.ulisboa.tecnico.sirs.controllers;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
+import pt.ulisboa.tecnico.sirs.utils.AuthenticationTokenUtils;
 
 @Controller
 public class LoginRegisterController {
@@ -19,32 +23,31 @@ public class LoginRegisterController {
     private ApplicationContext context;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String getRequestLogin(Map<String, Object> model) {
+    public String getRequestLogin(HttpServletResponse response,
+                                  Map<String, Object> model,
+                                  @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
     	log.info("Entering getRequestLogin function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-        boolean result = service.getLoginRegisterPage();
+
+        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
+        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
+
+        boolean result = service.getLoginPage();
         return result? "login": "404";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String postRequestLogin(Map<String, Object> model) {
+    public String postRequestLogin(HttpServletResponse response,
+                                   Map<String, Object> model,
+                                   @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-        boolean result = service.postLoginRegisterPage();
+
+        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
+        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
+
+        boolean result = service.postLoginPage();
         return result? "login": "404";
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String getRequestRegister(Map<String, Object> model) {
-    	log.info("Entering getRequestRegister function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-        boolean result = service.getLoginRegisterPage();
-        return result? "register": "404";
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String postRequestRegister(Map<String, Object> model) {
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-        boolean result = service.postLoginRegisterPage();
-        return result? "register": "404";
-    }
 }

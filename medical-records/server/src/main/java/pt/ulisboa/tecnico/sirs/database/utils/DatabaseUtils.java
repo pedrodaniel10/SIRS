@@ -524,7 +524,7 @@ public class DatabaseUtils {
 			statement.executeUpdate();
 		}
 	}
-	
+
 	public static Session getSessionBySessionId(Connection conn, String sessionId) throws SQLException {
 		List<Session> sessions = getSessions(conn, Queries.GET_SESSION_BY_ID_QUERY, sessionId);
 		if (sessions.isEmpty()) {

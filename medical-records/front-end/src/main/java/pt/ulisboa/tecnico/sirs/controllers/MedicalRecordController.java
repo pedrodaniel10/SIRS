@@ -2,10 +2,13 @@ package pt.ulisboa.tecnico.sirs.controllers;
 
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +17,7 @@ import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Doctor;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Institution;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.MedicalRecord;
+import pt.ulisboa.tecnico.sirs.utils.AuthenticationTokenUtils;
 
 @Controller
 public class MedicalRecordController {
@@ -24,10 +28,17 @@ public class MedicalRecordController {
     private ApplicationContext context;
 
     @RequestMapping(value = "/citizens/{citizenId}/medrec/{idMedRec}/view", method = RequestMethod.GET)
-    public String getRequestMedicalRecord(Map<String, Object> model, @PathVariable String citizenId, @PathVariable String idMedRec) {
+    public String getRequestMedicalRecord(HttpServletResponse response,
+                                          Map<String, Object> model, @PathVariable String citizenId, @PathVariable String idMedRec,
+                                          @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
         log.info("Entering getMedicalRecord function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-        Citizen subject = service.getSessionCitizen();
+
+        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
+        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
+
+        Citizen subject = service.getSessionCitizen(authTokenCookie);
+
         model.put("citizen", subject);
         MedicalRecord record = service.getMedicalRecord(subject, citizenId, idMedRec);
         if (record == null)
@@ -41,10 +52,17 @@ public class MedicalRecordController {
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/medrec/create", method = RequestMethod.GET)
-    public String getRequestCreateMedicalRecord(Map<String, Object> model, @PathVariable String citizenId) {
+    public String getRequestCreateMedicalRecord(HttpServletResponse response,
+                                                Map<String, Object> model, @PathVariable String citizenId,
+                                                @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
         log.info("Entering createMedicalRecord function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-        Citizen subject = service.getSessionCitizen();
+
+        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
+        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
+
+        Citizen subject = service.getSessionCitizen(authTokenCookie);
+
         model.put("citizen", subject);
         Citizen doctor = service.getCitizen(subject, subject.getCitizenId());
         if (doctor != null) {
@@ -63,7 +81,9 @@ public class MedicalRecordController {
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/medrec/create", method = RequestMethod.POST)
-    public String postRequestCreateMedicalRecord(Map<String, Object> model, @PathVariable String citizenId) {
+    public String postRequestCreateMedicalRecord(HttpServletResponse response,
+                                                 Map<String, Object> model, @PathVariable String citizenId,
+                                                 @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
         return "medicalRecord";
     }
 

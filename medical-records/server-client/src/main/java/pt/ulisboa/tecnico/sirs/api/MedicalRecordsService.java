@@ -5,11 +5,11 @@ import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
 import java.util.List;
 
 public interface MedicalRecordsService {
-    Boolean getWelcomePage();
+    Citizen getWelcomePage(Citizen citizen);
 
-    Boolean getLoginRegisterPage();
-    Boolean postLoginRegisterPage();
-    Citizen getSessionCitizen();
+    Citizen getLoginPage(Citizen citizen);
+    Citizen postLoginPage(Citizen citizen);
+    Citizen getSessionCitizen(String authToken);
 
     Citizen getCitizen(Citizen subject, String citizenId);
     List<Citizen> getCitizens(Citizen subject);
