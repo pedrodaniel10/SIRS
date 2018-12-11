@@ -53,6 +53,9 @@ public class Queries {
 	public static final String GET_MEDICAL_RECORDS_BY_PATIENT_CITIZEN_ID_QUERY = "SELECT * FROM medical_records "
 			+ "WHERE patient_citizen_id=?";
 	
+	public static final String GET_MEDICAL_RECORDS_BY_ID_QUERY = "SELECT * FROM medical_records "
+			+ "WHERE record_id=?";
+	
 	public static final String ADD_MEDICAL_RECORD_QUERY = "INSERT  INTO  medical_records(heart_beat,blood_pressure,sugar,"
 			+ "haemoglobin,doctor_citizen_id,treatment,patient_citizen_id,institution_id,general_report,record_signature) "
 			+ "VALUES  (?,?,?,?,?,?,?,?,?,?)";

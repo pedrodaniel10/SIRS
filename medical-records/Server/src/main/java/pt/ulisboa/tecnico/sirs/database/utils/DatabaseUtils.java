@@ -270,6 +270,32 @@ public class DatabaseUtils {
 		setAdminInstitutionId(conn, institution.getAdminCitizenId(), institution.getInstitutionId());
 	}
 	
+	public static MedicalRecord getMedicalRecordById(Connection conn, int recordId) throws SQLException {
+		MedicalRecord medicalRecord = new MedicalRecord();
+		
+		try (PreparedStatement statement = conn.prepareStatement(
+				Queries.GET_MEDICAL_RECORDS_BY_ID_QUERY)) {
+			statement.setInt(1, recordId);
+			try (ResultSet rs = statement.executeQuery()) {
+				if (rs.next()) {
+					medicalRecord.setRecordId(rs.getInt("record_id"));
+					medicalRecord.getReportInfo().setHeartBeat(rs.getInt("heart_beat"));
+					medicalRecord.getReportInfo().setBloodPressure(rs.getInt("blood_pressure"));
+					medicalRecord.getReportInfo().setSugar(rs.getInt("sugar"));
+					medicalRecord.getReportInfo().setHaemoglobin(rs.getInt("haemoglobin"));
+					medicalRecord.setCreationDate(rs.getTimestamp("creation_date"));
+					medicalRecord.setDoctorCitizenId(rs.getString("doctor_citizen_id"));
+					medicalRecord.getReportInfo().setTreatment(rs.getString("treatment"));
+					medicalRecord.setPatientCitizenId(rs.getString("patient_citizen_id"));
+					medicalRecord.setInstitutionId(rs.getInt("institution_id"));
+					medicalRecord.getReportInfo().setGeneralReport(rs.getString("general_report"));
+					medicalRecord.setRecordSignature(rs.getString("record_signature"));
+				}
+			}
+		}
+		return medicalRecord;
+	}
+	
 	public static List<MedicalRecord> getMedicalRecordsByPatientCitizenId(Connection conn, String citizenId) 
 			throws SQLException {
 		List<MedicalRecord> medicalRecords = new ArrayList<>();
@@ -370,6 +396,12 @@ public class DatabaseUtils {
 				}
 			}
 		}
+		
+		for (DocPatRelation docPatRelation : docPatRelations) {
+			docPatRelation.setDoctor(getCitizenById(conn, docPatRelation.getDoctorCitizenId()));
+			docPatRelation.setPatient(getCitizenById(conn, docPatRelation.getPatientCitizenId()));
+		}
+		
 		return docPatRelations;
 	}
 	
