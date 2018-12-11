@@ -128,19 +128,19 @@
                                     <div class="post-box">
                                         <h4 class="font-bold">General Report</h4>
                                         <hr>
-                                        <h5>Heart Beat <span class="pull-right">85</span></h5>
+                                        <h5>Heart Beat <span class="pull-right">${record.reportInfo.heartBeat}</span></h5>
                                         <div class="progress">
                                             <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow=${record.reportInfo.heartBeat} aria-valuemin="0" aria-valuemax="100" style="width: 40%"> <span class="sr-only">40% Complete (success)</span> </div>
                                         </div>
-                                        <h5>Blood Pressure<span class="pull-right">93</span></h5>
+                                        <h5>Blood Pressure<span class="pull-right">${record.reportInfo.bloodPressure}</span></h5>
                                         <div class="progress">
                                             <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow=${record.reportInfo.bloodPressure} aria-valuemin="0" aria-valuemax="100" style="width:90%;"> <span class="sr-only">50% Complete</span> </div>
                                         </div>
-                                        <h5>Sugar<span class="pull-right">55</span></h5>
+                                        <h5>Sugar<span class="pull-right">${record.reportInfo.sugar}</span></h5>
                                         <div class="progress">
                                             <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow=${record.reportInfo.sugar} aria-valuemin="0" aria-valuemax="100" style="width:50%;"> <span class="sr-only">50% Complete</span> </div>
                                         </div>
-                                        <h5>Haemoglobin<span class="pull-right">78%</span></h5>
+                                        <h5>Haemoglobin<span class="pull-right">${record.reportInfo.haemoglobin}</span></h5>
                                         <div class="progress">
                                             <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow=${record.reportInfo.haemoglobin} aria-valuemin="0" aria-valuemax="100" style="width:70%;"> <span class="sr-only">50% Complete</span> </div>
                                         </div>

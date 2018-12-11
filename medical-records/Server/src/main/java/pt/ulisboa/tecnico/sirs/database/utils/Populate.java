@@ -1,14 +1,13 @@
 package pt.ulisboa.tecnico.sirs.database.utils;
 
-import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.DocPatRelation;
-import pt.ulisboa.tecnico.sirs.api.dataobjects.Institution;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
 import pt.ulisboa.tecnico.sirs.database.DatabaseConnector;
 import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -84,5 +83,19 @@ public class Populate {
         DatabaseUtils.addDocPatRelation(connection, dpr3);
         DatabaseUtils.addCitizen(connection, patient4);
         DatabaseUtils.addDocPatRelation(connection, dpr4);
+
+        //Add Medical Records
+        ReportInfo report1 = new ReportInfo(50,40,10,10,"Blood Test","The results of the first" +
+                "tests were inconclusive. Requested more blood tests.");
+        MedicalRecord record1 = new MedicalRecord(0, Timestamp.valueOf("2018-12-12 22:22:22"),
+                doctor1.getCitizenId(), patient1.getCitizenId(), 1, doctor1.getCitizenName(), report1);
+        MedicalRecord record2 = new MedicalRecord(0, Timestamp.valueOf("2018-12-8 10:00:00"),
+                doctor1.getCitizenId(), patient2.getCitizenId(), 1, doctor1.getCitizenName(), report1);
+        MedicalRecord record3 = new MedicalRecord(0, Timestamp.valueOf("2018-12-5 13:45:00"),
+                doctor1.getCitizenId(), patient1.getCitizenId(), 1, doctor1.getCitizenName(), report1);
+
+        DatabaseUtils.addMedicalRecord(connection, record1);
+        DatabaseUtils.addMedicalRecord(connection, record2);
+        DatabaseUtils.addMedicalRecord(connection, record3);
     }
 }

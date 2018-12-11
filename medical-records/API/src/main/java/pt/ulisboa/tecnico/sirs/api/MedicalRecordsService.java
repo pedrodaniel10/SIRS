@@ -38,4 +38,7 @@ public interface MedicalRecordsService {
 
     MedicalRecord getMedicalRecord(Citizen subject, String citizenId, String idMedRec);
     Boolean getAddMedicalRecordPage(Citizen subject, String citizenId);
+    List<MedicalRecord> getMedicalRecordsByCitizenId(Citizen subject, String citizenId);
+
+    List<Citizen> getPatients(Citizen subject);
 }

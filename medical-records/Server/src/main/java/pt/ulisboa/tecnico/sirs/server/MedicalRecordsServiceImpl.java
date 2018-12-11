@@ -404,6 +404,40 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
                 ServiceUtils.parseRoleList(subject.getRoles()), "create", "medicalRecordsPage", citizenId);
     }
 
+    @Override
+    public List<MedicalRecord> getMedicalRecordsByCitizenId(Citizen subject, String citizenId) {
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "medicalRecordsPage", citizenId);
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
+                return DatabaseUtils.getMedicalRecordsByPatientCitizenId(connection, citizenId);
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    /* --------------------------------------------------------------------------------------------------------------*/
+    /* -------------------------------------------- PATIENTS SERVICES -----------------------------------------------*/
+    /* --------------------------------------------------------------------------------------------------------------*/
+
+    @Override
+    public List<Citizen> getPatients(Citizen subject) {
+        /*Boolean authorization = requestEvaluation(subject.getCitizenId(),
+                ServiceUtils.parseRoleList(subject.getRoles()), "view", "patientsPage", "");
+        if (authorization) {
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
+                return DatabaseUtils.getPatientsByDoctorCitizenId(connection, subject.getCitizenId());
+            } catch (DatabaseConnectionException | SQLException e ) {
+                log.error(e.getMessage());
+            }
+        }*/
+        return null;
+    }
+
     /* --------------------------------------------------------------------------------------------------------------*/
     /* ---------------------------------------------- UTILS SERVICES ------------------------------------------------*/
     /* --------------------------------------------------------------------------------------------------------------*/
@@ -412,7 +446,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     private Citizen getSessionCitizenTest() {
         try {
             Connection connection = (new DatabaseConnector()).getConnection();
-            return DatabaseUtils.getCitizenById(connection, "2");
+            return DatabaseUtils.getCitizenById(connection, "7");
         } catch (DatabaseConnectionException | SQLException e) {
             e.printStackTrace();
         }

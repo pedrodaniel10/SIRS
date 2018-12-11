@@ -136,10 +136,13 @@
                     <div class="ibox-content">
                         <div class="panel-body">
                             <!-- content here -->
-                            <a href="/citizens/20/medrec/create" class="btn btn-info" type="button"><i class="fa fa-plus"></i>&nbsp;&nbsp;<span class="bold">Create Record</span></a>
+                            <c:if test="${citizen.hasRole(\"DOCTOR\")}">
+                            <a href="/citizens/${profile.citizenId}/medrec/create" class="btn btn-info" type="button"><i class="fa fa-plus"></i>&nbsp;&nbsp;<span class="bold">Create Record</span></a>
+                            </c:if>
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover dataTables-example" style="text-align: center;">
                                     <thead>
+
                                     <tr>
                                         <th>Date</th>
                                         <th>Doctor</th>
@@ -148,54 +151,16 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    <c:forEach var="record" items="${records}">
                                     <tr>
-                                        <td>11/05/2017</td>
+                                        <td>${record.creationDate}</td>
                                         <td>Dr.Rajesh</td>
-                                        <td>Check up</td>
-                                        <td><a href="javascript:void(0)" class="" data-toggle="tooltip" title="View">
+                                        <td>${record.reportInfo.treatment}</td>
+                                        <td><a href="/citizens/${citizen.citizenId}/medrec/${record.recordId}/view" class="" data-toggle="tooltip" title="View">
                                             <i class="fa fa-chevron-circle-right"></i></a>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>13/05/2017</td>
-                                        <td>Dr.Rajesh</td>
-                                        <td>X-Ray</td>
-                                        <td><a href="javascript:void(0)" class="" data-toggle="tooltip" title="View">
-                                            <i class="fa fa-chevron-circle-right"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>13/05/2017</td>
-                                        <td>Dr.Rajesh</td>
-                                        <td>Blood Test</td>
-                                        <td><a href="javascript:void(0)" class="" data-toggle="tooltip" title="View">
-                                            <i class="fa fa-chevron-circle-right"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>14/05/2017</td>
-                                        <td>Dr.Rajesh</td>
-                                        <td>Admit</td>
-                                        <td><a href="javascript:void(0)" class="" data-toggle="tooltip" title="View">
-                                            <i class="fa fa-chevron-circle-right"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>15/05/2017</td>
-                                        <td>Dr.Rajesh</td>
-                                        <td>Operation</td>
-                                        <td><a href="javascript:void(0)" class="" data-toggle="tooltip" title="View">
-                                            <i class="fa fa-chevron-circle-right"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>18/05/2017</td>
-                                        <td>Dr.Rajesh</td>
-                                        <td>Discharge</td>
-                                        <td><a href="javascript:void(0)" class="" data-toggle="tooltip" title="View">
-                                            <i class="fa fa-chevron-circle-right"></i></a>
-                                        </td>
-                                    </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
