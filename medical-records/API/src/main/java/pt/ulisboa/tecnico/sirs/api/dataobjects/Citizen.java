@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 
 public class Citizen implements Serializable {
@@ -21,7 +24,7 @@ public class Citizen implements Serializable {
     private Gender gender;
     private LocalDate dateOfBirth;
     private String email;
-    private String password;
+    private byte[] password;
     private String profilePic;
     private String superuserCitizenId;
     private List<Role> roles = new ArrayList<Role>();
@@ -29,16 +32,21 @@ public class Citizen implements Serializable {
     public Citizen() {}
 
     public Citizen(String citizenId, String citizenName, Gender gender, LocalDate dateOfBirth, String email,
-                   String password, String profilePic, String superuserCitizenId, List<Role> roles) {
+                   String password, String profilePic, String superuserCitizenId, List<Role> roles) throws NoSuchAlgorithmException {
         this.citizenId = citizenId;
         this.citizenName = citizenName;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
-        this.password = password;
+        this.encodePassword(password);
         this.profilePic = profilePic;
         this.superuserCitizenId = superuserCitizenId;
         this.roles = roles;
+    }
+    
+    private void encodePassword(String password) throws NoSuchAlgorithmException {
+    	MessageDigest digest = MessageDigest.getInstance("SHA-256");
+    	this.password = digest.digest(password.getBytes(StandardCharsets.UTF_8));
     }
 
     public String getCitizenId() {
@@ -81,11 +89,11 @@ public class Citizen implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
+    public byte[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(byte[] password) {
         this.password = password;
     }
 

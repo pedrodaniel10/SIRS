@@ -33,7 +33,7 @@ public class DatabaseCitizenOperationsTest {
 	private Citizen c1;
 	
 	@Before
-	public void setup() throws DatabaseConnectionException, IOException, SQLException {
+	public void setup() throws DatabaseConnectionException, IOException, SQLException, NoSuchAlgorithmException {
 		DatabaseConnector dbConnector = new DatabaseConnector();
 		dbConnector.setupTables();
 		this.conn = dbConnector.getConnection();
@@ -70,7 +70,7 @@ public class DatabaseCitizenOperationsTest {
 	}
 	
 	@Test
-	public void updateCitizenWithRelations() throws SQLException {
+	public void updateCitizenWithRelations() throws SQLException, NoSuchAlgorithmException {
 		Citizen c2 = new Citizen("test_id2", "paulo", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt",
 				"jálhedigo", "path", "super", new ArrayList<>());
 		Citizen c3 = new Citizen("test_id3", "paulo", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt",

@@ -53,7 +53,7 @@ public class DatabaseUtils {
 					citizen.setGender(Gender.valueOf(rs.getString("gender")));
 					citizen.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
 					citizen.setEmail(rs.getString("email"));
-					citizen.setPassword(rs.getString("password"));
+					citizen.setPassword(rs.getBytes("password"));
 					citizen.setProfilePic(rs.getString("profile_pic"));
 					citizen.setSuperuserCitizenId(rs.getString("superuser_citizen_id"));
 					
@@ -85,7 +85,7 @@ public class DatabaseUtils {
 			statement.setString(3, citizen.getGender().toString());
 			statement.setString(4, citizen.getDateOfBirth().toString());
 			statement.setString(5, citizen.getEmail());
-			statement.setString(6, citizen.getPassword());
+			statement.setBytes(6, citizen.getPassword());
 			statement.setString(7, citizen.getProfilePic());
 			statement.setString(8, citizen.getSuperuserCitizenId());
 			statement.executeUpdate();
@@ -114,7 +114,7 @@ public class DatabaseUtils {
 			statement.setString(2, citizen.getGender().toString());
 			statement.setString(3, citizen.getDateOfBirth().toString());
 			statement.setString(4, citizen.getEmail());
-			statement.setString(5, citizen.getPassword());
+			statement.setBytes(5, citizen.getPassword());
 			statement.setString(6, citizen.getProfilePic());
 			statement.setString(7, citizen.getSuperuserCitizenId());
 			statement.setString(8, citizen.getCitizenId());
