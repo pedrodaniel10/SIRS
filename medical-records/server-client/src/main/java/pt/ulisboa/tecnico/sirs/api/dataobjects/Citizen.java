@@ -59,10 +59,10 @@ public class Citizen implements Serializable {
         this.superuserCitizenId = superuserCitizenId;
         this.roles = roles;
     }
-    
+
     private void encodePassword(String password) throws NoSuchAlgorithmException {
-    	MessageDigest digest = MessageDigest.getInstance("SHA-256");
-    	this.password = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        this.password = digest.digest(password.getBytes(StandardCharsets.UTF_8));
     }
 
     public String getCitizenId() {

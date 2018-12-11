@@ -22,13 +22,13 @@ public class MedicalRecord implements Serializable {
 	private String patientCitizenId;
 	private int institutionId;
 	private ReportInfo reportInfo;
-	
+
 	public MedicalRecord() {
 		this.reportInfo = new ReportInfo();
 	}
-	
-	public MedicalRecord(int recordId, String doctorCitizenId, String patientCitizenId, 
-			int institutionId, ReportInfo reportInfo) {
+
+	public MedicalRecord(int recordId, String doctorCitizenId, String patientCitizenId,
+						 int institutionId, ReportInfo reportInfo) {
 		this.creationDate = new Timestamp(System.currentTimeMillis());
 		this.creationDate.setNanos(0);
 		this.recordId = recordId;
@@ -37,23 +37,23 @@ public class MedicalRecord implements Serializable {
 		this.institutionId = institutionId;
 		this.reportInfo = reportInfo;
 	}
-	
+
 	public int getRecordId() {
 		return recordId;
 	}
-	
+
 	public void setRecordId(int recordId) {
 		this.recordId = recordId;
 	}
-	
+
 	public Timestamp getCreationDate() {
 		return creationDate;
 	}
-	
+
 	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}
-	
+
 	public String getDoctorCitizenId() {
 		return doctorCitizenId;
 	}
@@ -61,7 +61,7 @@ public class MedicalRecord implements Serializable {
 	public void setDoctorCitizenId(String doctorCitizenId) {
 		this.doctorCitizenId = doctorCitizenId;
 	}
-	
+
 	public String getPatientCitizenId() {
 		return patientCitizenId;
 	}
@@ -73,7 +73,7 @@ public class MedicalRecord implements Serializable {
 	public int getInstitutionId() {
 		return institutionId;
 	}
-	
+
 	public void setInstitutionId(int institutionId) {
 		this.institutionId = institutionId;
 	}
@@ -85,7 +85,7 @@ public class MedicalRecord implements Serializable {
 	public void setReportInfo(ReportInfo reportInfo) {
 		this.reportInfo = reportInfo;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "MedicalRecord [creationDate=" + creationDate + ", doctorCitizenId="
@@ -93,18 +93,18 @@ public class MedicalRecord implements Serializable {
 				+ ", reportInfo=" + reportInfo + "]";
 	}
 
-	public SignedMedicalRecord getSignedMedicalRecord() throws NoSuchAlgorithmException, InvalidKeyException, 
-	IOException, SignatureException, KeyStoreException, CertificateException, UnrecoverableEntryException {
-		
+	public SignedMedicalRecord getSignedMedicalRecord() throws NoSuchAlgorithmException, InvalidKeyException,
+			IOException, SignatureException, KeyStoreException, CertificateException, UnrecoverableEntryException {
+
 		RSAPrivateKey privateKey = (RSAPrivateKey) KeyUtils.getKeyPair(this.doctorCitizenId).getPrivate();
-		
+
 		byte[] objBytes = this.toString().getBytes();
 
 		Signature signature = Signature.getInstance("SHA256withRSA");
 		signature.initSign(privateKey);
 		signature.update(objBytes);
 		byte[] digitalSignature = signature.sign();
-		
+
 		return new SignedMedicalRecord(this, digitalSignature);
 	}
 }

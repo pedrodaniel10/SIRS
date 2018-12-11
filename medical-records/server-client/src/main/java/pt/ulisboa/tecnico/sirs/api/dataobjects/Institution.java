@@ -70,11 +70,11 @@ public class Institution implements Serializable {
         this.superuserCitizenId = superuserCitizenId;
     }
 
-	public String getAdminCitizenId() {
-		return adminCitizenId;
-	}
+    public String getAdminCitizenId() {
+        return adminCitizenId;
+    }
 
-	public void setAdminCitizenId(String adminCitizenId) {
-		this.adminCitizenId = adminCitizenId;
-	}
+    public void setAdminCitizenId(String adminCitizenId) {
+        this.adminCitizenId = adminCitizenId;
+    }
 }

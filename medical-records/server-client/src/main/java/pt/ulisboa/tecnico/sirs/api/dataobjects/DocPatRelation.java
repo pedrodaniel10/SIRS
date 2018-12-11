@@ -12,11 +12,11 @@ public class DocPatRelation implements Serializable {
 	private String adminCitizenId;
 	private Citizen doctor;
 	private Citizen patient;
-	
+
 	public DocPatRelation() {}
 
 	public DocPatRelation(int docPatRelationId, Date beginDate, Date endDate, String doctorCitizenId,
-			String patientCitizenId, String adminCitizenId) {
+						  String patientCitizenId, String adminCitizenId) {
 		this.docPatRelationId = docPatRelationId;
 		this.beginDate = beginDate;
 		this.endDate = endDate;
@@ -28,23 +28,23 @@ public class DocPatRelation implements Serializable {
 	public int getDocPatRelationId() {
 		return docPatRelationId;
 	}
-	
+
 	public void setDocPatRelationId(int docPatRelationId) {
 		this.docPatRelationId = docPatRelationId;
 	}
-	
+
 	public Date getBeginDate() {
 		return beginDate;
 	}
-	
+
 	public void setBeginDate(Date beginDate) {
 		this.beginDate = beginDate;
 	}
-	
+
 	public Date getEndDate() {
 		return endDate;
 	}
-	
+
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
