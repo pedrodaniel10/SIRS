@@ -3,7 +3,6 @@ package pt.ulisboa.tecnico.sirs.api;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
 import pt.ulisboa.tecnico.sirs.api.exceptions.CitizenException;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface MedicalRecordsService {
@@ -18,7 +17,7 @@ public interface MedicalRecordsService {
     Boolean getAddCitizensPage(Citizen subject);
     List<Citizen> addCitizen(Citizen subject, Citizen citizenToAdd) throws CitizenException;
     Citizen getEditCitizensPage(Citizen subject, String citizenToEdit);
-    List<Citizen> editCitizen(Citizen subject, Citizen citizenToEdit);
+    List<Citizen> editCitizen(Citizen subject, String citizenId, Citizen citizenToEdit);
 
     Institution getInstitution(Citizen subject, int institutionId);
     List<Institution> getInstitutions(Citizen subject);

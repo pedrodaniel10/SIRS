@@ -138,13 +138,17 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public List<Citizen> editCitizen(Citizen subject, Citizen citizenToEdit) {
+    public List<Citizen> editCitizen(Citizen subject, String citizenId, Citizen citizenToEdit) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "citizensPage", ""/*citizenToEdit.getCitizenId()*/);
+                ServiceUtils.parseRoleList(subject.getRoles()), "edit", "citizensPage", citizenToEdit.getCitizenId());
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                if (citizenToEdit != null) DatabaseUtils.updateCitizen(connection, citizenToEdit);
+                if (citizenToEdit != null) {
+                    citizenToEdit.setCitizenId(citizenId);
+                    citizenToEdit.addRole(Citizen.Role.PATIENT);
+                    DatabaseUtils.updateCitizen(connection, citizenToEdit);
+                }
                 return DatabaseUtils.getAllCitizens(connection);
             } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());

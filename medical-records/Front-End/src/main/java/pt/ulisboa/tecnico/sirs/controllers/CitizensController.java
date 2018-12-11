@@ -80,12 +80,12 @@ public class CitizensController {
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/edit", method = RequestMethod.POST)
-    public String postRequestEditProfile(Map<String, Object> model, @PathVariable String citizenId) {
+    public String postRequestEditProfile(@ModelAttribute("citizenToEdit")Citizen citizenToEdit, Map<String, Object> model, @PathVariable String citizenId) {
         log.info("Entering editCitizens function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        List<Citizen> citizens = service.editCitizen(subject, null);
+        List<Citizen> citizens = service.editCitizen(subject, citizenId, citizenToEdit);
         model.put("citizens", citizens);
         return (citizens != null)? "redirect:/citizens": "404";
     }
@@ -104,10 +104,12 @@ public class CitizensController {
                 return "profile";
             }
             Citizen profile = service.getCitizen(subject, citizenId);
-            model.put("profile", profile);
-            List<MedicalRecord> records = service.getMedicalRecordsByCitizenId(subject, profile.getCitizenId());
-            model.put("records", records);
-            return "profile";
+            if(profile != null) {
+                model.put("profile", profile);
+                List<MedicalRecord> records = service.getMedicalRecordsByCitizenId(subject, profile.getCitizenId());
+                model.put("records", records);
+                return (records != null)? "profile" : "404";
+            }
         }
         return "404";
     }
