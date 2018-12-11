@@ -79,7 +79,7 @@ to mysql config folder (usually **C:\Program Files\MariaDB X.X\data\\**, where c
 - Everytime the mariadb service starts, the key must be in the the config folder
 
 ## How to run
-The first time you want to run the project you need to run the following command in ***/medical-records/:
+The first time you want to run the project you need to run the following command in **/medical-records/**:
 
 ```
 mvn clean install
@@ -105,7 +105,7 @@ mvn clean spring-boot:run
 ### Handle possible SAXParseException
 
 #### Failed to read schema document 'xml.xsd', because 'http' access is not allowed due to restriction set by the accessExternalSchema property.
-Create a file named **jaxp.properties** (if it doesn't exist) under **/<path to jdk1.8.0>/jre/lib** and then write this line in it:
+Create a file named **jaxp.properties** (if it doesn't exist) under **/\<path to jdk1.8.0>/jre/lib** and then write this line in it:
 ```
 javax.xml.accessExternalSchema = all
 ```
