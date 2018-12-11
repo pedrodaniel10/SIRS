@@ -113,6 +113,8 @@ public class Queries {
 			+ "(SELECT institution_id FROM admins WHERE citizen_id=?)";
 
 	public static final String GET_INSTITUTION_BY_ID_QUERY = "SELECT * FROM institutions WHERE institution_id=?";
+	
+	public static final String GET_INSTITUTION_ID_BY_NAME_QUERY = "SELECT institution_id FROM institutions WHERE institution_name=?";
 
 	public static final String GET_INSTITUTION_BY_DOCTOR_ID_QUERY = "SELECT * FROM institutions WHERE institution_id IN "
 			+ "(SELECT institution_id FROM doctors WHERE citizen_id=?)";

@@ -279,7 +279,22 @@ public class DatabaseUtils {
 			
 			statement.executeUpdate();
 		}
-		setAdminInstitutionId(conn, institution.getAdminCitizenId(), institution.getInstitutionId());
+		
+		setAdminInstitutionId(conn, institution.getAdminCitizenId(), 
+				DatabaseUtils.getInstitutionIdByName(conn, institution.getInstitutionName()));
+	}
+	
+	private static int getInstitutionIdByName(Connection conn, String institutionName) throws SQLException {
+		int institutionId = -1;
+		try (PreparedStatement statement = conn.prepareStatement(Queries.GET_INSTITUTION_ID_BY_NAME_QUERY)) {
+			statement.setString(1, institutionName);
+			try (ResultSet rs = statement.executeQuery()) {
+				if (rs.next()) {
+					institutionId = rs.getInt("institution_id");
+				}
+			}
+		}
+		return institutionId;
 	}
 	
 	public static SignedMedicalRecord getMedicalRecordById(Connection conn, int recordId) throws SQLException, 
