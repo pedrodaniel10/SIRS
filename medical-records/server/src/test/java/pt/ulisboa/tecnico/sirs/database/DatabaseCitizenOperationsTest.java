@@ -71,9 +71,9 @@ public class DatabaseCitizenOperationsTest {
 	
 	@Test
 	public void updateCitizenWithRelations() throws SQLException, NoSuchAlgorithmException {
-		Citizen c2 = new Citizen("test_id2", "paulo", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "paulo2@paulos.pt",
+		Citizen c2 = new Citizen("test_id2", "paulo", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt",
 				"jálhedigo", "path", "super", new ArrayList<>());
-		Citizen c3 = new Citizen("test_id3", "paulo", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "paulo3@paulos.pt",
+		Citizen c3 = new Citizen("test_id3", "paulo", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt",
 				"jálhedigo", "path", "super", new ArrayList<>());
 		
 		c1.addRole(Citizen.Role.PATIENT);
