@@ -332,6 +332,14 @@ public class DatabaseUtils {
                 }
             }
         }
+        
+        signedMedicalRecord.getMedicalRecord().setDoctor(getCitizenById(conn, 
+        		signedMedicalRecord.getMedicalRecord().getDoctorCitizenId()));
+        signedMedicalRecord.getMedicalRecord().setPatient(getCitizenById(conn, 
+        		signedMedicalRecord.getMedicalRecord().getPatientCitizenId()));
+        signedMedicalRecord.getMedicalRecord().setInstitution(getInstitutionById(conn, 
+        		signedMedicalRecord.getMedicalRecord().getInstitutionId()));
+        
         return signedMedicalRecord;
     }
 
@@ -363,6 +371,16 @@ public class DatabaseUtils {
                 }
             }
         }
+        
+        for (SignedMedicalRecord signedMedicalRecord : signedMedicalRecords) {
+        	signedMedicalRecord.getMedicalRecord().setDoctor(getCitizenById(conn, 
+        			signedMedicalRecord.getMedicalRecord().getDoctorCitizenId()));
+        	signedMedicalRecord.getMedicalRecord().setPatient(getCitizenById(conn, 
+        			signedMedicalRecord.getMedicalRecord().getPatientCitizenId()));
+        	signedMedicalRecord.getMedicalRecord().setInstitution(getInstitutionById(conn, 
+        			signedMedicalRecord.getMedicalRecord().getInstitutionId()));
+        }
+        
         return signedMedicalRecords;
     }
 
