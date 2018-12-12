@@ -338,14 +338,9 @@ import Attributes.*
 					/* RULE: Doctors can create medical records */
 					rule DoctorsCanCreateMedicalRecords {
 						target clause Attributes.actionId == "create"
+						and attributes.validRelation == true
 						permit
 					}
-			
-	
-					/* RULE: Doctors cannot perform other actions in medical records */
-	                rule DoctorsCannotPerformOtherActions {
-	                    deny
-	                }
 				}
 				
 				/* Patients actions */

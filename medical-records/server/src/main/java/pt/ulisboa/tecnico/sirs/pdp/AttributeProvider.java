@@ -97,20 +97,9 @@ public class AttributeProvider extends BaseNamedAttributeProvider {
             /* Check if medical record patient is the subject id*/
             if(attributeGUID.getId().equals("pt.ulisboa.tecnico.sirs.medicalRecordPatient")) {
                 boolean result = false;
-                try {
-                    Connection connection = (new DatabaseConnector()).getConnection();
-                    List<DocPatRelation> relations = DatabaseUtils.getDocPatRelationsByDoctorId(connection, subjectId);
-                    for (DocPatRelation relation : relations) {
-                        if (relation.getPatientCitizenId().equals(resourceId)
-                                && relation.getBeginDate().compareTo(new Date()) <= 0
-                                && relation.getEndDate().compareTo(new Date()) >= 0) {
-                            result = true;
-                        }
-                    }
-                } catch (DatabaseConnectionException | SQLException e) {
-                    log.error(e.getMessage());
-                }
-                AttributeBag<?> validRelationAttrValue = Bags.singletonAttributeBag(StandardDatatypes.BOOLEAN, new BooleanValue(true));
+                if (resourceId.equals(subjectId))
+                    result = true;
+                AttributeBag<?> validRelationAttrValue = Bags.singletonAttributeBag(StandardDatatypes.BOOLEAN, new BooleanValue(result));
                 return (AttributeBag<AV>) validRelationAttrValue;
             }
 
