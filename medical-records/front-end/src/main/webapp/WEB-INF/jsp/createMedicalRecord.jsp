@@ -1,5 +1,6 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -15,7 +16,7 @@
                     <a href="/patients">Patients</a>
                 </li>
                 <li>
-                    <a href="/citizens/${newRecord.patient.citizenId}/profile">${newRecord.patient.citizenId}</a>
+                    <a href="/citizens/<c:out value="${newRecord.patient.citizenId}"/>/profile">${newRecord.patient.citizenId}</a>
                 </li>
                 <li class="active">
                     <strong>Create Medical Record</strong>
@@ -43,7 +44,7 @@
                         <h2 class="font-bold no-margins">
                             Patient
                         </h2>
-                        <small>${newRecord.patient.citizenName}</small>
+                        <small><c:out value="${newRecord.patient.citizenName}"/></small>
                     </div>
                     <img src="${newRecord.patient.profilePic}" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
                 </div>
@@ -55,7 +56,7 @@
                         <h2 class="font-bold no-margins">
                             Doctor
                         </h2>
-                        <small>${newRecord.doctor.citizenName}</small>
+                        <small><c:out value="${newRecord.doctor.citizenName}"/></small>
                     </div>
                     <img src="${newRecord.doctor.profilePic}" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
                 </div>
@@ -67,7 +68,7 @@
                         <h2 class="font-bold no-margins">
                             Institution
                         </h2>
-                        <small>${newRecord.institution.institutionName}</small>
+                        <small><c:out value="${newRecord.institution.institutionName}"/></small>
                     </div>
                     <img src="${newRecord.institution.profilePic}" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
                 </div>

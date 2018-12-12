@@ -70,11 +70,11 @@
                                                 </c:if>
                                             </c:forEach>
                                         </td>
-                                        <td class="center">${citizen.citizenId}</td>
-                                        <td class="center">${citizen.citizenName}</td>
-                                        <td class="center">${citizen.dateOfBirth}</td>
-                                        <td class="center">${citizen.gender.name()}</td>
-                                        <td class="center">${citizen.email}</td>
+                                        <td class="center"><c:out value="${citizen.citizenId}"/></td>
+                                        <td class="center"><c:out value="${citizen.citizenName}"/></td>
+                                        <td class="center"><c:out value="${citizen.dateOfBirth}"/></td>
+                                        <td class="center"><c:out value="${citizen.gender.name()}"/></td>
+                                        <td class="center"><c:out value="${citizen.email}"/></td>
                                         <td class="center">
                                             <a href="/citizens/${citizen.citizenId}/edit" class="btn btn-success btn-circle" type="button">
                                                 <i class="fa fa-pencil"></i>

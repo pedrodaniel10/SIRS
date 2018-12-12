@@ -52,11 +52,11 @@
                                 <c:forEach var="institution" items="${institutions}">
                                 <tr>
                                     <td class="center"><img src=${institution.profilePic} class="img-circle" style="width:50px;height:50px;"\></td>
-                                    <td class="center">${institution.institutionId}</td>
-                                    <td class="center">${institution.institutionName}</td>
-                                    <td class="center">${institution.institutionAddress}</td>
+                                    <td class="center"><c:out value="${institution.institutionId}"/></td>
+                                    <td class="center"><c:out value="${institution.institutionName}"/></td>
+                                    <td class="center"><c:out value="${institution.institutionAddress}"/></td>
                                     <td class="center">
-                                        <a href="/institutions/${institution.institutionId}/edit" class="btn btn-success btn-circle" type="button">
+                                        <a href="/institutions/<c:out value="${institution.institutionId}"/>/edit" class="btn btn-success btn-circle" type="button">
                                             <i class="fa fa-pencil"></i>
                                         </a>
                                     </td>

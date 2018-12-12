@@ -11,7 +11,7 @@
         <!--Top panel-->
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>${profile.citizenName}</h2>
+                <h2><c:out value="${profile.citizenName}"/></h2>
                 <ol class="breadcrumb">
                     <li class="active">
                         <strong>Profile</strong>
@@ -42,9 +42,9 @@
                             <div class="widget-head-color-box navy-bg p-lg text-center">
                                 <div class="m-b-md">
                                     <h2 class="font-bold no-margins">
-                                        ${profile.citizenName}
+                                        <c:out value="${profile.citizenName}"/>
                                     </h2>
-                                    <small>${profile.citizenName}</small>
+                                    <small><c:out value="${profile.citizenName}"/></small>
                                 </div>
                                 <img src="${profile.profilePic}" class="img-circle circle-border m-b-md" style="width:250px;height:250px;"\>
                             </div>
@@ -80,7 +80,7 @@
                                             <strong>Citizen ID:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                            ${profile.citizenId}
+                                            <c:out value="${profile.citizenId}"/>
                                         </div>
                                     </div>
                                     <div class="row wrapper border-bottom white-bg">
@@ -88,7 +88,7 @@
                                             <strong>Name:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                                ${profile.citizenName}
+                                            <c:out value="${profile.citizenName}"/>
                                         </div>
                                     </div>
                                     <div class="row wrapper border-bottom white-bg">
@@ -96,7 +96,7 @@
                                             <strong>Born:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                                ${profile.dateOfBirth}
+                                            <c:out value="${profile.dateOfBirth}"/>
                                         </div>
                                     </div>
                                     <div class="row wrapper border-bottom white-bg">
@@ -104,7 +104,7 @@
                                             <strong>Gender:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                                ${profile.gender.name()}
+                                            <c:out value="${profile.gender.name()}"/>
                                         </div>
                                     </div>
                                     <div class="row wrapper white-bg">
@@ -112,7 +112,7 @@
                                             <strong>Email:</strong>
                                         </div>
                                         <div class="col-lg-6" style="height:40px;line-height:40px;">
-                                                ${profile.email}
+                                            <c:out value="${profile.email}"/>
                                         </div>
                                     </div>
                                 </div>
