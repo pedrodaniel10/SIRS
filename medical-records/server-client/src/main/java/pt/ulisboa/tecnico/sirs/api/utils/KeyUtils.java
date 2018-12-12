@@ -13,7 +13,11 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Properties;
 
+import org.apache.maven.shared.utils.cli.javatool.JavaToolException;
 import org.bouncycastle.operator.OperatorCreationException;
+import org.codehaus.mojo.keytool.DefaultKeyTool;
+import org.codehaus.mojo.keytool.KeyTool;
+import org.codehaus.mojo.keytool.requests.KeyToolGenerateKeyPairRequest;
 import org.springframework.core.io.ClassPathResource;
 
 public class KeyUtils {
@@ -23,15 +27,33 @@ public class KeyUtils {
     private static final String KEYSTORE_FILE_NAME = "citizens.jks";
     private static final String PASSWORD_FILE_NAME = "application.properties";
 
-    public static void createKeyPair(String citizenId) throws IOException, InterruptedException {
+    public static void createKeyPair(String citizenId) throws IOException, InterruptedException, JavaToolException {
 
         String pwd = getPwd();
         String keyStoreFile = KEYSTORE_FILE_PATH + KEYSTORE_FILE_NAME;
-
+        
+        KeyToolGenerateKeyPairRequest request = new KeyToolGenerateKeyPairRequest();
+        request.setAlias(citizenId);
+        request.setKeystore(keyStoreFile);
+        request.setStorepass(pwd);
+        request.setValidity("365");
+        request.setKeysize("2048");
+        request.setSigalg("SHA256withRSA");
+        request.setKeyalg("RSA");
+        request.setDname("CN=" + citizenId);
+        request.setKeypass(pwd);
+        request.setExt("bc:c=ca:false");
+        request.setStoretype("pkcs12");
+        
+        DefaultKeyTool keyTool = new DefaultKeyTool();
+        System.out.print(keyTool.execute(request).getCommandline().toString());
+        
+        /*
         Process p = Runtime.getRuntime().exec("keytool -genkeypair -alias " + citizenId + " -keystore " + keyStoreFile
                 + " -storepass " + pwd + " -validity 365 -keysize 2048 -sigalg SHA256withRSA -keyalg RSA -dname "
                 + "CN=" + citizenId + " -noprompt -keypass " + pwd + " -ext bc:c=ca:false -storetype pkcs12");
         p.waitFor();
+        */
     }
 
     private static KeyStore getKeystore(String pwd) throws KeyStoreException, IOException, NoSuchAlgorithmException,

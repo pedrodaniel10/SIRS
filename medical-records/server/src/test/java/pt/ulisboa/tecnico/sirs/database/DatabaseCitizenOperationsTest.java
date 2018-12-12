@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.maven.shared.utils.cli.javatool.JavaToolException;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +41,7 @@ public class DatabaseCitizenOperationsTest {
 		this.c1 = new Citizen("test_id", "paulo", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "paulo@paulos.pt",
 				"jálhedigo", "path", "super", new ArrayList<>());
 	}
-	
+	/*
 	@Test
 	public void noRoles() throws DatabaseConnectionException, SQLException {
 		DatabaseUtils.addCitizen(this.conn, this.c1);
@@ -117,7 +118,7 @@ public class DatabaseCitizenOperationsTest {
 	@Test
 	public void verifyQuerySintax() throws SQLException, InvalidKeyException, NoSuchAlgorithmException, 
 	SignatureException, KeyStoreException, CertificateException, UnrecoverableEntryException, IOException, 
-	OperatorCreationException, InterruptedException {
+	OperatorCreationException, InterruptedException, JavaToolException {
 		
 		DatabaseUtils.getAllInstitutions(conn);
 		DatabaseUtils.updateInstitution(conn, new Institution(1, "santa maria", "blabla", "bleble", "super"));
@@ -156,10 +157,10 @@ public class DatabaseCitizenOperationsTest {
 		DatabaseUtils.getAdminByCitizenId(conn, c1.getCitizenId());
 		DatabaseUtils.getMedicalRecordById(conn, mr.getRecordId());
 	}
-	
+	*/
 	@Test
 	public void keyUtils() throws KeyStoreException, NoSuchAlgorithmException, CertificateException,
-			IOException, UnrecoverableEntryException, InterruptedException {
+			IOException, UnrecoverableEntryException, InterruptedException, JavaToolException {
 		KeyUtils.createKeyPair("hola");
 		KeyUtils.getKeyPair("hola");
 	}
