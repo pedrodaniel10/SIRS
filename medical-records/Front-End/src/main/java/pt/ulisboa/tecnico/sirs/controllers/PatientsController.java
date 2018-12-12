@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.Patient;
 
 @Controller
 public class PatientsController {
@@ -26,9 +27,9 @@ public class PatientsController {
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        List<Citizen> citizens = service.getPatients(subject);
-        model.put("citizens", citizens);
-        return (citizens != null)? "patients": "404";
+        List<Patient> patients = service.getPatients(subject);
+        model.put("patients", patients);
+        return (patients != null)? "patients": "404";
     }
 
 }

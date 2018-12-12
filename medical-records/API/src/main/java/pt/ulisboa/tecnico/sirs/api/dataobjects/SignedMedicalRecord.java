@@ -1,6 +1,7 @@
 package pt.ulisboa.tecnico.sirs.api.dataobjects;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.security.InvalidKeyException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -12,7 +13,7 @@ import java.security.interfaces.RSAPublicKey;
 
 import pt.ulisboa.tecnico.sirs.api.utils.KeyUtils;
 
-public class SignedMedicalRecord {
+public class SignedMedicalRecord implements Serializable {
 	private MedicalRecord medicalRecord;
 	private byte[] recordSignature;
 	private boolean isVerified;

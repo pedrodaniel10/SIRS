@@ -153,10 +153,10 @@
                                     <tbody>
                                     <c:forEach var="record" items="${records}">
                                     <tr>
-                                        <td>${record.creationDate}</td>
-                                        <td>Dr.Rajesh</td>
-                                        <td>${record.reportInfo.treatment}</td>
-                                        <td><a href="/citizens/${citizen.citizenId}/medrec/${record.recordId}/view" class="" data-toggle="tooltip" title="View">
+                                        <td>${record.medicalRecord.creationDate}</td>
+                                        <td>${record.medicalRecord.doctorCitizenId}</td>
+                                        <td>${record.medicalRecord.reportInfo.treatment}</td>
+                                        <td><a href="/citizens/${citizen.citizenId}/medrec/${record.medicalRecord.recordId}/view" class="" data-toggle="tooltip" title="View">
                                             <i class="fa fa-chevron-circle-right"></i></a>
                                         </td>
                                     </tr>

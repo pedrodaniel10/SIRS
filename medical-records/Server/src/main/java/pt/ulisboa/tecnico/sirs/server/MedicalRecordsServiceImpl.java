@@ -444,8 +444,8 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     /* --------------------------------------------------------------------------------------------------------------*/
 
     @Override
-    public List<Citizen> getPatients(Citizen subject) {
-        /*Boolean authorization = requestEvaluation(subject.getCitizenId(),
+    public List<Patient> getPatients(Citizen subject) {
+        Boolean authorization = requestEvaluation(subject.getCitizenId(),
                 ServiceUtils.parseRoleList(subject.getRoles()), "view", "patientsPage", "");
         if (authorization) {
             try {
@@ -454,7 +454,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
             } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());
             }
-        }*/
+        }
         return null;
     }
 
@@ -466,7 +466,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     private Citizen getSessionCitizenTest() {
         try {
             Connection connection = (new DatabaseConnector()).getConnection();
-            return DatabaseUtils.getCitizenById(connection, "1");
+            return DatabaseUtils.getCitizenById(connection, "5");
         } catch (DatabaseConnectionException | SQLException e) {
             e.printStackTrace();
         }

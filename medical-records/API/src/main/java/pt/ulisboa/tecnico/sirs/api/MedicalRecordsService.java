@@ -42,5 +42,5 @@ public interface MedicalRecordsService {
     Boolean getAddMedicalRecordPage(Citizen subject, String citizenId);
     List<SignedMedicalRecord> getMedicalRecordsByCitizenId(Citizen subject, String citizenId);
 
-    List<Citizen> getPatients(Citizen subject);
+    List<Patient> getPatients(Citizen subject);
 }

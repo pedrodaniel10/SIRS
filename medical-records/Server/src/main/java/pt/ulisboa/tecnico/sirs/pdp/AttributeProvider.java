@@ -1,10 +1,12 @@
 package pt.ulisboa.tecnico.sirs.pdp;
 
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
 import org.ow2.authzforce.core.pdp.api.*;
 import org.ow2.authzforce.core.pdp.api.io.NamedXacmlAttributeParser;
 import org.ow2.authzforce.core.pdp.api.io.NonIssuedLikeIssuedStrictXacmlAttributeParser;
@@ -16,6 +18,10 @@ import org.ow2.authzforce.xacml.identifiers.XacmlStatusCode;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.Attribute;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.AttributeDesignatorType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.Attributes;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.DocPatRelation;
+import pt.ulisboa.tecnico.sirs.database.DatabaseConnector;
+import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
+import pt.ulisboa.tecnico.sirs.database.utils.DatabaseUtils;
 import pt.ulisboa.tecnico.sirs.pdp.attributeprovider.AttributeProviderDescriptor;
 
 import static org.ow2.authzforce.xacml.identifiers.XacmlAttributeCategory.XACML_1_0_ACCESS_SUBJECT;
@@ -26,6 +32,9 @@ public class AttributeProvider extends BaseNamedAttributeProvider {
 
     private final Set<AttributeDesignatorType> supportedDesignatorTypes;
     private final Map<AttributeFqn, AttributeBag<?>> attrMap;
+
+    private static Logger log = Logger.getLogger(AttributeProvider.class);
+
 
     private AttributeProvider(final String id, final Map<AttributeFqn, AttributeBag<?>> attributeMap) throws IllegalArgumentException {
         super(id);
@@ -94,9 +103,27 @@ public class AttributeProvider extends BaseNamedAttributeProvider {
             }
             /* Check if doctor has valid relation with the subject id (medical record patient) */
             if(attributeGUID.getId().equals("pt.ulisboa.tecnico.sirs.validRelation")) {
-                /* This is where the query to the database is going to be
-                 * For now is returning true */
-                AttributeBag<?> validRelationAttrValue = Bags.singletonAttributeBag(StandardDatatypes.BOOLEAN, new BooleanValue(true));
+                boolean result = false;
+                try {
+                    Connection connection = (new DatabaseConnector()).getConnection();
+                    List<DocPatRelation> relations = DatabaseUtils.getDocPatRelationsByDoctorId(connection, subjectId);
+                    for (DocPatRelation relation : relations) {
+                        log.info("--RELATION--");
+                        log.info(relation.getBeginDate());
+                        log.info(relation.getEndDate());
+                        log.info(relation.getDoctor().getCitizenName());
+                        log.info(relation.getPatient().getCitizenName());
+                        log.info(resourceId);
+                        if (relation.getPatientCitizenId().equals(resourceId)
+                                && relation.getBeginDate().compareTo(new Date()) <= 0
+                                && relation.getEndDate().compareTo(new Date()) >= 0) {
+                            result = true;
+                        }
+                    }
+                } catch (DatabaseConnectionException | SQLException e) {
+                    log.error(e.getMessage());
+                }
+                AttributeBag<?> validRelationAttrValue = Bags.singletonAttributeBag(StandardDatatypes.BOOLEAN, new BooleanValue(result));
                 return (AttributeBag<AV>) validRelationAttrValue;
             }
         }

@@ -49,16 +49,16 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach var="citizen" items="${citizens}">
+                                <c:forEach var="patient" items="${patients}">
                                 <tr>
-                                    <td class="center"><img src="/img/david_williams.jpg" class="img-circle" style="width:50px;height:50px;"\></td>
-                                    <td class="center">24786562</td>
-                                    <td class="center">David Edward Williams</td>
-                                    <td class="center">20/08/1971</td>
-                                    <td class="center">Male</td>
-                                    <td class="center">davidwilliams@hotmail.com</td>
+                                    <td class="center"><img src="${patient.citizen.profilePic}" class="img-circle" style="width:50px;height:50px;"></td>
+                                    <td class="center">"${patient.citizen.citizenId}"</td>
+                                    <td class="center">"${patient.citizen.citizenName}"</td>
+                                    <td class="center">"${patient.citizen.dateOfBirth}"</td>
+                                    <td class="center">"${patient.citizen.gender.name()}"</td>
+                                    <td class="center">"${patient.citizen.email}"</td>
                                     <td class="center">
-                                        <a href="/citizens/20/profile" class="btn btn-success btn-circle" type="button">
+                                        <a href="/citizens/${patient.citizen.citizenId}/profile" class="btn btn-success btn-circle" type="button">
                                             <i class="fa fa-chevron-right"></i>
                                         </a>
                                     </td>

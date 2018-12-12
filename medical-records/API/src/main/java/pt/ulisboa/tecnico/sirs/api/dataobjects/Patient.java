@@ -1,6 +1,8 @@
 package pt.ulisboa.tecnico.sirs.api.dataobjects;
 
-public class Patient{
+import java.io.Serializable;
+
+public class Patient implements Serializable {
 	private int patientId;
 	private String citizenId;
 	private Citizen citizen;
