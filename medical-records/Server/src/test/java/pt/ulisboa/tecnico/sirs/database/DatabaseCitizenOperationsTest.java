@@ -154,7 +154,8 @@ public class DatabaseCitizenOperationsTest {
 		DatabaseUtils.getInstitutionById(conn, 1);
 		DatabaseUtils.getInstitutionByDoctorId(conn, c1.getCitizenId());
 		DatabaseUtils.getAdminByCitizenId(conn, c1.getCitizenId());
-		DatabaseUtils.getMedicalRecordById(conn, mr.getRecordId());
+		DatabaseUtils.getMedicalRecordById(conn, DatabaseUtils.getMedicalRecordsByPatientCitizenId(conn, 
+				mr.getPatientCitizenId()).get(0).getMedicalRecord().getRecordId());
 	}
 	
 	@Test

@@ -307,22 +307,32 @@ public class DatabaseUtils {
 			statement.setInt(1, recordId);
 			try (ResultSet rs = statement.executeQuery()) {
 				if (rs.next()) {
-					signedMedicalRecord.getMedicalRecord().setRecordId(rs.getInt("record_id"));
-					signedMedicalRecord.getMedicalRecord().getReportInfo().setHeartBeat(rs.getInt("heart_beat"));
-					signedMedicalRecord.getMedicalRecord().getReportInfo().setBloodPressure(rs.getInt("blood_pressure"));
-					signedMedicalRecord.getMedicalRecord().getReportInfo().setSugar(rs.getInt("sugar"));
-					signedMedicalRecord.getMedicalRecord().getReportInfo().setHaemoglobin(rs.getInt("haemoglobin"));
-					signedMedicalRecord.getMedicalRecord().setCreationDate(rs.getTimestamp("creation_date"));
-					signedMedicalRecord.getMedicalRecord().setDoctorCitizenId(rs.getString("doctor_citizen_id"));
-					signedMedicalRecord.getMedicalRecord().getReportInfo().setTreatment(rs.getString("treatment"));
-					signedMedicalRecord.getMedicalRecord().setPatientCitizenId(rs.getString("patient_citizen_id"));
-					signedMedicalRecord.getMedicalRecord().setInstitutionId(rs.getInt("institution_id"));
-					signedMedicalRecord.getMedicalRecord().getReportInfo().setGeneralReport(rs.getString("general_report"));
+					signedMedicalRecord.setRecordId(rs.getInt("record_id"));
+					signedMedicalRecord.setHeartBeat(rs.getInt("heart_beat"));
+					signedMedicalRecord.setBloodPressure(rs.getInt("blood_pressure"));
+					signedMedicalRecord.setSugar(rs.getInt("sugar"));
+					signedMedicalRecord.setHaemoglobin(rs.getInt("haemoglobin"));
+					signedMedicalRecord.setCreationDate(rs.getTimestamp("creation_date"));
+					signedMedicalRecord.setDoctorCitizenId(rs.getString("doctor_citizen_id"));
+					signedMedicalRecord.setTreatment(rs.getString("treatment"));
+					signedMedicalRecord.setPatientCitizenId(rs.getString("patient_citizen_id"));
+					signedMedicalRecord.setInstitutionId(rs.getInt("institution_id"));
+					signedMedicalRecord.setGeneralReport(rs.getString("general_report"));
 					signedMedicalRecord.setRecordSignature(rs.getBytes("record_signature"));
 					signedMedicalRecord.verifySignature();
 				}
 			}
 		}
+		
+		signedMedicalRecord.setDoctor(getCitizenById(conn, 
+        		signedMedicalRecord.getMedicalRecord().getDoctorCitizenId()));
+        
+		signedMedicalRecord.setPatient(getCitizenById(conn, 
+        		signedMedicalRecord.getMedicalRecord().getPatientCitizenId()));
+        
+		signedMedicalRecord.setInstitution(getInstitutionById(conn, 
+        		signedMedicalRecord.getMedicalRecord().getInstitutionId()));
+		
 		return signedMedicalRecord;
 	}
 	
@@ -336,17 +346,17 @@ public class DatabaseUtils {
 			try (ResultSet rs = statement.executeQuery()) {
 				while (rs.next()) {
 					SignedMedicalRecord signedMedicalRecord = new SignedMedicalRecord();
-					signedMedicalRecord.getMedicalRecord().setRecordId(rs.getInt("record_id"));
-					signedMedicalRecord.getMedicalRecord().getReportInfo().setHeartBeat(rs.getInt("heart_beat"));
-					signedMedicalRecord.getMedicalRecord().getReportInfo().setBloodPressure(rs.getInt("blood_pressure"));
-					signedMedicalRecord.getMedicalRecord().getReportInfo().setSugar(rs.getInt("sugar"));
-					signedMedicalRecord.getMedicalRecord().getReportInfo().setHaemoglobin(rs.getInt("haemoglobin"));
-					signedMedicalRecord.getMedicalRecord().setCreationDate(rs.getTimestamp("creation_date"));
-					signedMedicalRecord.getMedicalRecord().setDoctorCitizenId(rs.getString("doctor_citizen_id"));
-					signedMedicalRecord.getMedicalRecord().getReportInfo().setTreatment(rs.getString("treatment"));
-					signedMedicalRecord.getMedicalRecord().setPatientCitizenId(rs.getString("patient_citizen_id"));
-					signedMedicalRecord.getMedicalRecord().setInstitutionId(rs.getInt("institution_id"));
-					signedMedicalRecord.getMedicalRecord().getReportInfo().setGeneralReport(rs.getString("general_report"));
+					signedMedicalRecord.setRecordId(rs.getInt("record_id"));
+					signedMedicalRecord.setHeartBeat(rs.getInt("heart_beat"));
+					signedMedicalRecord.setBloodPressure(rs.getInt("blood_pressure"));
+					signedMedicalRecord.setSugar(rs.getInt("sugar"));
+					signedMedicalRecord.setHaemoglobin(rs.getInt("haemoglobin"));
+					signedMedicalRecord.setCreationDate(rs.getTimestamp("creation_date"));
+					signedMedicalRecord.setDoctorCitizenId(rs.getString("doctor_citizen_id"));
+					signedMedicalRecord.setTreatment(rs.getString("treatment"));
+					signedMedicalRecord.setPatientCitizenId(rs.getString("patient_citizen_id"));
+					signedMedicalRecord.setInstitutionId(rs.getInt("institution_id"));
+					signedMedicalRecord.setGeneralReport(rs.getString("general_report"));
 					signedMedicalRecord.setRecordSignature(rs.getBytes("record_signature"));
 					signedMedicalRecord.verifySignature();
 					
@@ -354,6 +364,18 @@ public class DatabaseUtils {
 				}
 			}
 		}
+		
+		for (SignedMedicalRecord signedMedicalRecord : signedMedicalRecords) {
+        	signedMedicalRecord.getMedicalRecord().setDoctor(getCitizenById(conn, 
+        			signedMedicalRecord.getMedicalRecord().getDoctorCitizenId()));
+        	
+        	signedMedicalRecord.getMedicalRecord().setPatient(getCitizenById(conn, 
+        			signedMedicalRecord.getMedicalRecord().getPatientCitizenId()));
+        	
+        	signedMedicalRecord.getMedicalRecord().setInstitution(getInstitutionById(conn, 
+        			signedMedicalRecord.getMedicalRecord().getInstitutionId()));
+        }
+		
 		return signedMedicalRecords;
 	}
 	

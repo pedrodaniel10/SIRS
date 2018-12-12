@@ -22,6 +22,9 @@ public class MedicalRecord implements Serializable {
 	private String patientCitizenId;
 	private int institutionId;
 	private ReportInfo reportInfo;
+	private Citizen doctor;
+	private Citizen patient;
+	private Institution institution;
 	
 	public MedicalRecord() {
 		this.reportInfo = new ReportInfo();
@@ -84,6 +87,54 @@ public class MedicalRecord implements Serializable {
 
 	public void setReportInfo(ReportInfo reportInfo) {
 		this.reportInfo = reportInfo;
+	}
+	
+	public Citizen getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Citizen doctor) {
+		this.doctor = doctor;
+	}
+
+	public Citizen getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Citizen patient) {
+		this.patient = patient;
+	}
+
+	public Institution getInstitution() {
+		return institution;
+	}
+
+	public void setInstitution(Institution institution) {
+		this.institution = institution;
+	}
+	
+	public void setHeartBeat(int heartBeat) {
+		this.reportInfo.setHeartBeat(heartBeat);
+	}
+	
+	public void setBloodPressure(int bloodPressure) {
+		this.reportInfo.setBloodPressure(bloodPressure);
+	}
+	
+	public void setSugar(int sugar) {
+		this.reportInfo.setSugar(sugar);
+	}
+	
+	public void setHaemoglobin(int haemoglobin) {
+		this.reportInfo.setHaemoglobin(haemoglobin);
+	}
+	
+	public void setTreatment(String treatment) {
+		this.reportInfo.setTreatment(treatment);
+	}
+	
+	public void setGeneralReport(String generalReport) {
+		this.reportInfo.setGeneralReport(generalReport);
 	}
 	
 	@Override
