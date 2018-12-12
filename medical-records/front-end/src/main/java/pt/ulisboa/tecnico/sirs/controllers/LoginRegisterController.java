@@ -28,13 +28,18 @@ public class LoginRegisterController {
     public String getRequestLogin(Map<String, Object> model,
                                   @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
     	log.info("Entering getRequestLogin function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
 
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-
-        model.put("login", new Login());
-        Citizen result = service.getLoginPage(subject);
-        return result==null? "login": "redirect:/citizens/" + result.getCitizenId() + "/profile";
+                model.put("login", new Login());
+                Citizen result = service.getLoginPage(subject);
+                return result==null? "login": "redirect:/citizens/" + result.getCitizenId() + "/profile";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -42,17 +47,22 @@ public class LoginRegisterController {
                                    @ModelAttribute("login") Login login,
                                    @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
 
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-        Citizen result;
-        try {
-        	result = service.postLoginPage(authTokenCookie, DataObjectCreation.createLogin(login));
-        } catch (LoginFailedException e) {
-            model.put("error", e.getMessage());
-        	return "login";
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                service.getSessionCitizen(authTokenCookie);
+                Citizen result;
+                try {
+                    result = service.postLoginPage(authTokenCookie, DataObjectCreation.createLogin(login));
+                } catch (LoginFailedException e) {
+                    model.put("error", e.getMessage());
+                    return "login";
+                }
+                return result==null? "login": "redirect:/citizens/" + result.getCitizenId() + "/profile";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
         }
-        return result==null? "login": "redirect:/citizens/" + result.getCitizenId() + "/profile";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -60,10 +70,15 @@ public class LoginRegisterController {
                                    @ModelAttribute("login") Login login,
                                    @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
 
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        service.postLogoutPage(authTokenCookie);
-        return "redirect:/";
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                service.postLogoutPage(authTokenCookie);
+                return "redirect:/";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 
 }

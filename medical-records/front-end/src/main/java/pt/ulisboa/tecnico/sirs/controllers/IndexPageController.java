@@ -1,9 +1,14 @@
 package pt.ulisboa.tecnico.sirs.controllers;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.remoting.rmi.RmiProxyFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,13 +27,18 @@ public class IndexPageController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String getRequest(Map<String, Object> model,
-							 @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
+							 @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) throws RemoteException, NotBoundException, MalformedURLException {
         log.info("Entering getRequest function");
-		MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+		MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+        	try{
+				Citizen subject = service.getSessionCitizen(authTokenCookie);
 
-		Citizen subject = service.getSessionCitizen(authTokenCookie);
-
-		Citizen result = service.getWelcomePage(subject);
-		return result==null? "welcome": "404";
+				Citizen result = service.getWelcomePage(subject);
+				return result==null? "welcome": "404";
+			} catch (RuntimeException e) {
+				service = (MedicalRecordsService) context.getBean("server2");
+			}
+		}
 	}
 }

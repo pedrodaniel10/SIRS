@@ -31,64 +31,84 @@ public class InstitutionsController {
     public String getRequestInstitutions(Map<String, Object> model,
                                          @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering getInstitutions function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
 
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-
-        model.put("citizen", subject);
-        List<Institution> institutions = service.getInstitutions(subject);
-        model.put("institutions", institutions);
-        return (institutions != null)? "institutions": "404";
+                model.put("citizen", subject);
+                List<Institution> institutions = service.getInstitutions(subject);
+                model.put("institutions", institutions);
+                return (institutions != null)? "institutions": "404";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 
     @RequestMapping(value = "/institutions/add", method = RequestMethod.GET)
     public String getRequestAddInstitution(Map<String, Object> model,
                                            @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering addInstitutions function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
 
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-
-        model.put("citizen", subject);
-        model.put("newInstitution", new Institution(true));
-        boolean result = service.getAddInstitutionsPage(subject);
-        return result? "addInstitution": "404";
+                model.put("citizen", subject);
+                model.put("newInstitution", new Institution(true));
+                boolean result = service.getAddInstitutionsPage(subject);
+                return result? "addInstitution": "404";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 
     @RequestMapping(value = "/institutions/add", method = RequestMethod.POST)
     public String postRequestAddInstitution(@ModelAttribute("newInstitution")Institution institution, Map<String, Object> model,
                                             @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering addInstitutions function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
 
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-
-        model.put("citizen", subject);
-        Institution institutionToAdd = DataObjectCreation.createInstitution(institution, subject.getCitizenId());
-        try {
-            List<Institution> institutions = service.addInstitution(subject, institutionToAdd);
-            model.put("institutions", institutions);
-            if (institutions != null) return "institutions";
-        } catch (AdminException e) {
-            model.put("newInstitution", institutionToAdd);
-            model.put("error", e.getMessage());
-            return "addInstitution";
+                model.put("citizen", subject);
+                Institution institutionToAdd = DataObjectCreation.createInstitution(institution, subject.getCitizenId());
+                try {
+                    List<Institution> institutions = service.addInstitution(subject, institutionToAdd);
+                    model.put("institutions", institutions);
+                    if (institutions != null) return "institutions";
+                } catch (AdminException e) {
+                    model.put("newInstitution", institutionToAdd);
+                    model.put("error", e.getMessage());
+                    return "addInstitution";
+                }
+                return "404";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
         }
-        return "404";
     }
 
     @RequestMapping(value = "/institutions/{institutionId}/edit", method = RequestMethod.GET)
     public String getRequestEditInstitution(Map<String, Object> model, @PathVariable String institutionId,
                                             @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering editInstitutions function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
 
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-
-        model.put("citizen", subject);
-        Institution institutionToEdit = service.getEditInstitutionPage(subject, NumberUtils.toInt(institutionId));
-        model.put("institutionToEdit", institutionToEdit);
-        return (institutionToEdit != null)? "editInstitution": "404";
+                model.put("citizen", subject);
+                Institution institutionToEdit = service.getEditInstitutionPage(subject, NumberUtils.toInt(institutionId));
+                model.put("institutionToEdit", institutionToEdit);
+                return (institutionToEdit != null)? "editInstitution": "404";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 
     @RequestMapping(value = "/institutions/{institutionId}/edit", method = RequestMethod.POST)
@@ -96,13 +116,18 @@ public class InstitutionsController {
                                              @PathVariable String institutionId,
                                              @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering editInstitutions function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
 
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-
-        model.put("citizen", subject);
-        List<Institution> institutions = service.editInstitution(subject, NumberUtils.toInt(institutionId), institution);
-        model.put("institutions", institutions);
-        return (institutions != null)? "redirect:/institutions" : "404";
+                model.put("citizen", subject);
+                List<Institution> institutions = service.editInstitution(subject, NumberUtils.toInt(institutionId), institution);
+                model.put("institutions", institutions);
+                return (institutions != null)? "redirect:/institutions" : "404";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 }

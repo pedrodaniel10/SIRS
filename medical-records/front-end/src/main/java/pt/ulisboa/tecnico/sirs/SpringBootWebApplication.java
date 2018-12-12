@@ -49,21 +49,29 @@ public class SpringBootWebApplication extends SpringBootServletInitializer {
     }
 
     @Bean
-    RmiProxyFactoryBean service() {
+    RmiProxyFactoryBean server1() {
         RmiProxyFactoryBean bean = new RmiProxyFactoryBean();
         bean.setServiceInterface(MedicalRecordsService.class);
         try {
             Naming.lookup("rmi://localhost:1099/MedicalRecordsService");
             bean.setServiceUrl("rmi://localhost:1099/MedicalRecordsService");
         } catch (MalformedURLException | RemoteException | NotBoundException e) {
-            try {
-                log.info("Unable to connect to primary server. Trying secondary server..");
-                Naming.lookup("rmi://localhost:1098/MedicalRecordsService");
-                bean.setServiceUrl("rmi://localhost:1098/MedicalRecordsService");
-            } catch (MalformedURLException | RemoteException | NotBoundException se) {
-                log.error("Unable to connect to both servers");
-                System.exit(-1);
-            }
+            log.error("Unable to connect to both servers");
+            System.exit(-1);
+        }
+        return bean;
+    }
+
+    @Bean
+    RmiProxyFactoryBean server2() {
+        RmiProxyFactoryBean bean = new RmiProxyFactoryBean();
+        bean.setServiceInterface(MedicalRecordsService.class);
+        try {
+            Naming.lookup("rmi://localhost:1098/MedicalRecordsService");
+            bean.setServiceUrl("rmi://localhost:1098/MedicalRecordsService");
+        } catch (MalformedURLException | RemoteException | NotBoundException e) {
+            log.error("Unable to connect to both servers");
+            System.exit(-1);
         }
         return bean;
     }
