@@ -1,12 +1,15 @@
 package pt.ulisboa.tecnico.sirs.server;
 
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import org.apache.log4j.Logger;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
 import pt.ulisboa.tecnico.sirs.api.exceptions.AdminException;
 import pt.ulisboa.tecnico.sirs.api.exceptions.CitizenException;
-import pt.ulisboa.tecnico.sirs.api.exceptions.LoginFailed;
+import pt.ulisboa.tecnico.sirs.api.exceptions.LoginFailedException;
 import pt.ulisboa.tecnico.sirs.database.DatabaseConnector;
 import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
 import pt.ulisboa.tecnico.sirs.database.utils.DatabaseUtils;
@@ -23,6 +26,8 @@ import java.util.List;
 public class MedicalRecordsServiceImpl implements MedicalRecordsService {
 
     private static Logger log = Logger.getLogger(MedicalRecordsService.class);
+
+    private static final int HOURS_EXPIRE_SESSION = 1;
 
     private Boolean requestEvaluation(String subjectId, List<String> roles, String action, String resourceName, String resourceId) {
         PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
@@ -60,15 +65,37 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public Citizen postLoginPage(Login login) throws LoginFailed {
+    public Citizen postLoginPage(String authToken, Login login) throws LoginFailedException {
         List<String> roles = new ArrayList<>();
 
         if (requestEvaluation("", roles, "edit", "loginRegisterPage", "")){
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                
 
-            } catch (DatabaseConnectionException e ) {
+                Citizen citizen = DatabaseUtils.getCitizenByEmail(connection, login.getEmail());
+
+                if (citizen == null) {
+                    throw new LoginFailedException("The email doesn't exist.");
+                }
+
+                if (!Arrays.equals(citizen.getPassword(), new Citizen(login.getPassword()).getPassword())){
+                    throw new LoginFailedException("The password is wrong.");
+                }
+
+                Date startSession = new Date();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(startSession);
+                calendar.add(Calendar.HOUR_OF_DAY, HOURS_EXPIRE_SESSION);
+                Date endSession = calendar.getTime();
+
+                Timestamp startSessionTimestamp = new Timestamp(startSession.getTime());
+
+                Timestamp endSessionTimestamp = new Timestamp(endSession.getTime());
+                Session newSession = new Session(authToken, citizen.getCitizenId(), startSessionTimestamp, endSessionTimestamp);
+
+                DatabaseUtils.addSession(connection, newSession);
+                return citizen;
+            } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());
             }
         }

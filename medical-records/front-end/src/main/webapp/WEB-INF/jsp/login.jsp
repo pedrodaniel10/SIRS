@@ -26,6 +26,8 @@
             <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
         </form:form>
 
+        <span style="color: red; "><small>${error}</small></span>
+
     </div>
 </div>
 

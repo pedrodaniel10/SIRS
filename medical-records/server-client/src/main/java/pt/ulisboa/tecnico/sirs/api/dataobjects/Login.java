@@ -1,6 +1,8 @@
 package pt.ulisboa.tecnico.sirs.api.dataobjects;
 
-public class Login {
+import java.io.Serializable;
+
+public class Login implements Serializable {
     private String email = "";
     private String password = "";
 

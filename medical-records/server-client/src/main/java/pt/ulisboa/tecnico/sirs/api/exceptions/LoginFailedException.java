@@ -1,12 +1,12 @@
 package pt.ulisboa.tecnico.sirs.api.exceptions;
 
-public class LoginFailed extends Exception{
+public class LoginFailedException extends Exception{
     private static final long serialVersionUID = 1L;
 
-    public LoginFailed() {
+    public LoginFailedException() {
     }
 
-    public LoginFailed(String message) {
+    public LoginFailedException(String message) {
         super(message);
     }
 }

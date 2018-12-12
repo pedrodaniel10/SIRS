@@ -127,7 +127,7 @@ CREATE TABLE doc_pat_relations(
 
 
 CREATE TABLE sessions(
-    session_id VARCHAR(10) NOT NULL,
+    session_id VARCHAR(100) NOT NULL,
     citizen_id VARCHAR(10) NOT NULL,
     creation_time DATETIME NOT NULL,
     end_time DATETIME NOT NULL,

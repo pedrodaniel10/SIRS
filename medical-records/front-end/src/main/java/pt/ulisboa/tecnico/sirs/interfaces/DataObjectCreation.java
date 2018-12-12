@@ -3,6 +3,7 @@ package pt.ulisboa.tecnico.sirs.interfaces;
 import org.apache.log4j.Logger;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Institution;
+import pt.ulisboa.tecnico.sirs.api.dataobjects.Login;
 
 public class DataObjectCreation {
 
@@ -22,6 +23,10 @@ public class DataObjectCreation {
                 institution.getProfilePic(), superuserCitizenId);
         newInstitution.setAdminCitizenId(institution.getAdminCitizenId());
         return newInstitution;
+    }
+
+    public static Login createLogin(Login login){
+        return new Login(login.getEmail(), login.getPassword());
     }
 
 }
