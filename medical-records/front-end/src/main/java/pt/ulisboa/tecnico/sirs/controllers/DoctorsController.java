@@ -27,55 +27,75 @@ public class DoctorsController {
     public String getRequestDoctors(Map<String, Object> model,
                                     @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering getDoctors function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
 
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-
-        model.put("citizen", subject);
-        List<Doctor> doctors = service.getDoctors(subject);
-        model.put("doctors", doctors);
-        return (doctors != null)? "doctors": "404";
+                model.put("citizen", subject);
+                List<Doctor> doctors = service.getDoctors(subject);
+                model.put("doctors", doctors);
+                return (doctors != null)? "doctors": "404";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 
     @RequestMapping(value = "/doctors/add", method = RequestMethod.GET)
     public String getRequestAddDoctor(Map<String, Object> model,
                                       @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering addDoctor function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
 
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-
-        model.put("citizen", subject);
-        List<Doctor> doctors = service.getAddDoctorPage(subject);
-        model.put("doctors", doctors);
-        return (doctors != null)? "addDoctor": "404";
+                model.put("citizen", subject);
+                List<Doctor> doctors = service.getAddDoctorPage(subject);
+                model.put("doctors", doctors);
+                return (doctors != null)? "addDoctor": "404";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 
     @RequestMapping(value = "/doctors/{citizenId}/add", method = RequestMethod.GET)
     public String postRequestAddDoctor(Map<String, Object> model, @PathVariable String citizenId,
                                        @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering addDoctor function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
 
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-
-        model.put("citizen", subject);
-        List<Doctor> doctors = service.addDoctor(subject, citizenId);
-        model.put("doctors", doctors);
-        return (doctors != null)? "doctors": "404";
+                model.put("citizen", subject);
+                List<Doctor> doctors = service.addDoctor(subject, citizenId);
+                model.put("doctors", doctors);
+                return (doctors != null)? "doctors": "404";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 
     @RequestMapping(value = "/doctors/{citizenId}/delete", method = RequestMethod.GET)
     public String getRequestDeleteDoctor(Map<String, Object> model, @PathVariable String citizenId,
                                          @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering deleteDoctors function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
 
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-
-        model.put("citizen", subject);
-        List<Doctor> doctors = service.deleteDoctor(subject, citizenId);
-        model.put("doctors", doctors);
-        return (doctors != null) ? "doctors" : "404";
+                model.put("citizen", subject);
+                List<Doctor> doctors = service.deleteDoctor(subject, citizenId);
+                model.put("doctors", doctors);
+                return (doctors != null) ? "doctors" : "404";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 }

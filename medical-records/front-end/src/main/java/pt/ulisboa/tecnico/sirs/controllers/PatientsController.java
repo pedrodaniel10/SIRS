@@ -26,14 +26,19 @@ public class PatientsController {
     public String getRequestAppointments(Map<String, Object> model,
                                          @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
         log.info("Entering getPatients function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
 
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-
-        model.put("citizen", subject);
-        List<Patient> patients = service.getPatients(subject);
-        model.put("patients", patients);
-        return (patients != null)? "patients": "404";
+                model.put("citizen", subject);
+                List<Patient> patients = service.getPatients(subject);
+                model.put("patients", patients);
+                return (patients != null)? "patients": "404";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 
 }

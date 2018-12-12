@@ -25,29 +25,40 @@ public class AppointmentsController {
     public String getRequestAppointments(Map<String, Object> model,
                                          @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering getAppointments function");
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try {
 
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-        model.put("citizen", subject);
-        List<DocPatRelation> appointments = service.getAppointments(subject);
-        model.put("appointments", appointments);
-        return (appointments != null)? "appointments": "404";
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
+                model.put("citizen", subject);
+                List<DocPatRelation> appointments = service.getAppointments(subject);
+                model.put("appointments", appointments);
+                return (appointments != null) ? "appointments" : "404";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 
     @RequestMapping(value = "/appointments/add", method = RequestMethod.GET)
     public String getRequestAddAppointment(Map<String, Object> model,
                                            @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering addAppointments function");
-
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-        model.put("citizen", subject);
-        DocPatRelation appointment = new DocPatRelation(true);
-        appointment.setPatient(new Citizen());
-        appointment.setDoctor(new Citizen());
-        model.put("newAppointment", appointment);
-        boolean result = service.getAddAppointmentsPage(subject);
-        return result? "addAppointment": "404";
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
+                model.put("citizen", subject);
+                DocPatRelation appointment = new DocPatRelation(true);
+                appointment.setPatient(new Citizen());
+                appointment.setDoctor(new Citizen());
+                model.put("newAppointment", appointment);
+                boolean result = service.getAddAppointmentsPage(subject);
+                return result? "addAppointment": "404";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 
     @RequestMapping(value = "/appointments/add", method = RequestMethod.POST)
@@ -55,12 +66,18 @@ public class AppointmentsController {
                                             @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering addAppointments function");
 
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-        model.put("citizen", subject);
-        List<DocPatRelation> appointments = service.addAppointment(subject, appointment);
-        model.put("appointments", appointments);
-        return (appointments != null)? "appointments": "404";
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
+                model.put("citizen", subject);
+                List<DocPatRelation> appointments = service.addAppointment(subject, appointment);
+                model.put("appointments", appointments);
+                return (appointments != null)? "appointments": "404";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 
     @RequestMapping(value = "/appointments/{appointmentId}/delete", method = RequestMethod.GET)
@@ -68,11 +85,17 @@ public class AppointmentsController {
                                               @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering deleteAppointments function");
 
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-        model.put("citizen", subject);
-        List<DocPatRelation> appointments = service.deleteAppointment(subject, NumberUtils.toInt(appointmentId));
-        model.put("appointments", appointments);
-        return (appointments != null)? "appointments": "404";
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
+                model.put("citizen", subject);
+                List<DocPatRelation> appointments = service.deleteAppointment(subject, NumberUtils.toInt(appointmentId));
+                model.put("appointments", appointments);
+                return (appointments != null)? "appointments": "404";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 }

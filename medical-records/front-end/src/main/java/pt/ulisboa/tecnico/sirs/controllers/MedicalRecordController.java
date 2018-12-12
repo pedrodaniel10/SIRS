@@ -31,39 +31,50 @@ public class MedicalRecordController {
     public String getRequestMedicalRecord(Map<String, Object> model, @PathVariable String citizenId, @PathVariable String idMedRec,
                                           @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering getMedicalRecord function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
 
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
 
-        model.put("citizen", subject);
-        SignedMedicalRecord record = service.getMedicalRecord(subject, citizenId, NumberUtils.toInt(idMedRec));
-        if (record == null)
-            return "404";
-        model.put("record", record);
-        return "medicalRecord";
+                model.put("citizen", subject);
+                SignedMedicalRecord record = service.getMedicalRecord(subject, citizenId, NumberUtils.toInt(idMedRec));
+                if (record == null)
+                    return "404";
+                model.put("record", record);
+                return "medicalRecord";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/medrec/create", method = RequestMethod.GET)
     public String getRequestCreateMedicalRecord(Map<String, Object> model, @PathVariable String citizenId,
                                                 @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering createMedicalRecord function");
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
 
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-
-        model.put("citizen", subject);
-        boolean result = service.getAddMedicalRecordPage(subject, citizenId);
-        if (result) {
-            Citizen patient = service.getMedicalRecordCitizen(subject, citizenId);
-            Institution institution = service.getMedicalRecordInstitution(subject, subject.getCitizenId());
-            MedicalRecord record = new MedicalRecord(true);
-            record.setDoctor(subject);
-            record.setPatient(patient);
-            record.setInstitution(institution);
-            model.put("newRecord", record);
-            model.put("newReportInfo", record.getReportInfo());
+                model.put("citizen", subject);
+                boolean result = service.getAddMedicalRecordPage(subject, citizenId);
+                if (result) {
+                    Citizen patient = service.getMedicalRecordCitizen(subject, citizenId);
+                    Institution institution = service.getMedicalRecordInstitution(subject, subject.getCitizenId());
+                    MedicalRecord record = new MedicalRecord(true);
+                    record.setDoctor(subject);
+                    record.setPatient(patient);
+                    record.setInstitution(institution);
+                    model.put("newRecord", record);
+                    model.put("newReportInfo", record.getReportInfo());
+                }
+                return result ? "createMedicalRecord" : "404";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
         }
-        return result ? "createMedicalRecord" : "404";
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/medrec/create", method = RequestMethod.POST)
@@ -71,20 +82,26 @@ public class MedicalRecordController {
             Map<String, Object> model, @PathVariable String citizenId,
                 @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
 
-        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-        Citizen subject = service.getSessionCitizen(authTokenCookie);
-        model.put("citizen", subject);
-        Citizen patient = service.getMedicalRecordCitizen(subject, citizenId);
-        Institution institution = service.getMedicalRecordInstitution(subject, subject.getCitizenId());
-        MedicalRecord record = new MedicalRecord(true);
-        record.setDoctor(subject);
-        record.setPatient(patient);
-        record.setInstitution(institution);
-        record.setReportInfo(info);
-        service.addMedicalRecord(subject, record);
-        model.put("record", record);
+        MedicalRecordsService service = (MedicalRecordsService) context.getBean("server1");
+        while (true) {
+            try{
+                Citizen subject = service.getSessionCitizen(authTokenCookie);
+                model.put("citizen", subject);
+                Citizen patient = service.getMedicalRecordCitizen(subject, citizenId);
+                Institution institution = service.getMedicalRecordInstitution(subject, subject.getCitizenId());
+                MedicalRecord record = new MedicalRecord(true);
+                record.setDoctor(subject);
+                record.setPatient(patient);
+                record.setInstitution(institution);
+                record.setReportInfo(info);
+                service.addMedicalRecord(subject, record);
+                model.put("record", record);
 
-        return "medicalRecord";
+                return "medicalRecord";
+            } catch (RuntimeException e) {
+                service = (MedicalRecordsService) context.getBean("server2");
+            }
+        }
     }
 
 }
