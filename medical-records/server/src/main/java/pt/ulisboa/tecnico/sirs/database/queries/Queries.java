@@ -124,5 +124,7 @@ public class Queries {
 	public static final String GET_ADMIN_BY_INSTITUTION_ID_QUERY = "SELECT * FROM admins WHERE institution_id=?";
 
 	public static final String GET_ADMIN_ID_BY_INSTITUTION_ID_QUERY = "SELECT citizen_id FROM admins WHERE institution_id=?";
+
+	public static final String GET_CITIZEN_BY_EMAIL_QUERY = "SELECT * FROM citizens WHERE email=?";
 	
 }

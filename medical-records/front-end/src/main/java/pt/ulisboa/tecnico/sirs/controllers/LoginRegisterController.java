@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Login;
+import pt.ulisboa.tecnico.sirs.api.exceptions.LoginFailed;
 import pt.ulisboa.tecnico.sirs.utils.AuthenticationTokenUtils;
 
 @Controller
@@ -54,8 +55,12 @@ public class LoginRegisterController {
         response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
         Citizen subject = service.getSessionCitizen(authTokenCookie);
-
-        Citizen result = service.postLoginPage(subject);
+        Citizen result = null;
+        try {
+        	result = service.postLoginPage(login);
+        } catch (LoginFailed loginFailed) {
+        	
+        }
         return result==null? "login": "redirect:/citizens/" + result.getCitizenId() + "/profile";
     }
 

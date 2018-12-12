@@ -37,12 +37,20 @@ public class DatabaseUtils {
         }
         return citizens.get(0);
     }
+    
+    public static Citizen getCitizenByEmail(Connection conn, String email) throws SQLException {
+        List<Citizen> citizens = getCitizens(conn, Queries.GET_CITIZEN_BY_EMAIL_QUERY, email);
+        if (citizens.isEmpty()) {
+            return null;
+        }
+        return citizens.get(0);
+    }
 
-    private static List<Citizen> getCitizens(Connection conn, String queryStatement, String citizenId) throws SQLException {
+    private static List<Citizen> getCitizens(Connection conn, String queryStatement, String column) throws SQLException {
         List<Citizen> citizens = new ArrayList<>();
         try (PreparedStatement statement = conn.prepareStatement(queryStatement)) {
-            if (citizenId != null) {
-                statement.setString(1, citizenId);
+            if (column != null) {
+                statement.setString(1, column);
             }
 
             try (ResultSet rs = statement.executeQuery()) {
