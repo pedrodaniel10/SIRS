@@ -6,6 +6,7 @@ import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
 import pt.ulisboa.tecnico.sirs.api.exceptions.AdminException;
 import pt.ulisboa.tecnico.sirs.api.exceptions.CitizenException;
+import pt.ulisboa.tecnico.sirs.api.exceptions.LoginFailed;
 import pt.ulisboa.tecnico.sirs.database.DatabaseConnector;
 import pt.ulisboa.tecnico.sirs.database.exceptions.DatabaseConnectionException;
 import pt.ulisboa.tecnico.sirs.database.utils.DatabaseUtils;
@@ -59,14 +60,17 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
-    public Citizen postLoginPage(Citizen citizen) {
+    public Citizen postLoginPage(Login login) throws LoginFailed {
         List<String> roles = new ArrayList<>();
 
         if (requestEvaluation("", roles, "edit", "loginRegisterPage", "")){
-            if (citizen.getCitizenId() == null) {
-                return null;
+            try {
+                Connection connection = (new DatabaseConnector()).getConnection();
+                
+
+            } catch (DatabaseConnectionException e ) {
+                log.error(e.getMessage());
             }
-            return citizen;
         }
 
         return null;

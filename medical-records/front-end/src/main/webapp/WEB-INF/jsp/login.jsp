@@ -1,4 +1,5 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -15,19 +16,15 @@
         </div>
         <h3>Welcome to MedRec</h3>
         <p>Login in.</p>
-        <form class="m-t" role="form" action="/src/main/webapp">
+        <form:form method="POST" class="m-t" role="form" modelAttribute="login">
             <div class="form-group">
-                <input type="email" class="form-control" placeholder="Username" required="true">
+                <form:input type="text" class="form-control" placeholder="email" required="true" path="email"/>
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" placeholder="Password" required="true">
+                <form:input type="password" class="form-control" placeholder="password" required="true" path="password"/>
             </div>
             <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
-
-            <a href="#"><small>Forgot password?</small></a>
-            <p class="text-muted text-center"><small>Do not have an account?</small></p>
-            <a class="btn btn-sm btn-white btn-block" href="/register">Create an account</a>
-        </form>
+        </form:form>
 
     </div>
 </div>

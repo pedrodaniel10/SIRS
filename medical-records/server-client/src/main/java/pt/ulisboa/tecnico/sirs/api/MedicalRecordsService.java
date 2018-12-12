@@ -5,12 +5,13 @@ import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
 import java.util.List;
 import pt.ulisboa.tecnico.sirs.api.exceptions.AdminException;
 import pt.ulisboa.tecnico.sirs.api.exceptions.CitizenException;
+import pt.ulisboa.tecnico.sirs.api.exceptions.LoginFailed;
 
 public interface MedicalRecordsService {
     Citizen getWelcomePage(Citizen citizen);
 
     Citizen getLoginPage(Citizen citizen);
-    Citizen postLoginPage(Citizen citizen);
+    Citizen postLoginPage(Login login) throws LoginFailed;
     Citizen getSessionCitizen(String authToken);
 
     Citizen getCitizen(Citizen subject, String citizenId);
