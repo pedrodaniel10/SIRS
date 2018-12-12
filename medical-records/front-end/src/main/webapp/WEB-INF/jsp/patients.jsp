@@ -52,13 +52,13 @@
                                 <c:forEach var="patient" items="${patients}">
                                 <tr>
                                     <td class="center"><img src="${patient.citizen.profilePic}" class="img-circle" style="width:50px;height:50px;"></td>
-                                    <td class="center">${patient.citizen.citizenId}</td>
-                                    <td class="center">${patient.citizen.citizenName}</td>
-                                    <td class="center">${patient.citizen.dateOfBirth}</td>
-                                    <td class="center">${patient.citizen.gender.name()}</td>
-                                    <td class="center">${patient.citizen.email}</td>
+                                    <td class="center"><c:out value="${patient.citizen.citizenId}"/></td>
+                                    <td class="center"><c:out value="${patient.citizen.citizenName}"/></td>
+                                    <td class="center"><c:out value="${patient.citizen.dateOfBirth}"/></td>
+                                    <td class="center"><c:out value="${patient.citizen.gender.name()}"/></td>
+                                    <td class="center"><c:out value="${patient.citizen.email}"/></td>
                                     <td class="center">
-                                        <a href="/citizens/${patient.citizen.citizenId}/profile" class="btn btn-success btn-circle" type="button">
+                                        <a href="/citizens/<c:out value="${patient.citizen.citizenId}"/>/profile" class="btn btn-success btn-circle" type="button">
                                             <i class="fa fa-chevron-right"></i>
                                         </a>
                                     </td>

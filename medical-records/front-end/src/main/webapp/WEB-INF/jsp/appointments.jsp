@@ -56,13 +56,13 @@
                                 <c:forEach var="appointment" items="${appointments}">
                                 <tr>
                                     <td class="center"><img src="${appointment.patient.profilePic}" class="img-circle" style="width:50px;height:50px;"\></td>
-                                    <td class="center">${appointment.patientCitizenId}</td>
-                                    <td class="center">${appointment.patient.citizenName}</td>
-                                    <td class="center">${appointment.patient.dateOfBirth}</td>
-                                    <td class="center">${appointment.patient.gender}</td>
-                                    <td class="center">${appointment.doctor.citizenName}</td>
-                                    <td class="center">${appointment.beginDate}</td>
-                                    <td class="center">${appointment.endDate}</td>
+                                    <td class="center"><c:out value="${appointment.patientCitizenId}"/></td>
+                                    <td class="center"><c:out value="${appointment.patient.citizenName}"/></td>
+                                    <td class="center"><c:out value="${appointment.patient.dateOfBirth}"/></td>
+                                    <td class="center"><c:out value="${appointment.patient.gender}"/></td>
+                                    <td class="center"><c:out value="${appointment.doctor.citizenName}"/></td>
+                                    <td class="center"><c:out value="${appointment.beginDate}"/></td>
+                                    <td class="center"><c:out value="${appointment.endDate}"/></td>
                                     <td class="center">
                                         <a href="/appointments/${appointment.docPatRelationId}/delete" class="btn btn-danger btn-circle" type="button">
                                             <i class="fa fa-trash-o"></i>
