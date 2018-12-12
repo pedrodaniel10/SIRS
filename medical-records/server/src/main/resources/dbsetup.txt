@@ -1,0 +1,141 @@
+DROP TABLE IF EXISTS sessions, doc_pat_relations, medical_records, doctors, admins, institutions, patients, sup_cit_relations, superusers, citizens;
+
+
+
+CREATE TABLE citizens(
+    citizen_id VARCHAR(10) NOT NULL,
+    citizen_name VARCHAR(255) NOT NULL,
+    gender VARCHAR(255) NOT NULL,
+    date_of_birth DATE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password BLOB(256) NOT NULL,
+    profile_pic VARCHAR(255) NOT NULL,
+    superuser_citizen_id VARCHAR(10),
+
+    PRIMARY KEY (citizen_id),
+    FOREIGN KEY (superuser_citizen_id) REFERENCES citizens(citizen_id)
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=1;
+
+
+
+CREATE TABLE superusers(
+    superuser_id INT NOT NULL AUTO_INCREMENT,
+    citizen_id VARCHAR(10) NOT NULL,
+    superuser_citizen_id VARCHAR(10),
+
+    PRIMARY KEY (superuser_id),
+    FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id),
+    FOREIGN KEY (superuser_citizen_id) REFERENCES citizens(citizen_id)
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=2;
+
+
+
+CREATE TABLE patients(
+    patient_id INT NOT NULL AUTO_INCREMENT,
+    citizen_id VARCHAR(10) NOT NULL,
+
+    PRIMARY KEY (patient_id),
+    FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id)
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=4;
+
+
+
+CREATE TABLE institutions(
+    institution_id INT NOT NULL AUTO_INCREMENT,
+    institution_name VARCHAR(100) UNIQUE NOT NULL,
+    institution_address VARCHAR(255) NOT NULL,
+    profile_pic VARCHAR(255) NOT NULL,
+    superuser_citizen_id VARCHAR(10),
+
+    PRIMARY KEY (institution_id),
+    FOREIGN KEY (superuser_citizen_id) REFERENCES citizens(citizen_id)
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=5;
+
+
+
+CREATE TABLE admins(
+    admin_id INT NOT NULL AUTO_INCREMENT,
+    citizen_id VARCHAR(10) NOT NULL,
+    institution_id INT,
+    superuser_citizen_id VARCHAR(10),
+
+    PRIMARY KEY (admin_id),
+    FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id),
+    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
+    FOREIGN KEY (superuser_citizen_id) REFERENCES citizens(citizen_id)
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=6;
+
+
+
+CREATE TABLE doctors(
+    doctor_id INT NOT NULL AUTO_INCREMENT,
+    citizen_id VARCHAR(10) NOT NULL,
+    institution_id INT,
+    superuser_citizen_id VARCHAR(10),
+    admin_citizen_id VARCHAR(10),
+
+    PRIMARY KEY (doctor_id),
+    FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id),
+    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
+    FOREIGN KEY (superuser_citizen_id) REFERENCES citizens(citizen_id),
+    FOREIGN KEY (admin_citizen_id) REFERENCES citizens(citizen_id)
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=7;
+
+
+
+CREATE TABLE medical_records (
+    record_id INT NOT NULL AUTO_INCREMENT,
+    heart_beat INT,
+    blood_pressure INT,
+    sugar INT,
+    haemoglobin INT,
+    creation_date DATETIME NOT NULL,
+    doctor_citizen_id VARCHAR(10) NOT NULL,
+    treatment VARCHAR(255) NOT NULL,
+    patient_citizen_id VARCHAR(10) NOT NULL,
+    institution_id INT NOT NULL,
+    general_report VARCHAR(255) NOT NULL,
+    record_signature BLOB(256) NOT NULL,
+
+    CONSTRAINT heart_beat_ck CHECK (heart_beat BETWEEN 0 AND 200),
+    CONSTRAINT blood_pressure_ck CHECK (blood_pressure BETWEEN 0 AND 100),
+    CONSTRAINT sugar_ck CHECK (sugar BETWEEN 0 AND 100),
+    CONSTRAINT haemoglobin_ck CHECK (haemoglobin BETWEEN 0 AND 100),
+
+    PRIMARY KEY (record_id),
+    FOREIGN KEY (doctor_citizen_id) REFERENCES citizens(citizen_id),
+    FOREIGN KEY (patient_citizen_id) REFERENCES citizens(citizen_id),
+    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)   
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=8;
+
+
+
+CREATE TABLE doc_pat_relations(
+    doc_pat_relation_id INT NOT NULL AUTO_INCREMENT,
+    begin_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    doctor_citizen_id VARCHAR(10) NOT NULL,
+    patient_citizen_id VARCHAR(10) NOT NULL,
+    admin_citizen_id VARCHAR(10) NOT NULL,
+
+    PRIMARY KEY (doc_pat_relation_id),
+    FOREIGN KEY (doctor_citizen_id) REFERENCES citizens(citizen_id),
+    FOREIGN KEY (patient_citizen_id) REFERENCES citizens(citizen_id),
+    FOREIGN KEY (admin_citizen_id) REFERENCES citizens(citizen_id)
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=9;
+
+
+
+CREATE TABLE sessions(
+    session_id VARCHAR(100) NOT NULL,
+    citizen_id VARCHAR(10) NOT NULL,
+    creation_time DATETIME NOT NULL,
+    end_time DATETIME NOT NULL,
+
+    PRIMARY KEY (session_id),
+    FOREIGN KEY (citizen_id) REFERENCES citizens(citizen_id)
+) ENGINE=InnoDB ENCRYPTED=YES ENCRYPTION_KEY_ID=10;
+
+INSERT  INTO  citizens  VALUES  ("super","super","MALE","1900-1-1","superguy","aaaa","agaga",NULL);
+INSERT INTO institutions(institution_name,institution_address,profile_pic,superuser_citizen_id)
+    VALUES ("santa maria","blabla","bleble","super");
