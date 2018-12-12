@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.sirs.controllers;
 
 import java.util.Map;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -26,14 +27,10 @@ public class MedicalRecordController {
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        SignedMedicalRecord record = service.getMedicalRecord(subject, citizenId, idMedRec);
+        SignedMedicalRecord record = service.getMedicalRecord(subject, citizenId, NumberUtils.toInt(idMedRec));
         if (record == null)
             return "404";
-        Citizen doctor = service.getCitizen(subject, record.getMedicalRecord().getDoctorCitizenId());
-        Institution institution = service.getInstitution(subject, record.getMedicalRecord().getInstitutionId());
         model.put("record", record);
-        model.put("doctor", doctor);
-        model.put("institution", institution);
         return "medicalRecord";
     }
 
@@ -43,20 +40,15 @@ public class MedicalRecordController {
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
         Citizen subject = service.getSessionCitizen();
         model.put("citizen", subject);
-        Citizen doctor = service.getCitizen(subject, subject.getCitizenId());
-        if (doctor != null) {
-            boolean result = service.getAddMedicalRecordPage(subject, citizenId);
-            if (result) {
-                Citizen patient = service.getCitizen(subject, citizenId);
-                Doctor doc = service.getDoctor(subject, citizenId);
-                Institution institution = service.getInstitution(subject, doc.getInstitutionId());
-                model.put("patient", patient);
-                model.put("doctor", doctor);
-                model.put("institution", institution);
-            }
-            return result ? "createMedicalRecord" : "404";
+        boolean result = service.getAddMedicalRecordPage(subject, citizenId);
+        if (result) {
+            Citizen patient = service.getCitizen(subject, citizenId);
+            Doctor doc = service.getDoctor(subject, citizenId);
+            Institution institution = service.getInstitution(subject, doc.getInstitutionId());
+            model.put("patient", patient);
+            model.put("institution", institution);
         }
-        return null;
+        return result ? "createMedicalRecord" : "404";
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/medrec/create", method = RequestMethod.POST)

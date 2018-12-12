@@ -1,4 +1,6 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -16,10 +18,10 @@
                     <a href="/citizens">Citizens</a>
                 </li>
                 <li>
-                    <a href="/citizens/${citizen.citizenId}/view">${citizen.citizenName}</a>
+                    <a href="/citizens/${record.medicalRecord.patient.citizenId}/profile">${record.medicalRecord.patient.citizenName}</a>
                 </li>
                 <li class="active">
-                    <strong>#${record.recordId}</strong>
+                    <strong>#${record.medicalRecord.recordId}</strong>
                 </li>
             </ol>
         </div>
@@ -33,33 +35,32 @@
                     <br class="m-b-md">
                         <div>
                             <div>
-                                <span>Number:</span>
-                                <span class="pull-right">${record.recordId}</span>
+                                <b><span>Number:</span></b><br>
+                                <span>${record.medicalRecord.recordId}</span><br>
                             </div>
 
                             <div>
-                                <span>Creation Date:</span>
-                                <span class="pull-right">${record.creationDate}</span>
+                                <b><span>Creation Date:</span></b><br>
+                                <span>${record.medicalRecord.creationDate}</span><br>
                             </div>
 
                             <div>
-                                <span>Treatment:</span>
-                                <span class="pull-right">${record.reportInfo.treatment}</span>
+                                <b><span>Treatment:</span></b><br>
+                                <span>${record.medicalRecord.reportInfo.treatment}</span><br>
                             </div>
 
                             <div>
-                                <span>Signature Patient:</span>
-                                <span class="pull-right text-info">Verified</span>
-                            </div>
-
-                            <div>
-                                <span>Signature Doctor:</span>
-                                <span class="pull-right text-info">Verified</span>
-                            </div>
-
-                            <div>
-                                <span>Signature Institution:</span>
-                                <span class="pull-right text-info">Verified</span>
+                                <b><span>Signature Doctor:</span></b><br>
+                                <c:if test="${record.verified}">
+                                    <span class="text-info" style="color: greenyellow">
+                                    Verified
+                                    </span>
+                                </c:if>
+                                <c:if test="${!record.verified}">
+                                    <span class="text-info" style="color: red">
+                                    Not Verified
+                                    </span>
+                                </c:if>
                             </div>
                             <br/><br/><br/><br/><br/>
                         </div>
@@ -72,9 +73,9 @@
                         <h2 class="font-bold no-margins">
                             Patient
                         </h2>
-                        <small>${citizen.citizenName}</small>
+                        <small>${record.medicalRecord.patient.citizenName}</small>
                     </div>
-                    <img src="${citizen.profilePic}" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
+                    <img src="${record.medicalRecord.patient.profilePic}" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
                 </div>
             </div>
 
@@ -84,9 +85,9 @@
                         <h2 class="font-bold no-margins">
                             Doctor
                         </h2>
-                        <small>${doctor.citizenName}</small>
+                        <small>${record.medicalRecord.doctor.citizenName}</small>
                     </div>
-                    <img src="${doctor.profilePic}" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
+                    <img src="${record.medicalRecord.doctor.profilePic}" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
                 </div>
             </div>
 
@@ -96,9 +97,9 @@
                         <h2 class="font-bold no-margins">
                             Institution
                         </h2>
-                        <small>${institution.institutionName}</small>
+                        <small>${record.medicalRecord.institution.institutionName}</small>
                     </div>
-                    <img src="${institution.profilePic}" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
+                    <img src="${record.medicalRecord.institution.profilePic}" class="img-circle circle-border m-b-md" style="width:150px;height:150px;">
                 </div>
             </div>
 
@@ -122,27 +123,27 @@
                             <div class="body">
                                 <div class="mypost-list">
                                     <div class="post-box">
-                                        <p>${record.reportInfo.generalReport}</p>
+                                        <p>${record.medicalRecord.reportInfo.generalReport}</p>
                                     </div>
                                     <hr>
                                     <div class="post-box">
                                         <h4 class="font-bold">General Report</h4>
                                         <hr>
-                                        <h5>Heart Beat <span class="pull-right">${record.reportInfo.heartBeat}</span></h5>
+                                        <h5>Heart Beat <span class="pull-right">${record.medicalRecord.reportInfo.heartBeat}</span></h5>
                                         <div class="progress">
-                                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow=${record.reportInfo.heartBeat} aria-valuemin="0" aria-valuemax="100" style="width: 40%"> <span class="sr-only">40% Complete (success)</span> </div>
+                                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow=${record.medicalRecord.reportInfo.heartBeat} aria-valuemin="0" aria-valuemax="100" style="width: 40%"> <span class="sr-only">40% Complete (success)</span> </div>
                                         </div>
-                                        <h5>Blood Pressure<span class="pull-right">${record.reportInfo.bloodPressure}</span></h5>
+                                        <h5>Blood Pressure<span class="pull-right">${record.medicalRecord.reportInfo.bloodPressure}</span></h5>
                                         <div class="progress">
-                                            <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow=${record.reportInfo.bloodPressure} aria-valuemin="0" aria-valuemax="100" style="width:90%;"> <span class="sr-only">50% Complete</span> </div>
+                                            <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow=${record.medicalRecord.reportInfo.bloodPressure} aria-valuemin="0" aria-valuemax="100" style="width:90%;"> <span class="sr-only">50% Complete</span> </div>
                                         </div>
-                                        <h5>Sugar<span class="pull-right">${record.reportInfo.sugar}</span></h5>
+                                        <h5>Sugar<span class="pull-right">${record.medicalRecord.reportInfo.sugar}</span></h5>
                                         <div class="progress">
-                                            <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow=${record.reportInfo.sugar} aria-valuemin="0" aria-valuemax="100" style="width:50%;"> <span class="sr-only">50% Complete</span> </div>
+                                            <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow=${record.medicalRecord.reportInfo.sugar} aria-valuemin="0" aria-valuemax="100" style="width:50%;"> <span class="sr-only">50% Complete</span> </div>
                                         </div>
-                                        <h5>Haemoglobin<span class="pull-right">${record.reportInfo.haemoglobin}</span></h5>
+                                        <h5>Haemoglobin<span class="pull-right">${record.medicalRecord.reportInfo.haemoglobin}</span></h5>
                                         <div class="progress">
-                                            <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow=${record.reportInfo.haemoglobin} aria-valuemin="0" aria-valuemax="100" style="width:70%;"> <span class="sr-only">50% Complete</span> </div>
+                                            <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow=${record.medicalRecord.reportInfo.haemoglobin} aria-valuemin="0" aria-valuemax="100" style="width:70%;"> <span class="sr-only">50% Complete</span> </div>
                                         </div>
                                     </div>
                                 </div>

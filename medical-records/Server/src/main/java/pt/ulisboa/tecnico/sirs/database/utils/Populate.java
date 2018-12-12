@@ -62,7 +62,7 @@ public class Populate {
         Citizen patient4 = new Citizen("10", "Arato Andras", Citizen.Gender.MALE, LocalDate.of(1944, 8, 22),
                 "aratos.andras@gmail.com", "aratos", "/img/patient4.png", "1", rolePatient);
 
-        DocPatRelation dpr1 = new DocPatRelation(1, Date.valueOf("2018-12-1"), Date.valueOf("2018-12-2"), doctor1.getCitizenId(), patient1.getCitizenId(), admin1.getCitizenId());
+        DocPatRelation dpr1 = new DocPatRelation(1, Date.valueOf("2018-12-10"), Date.valueOf("2018-12-15"), doctor1.getCitizenId(), patient1.getCitizenId(), admin1.getCitizenId());
         DocPatRelation dpr2 = new DocPatRelation(2, Date.valueOf("2018-12-5"), Date.valueOf("2018-12-6"), doctor1.getCitizenId(), patient2.getCitizenId(), admin1.getCitizenId());
         DocPatRelation dpr3 = new DocPatRelation(3, Date.valueOf("2018-12-12"), Date.valueOf("2018-12-14"), doctor2.getCitizenId(), patient3.getCitizenId(), admin2.getCitizenId());
         DocPatRelation dpr4 = new DocPatRelation(4, Date.valueOf("2018-12-12"), Date.valueOf("2018-12-14"), doctor2.getCitizenId(), patient4.getCitizenId(), admin2.getCitizenId());

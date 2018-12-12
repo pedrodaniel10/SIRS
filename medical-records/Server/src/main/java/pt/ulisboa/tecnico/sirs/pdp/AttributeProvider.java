@@ -96,11 +96,24 @@ public class AttributeProvider extends BaseNamedAttributeProvider {
 
             /* Check if medical record patient is the subject id*/
             if(attributeGUID.getId().equals("pt.ulisboa.tecnico.sirs.medicalRecordPatient")) {
-                /* This is where the query to the database is going to be
-                 * For now is returning true */
+                boolean result = false;
+                try {
+                    Connection connection = (new DatabaseConnector()).getConnection();
+                    List<DocPatRelation> relations = DatabaseUtils.getDocPatRelationsByDoctorId(connection, subjectId);
+                    for (DocPatRelation relation : relations) {
+                        if (relation.getPatientCitizenId().equals(resourceId)
+                                && relation.getBeginDate().compareTo(new Date()) <= 0
+                                && relation.getEndDate().compareTo(new Date()) >= 0) {
+                            result = true;
+                        }
+                    }
+                } catch (DatabaseConnectionException | SQLException e) {
+                    log.error(e.getMessage());
+                }
                 AttributeBag<?> validRelationAttrValue = Bags.singletonAttributeBag(StandardDatatypes.BOOLEAN, new BooleanValue(true));
                 return (AttributeBag<AV>) validRelationAttrValue;
             }
+
             /* Check if doctor has valid relation with the subject id (medical record patient) */
             if(attributeGUID.getId().equals("pt.ulisboa.tecnico.sirs.validRelation")) {
                 boolean result = false;
@@ -108,12 +121,6 @@ public class AttributeProvider extends BaseNamedAttributeProvider {
                     Connection connection = (new DatabaseConnector()).getConnection();
                     List<DocPatRelation> relations = DatabaseUtils.getDocPatRelationsByDoctorId(connection, subjectId);
                     for (DocPatRelation relation : relations) {
-                        log.info("--RELATION--");
-                        log.info(relation.getBeginDate());
-                        log.info(relation.getEndDate());
-                        log.info(relation.getDoctor().getCitizenName());
-                        log.info(relation.getPatient().getCitizenName());
-                        log.info(resourceId);
                         if (relation.getPatientCitizenId().equals(resourceId)
                                 && relation.getBeginDate().compareTo(new Date()) <= 0
                                 && relation.getEndDate().compareTo(new Date()) >= 0) {

@@ -404,13 +404,13 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     /* --------------------------------------------------------------------------------------------------------------*/
 
     @Override
-    public SignedMedicalRecord getMedicalRecord(Citizen subject, String citizenId, String idMedRec) {
+    public SignedMedicalRecord getMedicalRecord(Citizen subject, String citizenId, int idMedRec) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
                 ServiceUtils.parseRoleList(subject.getRoles()), "view", "medicalRecordsPage", citizenId);
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                return DatabaseUtils.getMedicalRecordsByPatientCitizenId(connection, citizenId).get(0); //this is wrong, we need to get one by id
+                return DatabaseUtils.getMedicalRecordById(connection, idMedRec);
             } catch (DatabaseConnectionException | SQLException | InvalidKeyException | SignatureException | NoSuchAlgorithmException | KeyStoreException | CertificateException | UnrecoverableEntryException | IOException e ) {
                 log.error(e.getMessage());
             }
@@ -466,7 +466,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     private Citizen getSessionCitizenTest() {
         try {
             Connection connection = (new DatabaseConnector()).getConnection();
-            return DatabaseUtils.getCitizenById(connection, "5");
+            return DatabaseUtils.getCitizenById(connection, "4");
         } catch (DatabaseConnectionException | SQLException e) {
             e.printStackTrace();
         }
