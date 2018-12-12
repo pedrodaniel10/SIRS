@@ -121,7 +121,7 @@ public class AttributeProvider extends BaseNamedAttributeProvider {
                     Connection connection = (new DatabaseConnector()).getConnection();
                     List<DocPatRelation> relations = DatabaseUtils.getDocPatRelationsByDoctorId(connection, subjectId);
                     for (DocPatRelation relation : relations) {
-                        if (relation.getPatientCitizenId().equals(resourceId)
+                        if (relation.getPatient().getCitizenId().equals(resourceId)
                                 && relation.getBeginDate().compareTo(new Date()) <= 0
                                 && relation.getEndDate().compareTo(new Date()) >= 0) {
                             result = true;

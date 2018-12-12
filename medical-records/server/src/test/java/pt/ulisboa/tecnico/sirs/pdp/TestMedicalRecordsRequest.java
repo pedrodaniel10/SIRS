@@ -54,17 +54,6 @@ public class TestMedicalRecordsRequest {
 	}
 
 	@Test
-	public void doctorViewMedicalRecords() {
-
-		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();
-		ArrayList<String> roles = new ArrayList<>();
-		roles.add("DOCTOR");
-		boolean result = policyEnforcementPoint.requestEvaluation("",
-				roles, "view", "medicalRecordsPage", "");
-		assertTrue(result);
-	}
-
-	@Test
 	public void doctorCreatesMedicalRecords() {
 
 		PolicyEnforcementPoint policyEnforcementPoint = new PolicyEnforcementPoint();

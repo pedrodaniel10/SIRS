@@ -340,6 +340,7 @@ import Attributes.*
 						target clause Attributes.actionId == "create"
 						permit
 					}
+			
 	
 					/* RULE: Doctors cannot perform other actions in medical records */
 	                rule DoctorsCannotPerformOtherActions {

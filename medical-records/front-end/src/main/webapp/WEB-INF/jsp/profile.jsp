@@ -156,7 +156,7 @@
                                         <td>${record.medicalRecord.creationDate}</td>
                                         <td>${record.medicalRecord.doctor.citizenName}</td>
                                         <td>${record.medicalRecord.reportInfo.treatment}</td>
-                                        <td><a href="/citizens/${citizen.citizenId}/medrec/${record.medicalRecord.recordId}/view" class="" data-toggle="tooltip" title="View">
+                                        <td><a href="/citizens/${record.medicalRecord.patient.citizenId}/medrec/${record.medicalRecord.recordId}/view" class="" data-toggle="tooltip" title="View">
                                             <i class="fa fa-chevron-circle-right"></i></a>
                                         </td>
                                     </tr>
