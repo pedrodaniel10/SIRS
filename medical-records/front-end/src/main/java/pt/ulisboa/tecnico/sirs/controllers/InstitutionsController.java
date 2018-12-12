@@ -1,7 +1,7 @@
 package pt.ulisboa.tecnico.sirs.controllers;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +17,6 @@ import pt.ulisboa.tecnico.sirs.api.dataobjects.Citizen;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.Institution;
 import pt.ulisboa.tecnico.sirs.api.exceptions.AdminException;
 import pt.ulisboa.tecnico.sirs.interfaces.DataObjectCreation;
-
-import java.util.List;
-import java.util.Map;
 import pt.ulisboa.tecnico.sirs.utils.AuthenticationTokenUtils;
 
 @Controller
@@ -31,14 +28,10 @@ public class InstitutionsController {
     private ApplicationContext context;
 
     @RequestMapping(value = "/institutions", method = RequestMethod.GET)
-    public String getRequestInstitutions(HttpServletResponse response,
-                                         Map<String, Object> model,
-                                         @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+    public String getRequestInstitutions(Map<String, Object> model,
+                                         @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering getInstitutions function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
         Citizen subject = service.getSessionCitizen(authTokenCookie);
 
@@ -49,14 +42,10 @@ public class InstitutionsController {
     }
 
     @RequestMapping(value = "/institutions/add", method = RequestMethod.GET)
-    public String getRequestAddInstitution(HttpServletResponse response,
-                                           Map<String, Object> model,
-                                           @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+    public String getRequestAddInstitution(Map<String, Object> model,
+                                           @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering addInstitutions function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
         Citizen subject = service.getSessionCitizen(authTokenCookie);
 
@@ -67,14 +56,10 @@ public class InstitutionsController {
     }
 
     @RequestMapping(value = "/institutions/add", method = RequestMethod.POST)
-    public String postRequestAddInstitution(HttpServletResponse response,
-                                            @ModelAttribute("newInstitution")Institution institution, Map<String, Object> model,
-                                            @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+    public String postRequestAddInstitution(@ModelAttribute("newInstitution")Institution institution, Map<String, Object> model,
+                                            @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering addInstitutions function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
         Citizen subject = service.getSessionCitizen(authTokenCookie);
 
@@ -93,14 +78,10 @@ public class InstitutionsController {
     }
 
     @RequestMapping(value = "/institutions/{institutionId}/edit", method = RequestMethod.GET)
-    public String getRequestEditInstitution(HttpServletResponse response,
-                                            Map<String, Object> model, @PathVariable String institutionId,
-                                            @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+    public String getRequestEditInstitution(Map<String, Object> model, @PathVariable String institutionId,
+                                            @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering editInstitutions function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
         Citizen subject = service.getSessionCitizen(authTokenCookie);
 
@@ -111,15 +92,11 @@ public class InstitutionsController {
     }
 
     @RequestMapping(value = "/institutions/{institutionId}/edit", method = RequestMethod.POST)
-    public String postRequestEditInstitution(HttpServletResponse response,
-                                             @ModelAttribute("newInstitution")Institution institution, Map<String, Object> model,
+    public String postRequestEditInstitution(@ModelAttribute("newInstitution")Institution institution, Map<String, Object> model,
                                              @PathVariable String institutionId,
-                                             @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+                                             @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering editInstitutions function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
         Citizen subject = service.getSessionCitizen(authTokenCookie);
 

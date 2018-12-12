@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.maven.shared.utils.cli.javatool.JavaToolException;
 import org.bouncycastle.operator.OperatorCreationException;
 
 import pt.ulisboa.tecnico.sirs.database.queries.Queries;
@@ -369,7 +368,7 @@ public class DatabaseUtils {
     public static void addMedicalRecord(Connection conn, MedicalRecord medicalRecord)
             throws SQLException, InvalidKeyException, KeyStoreException, NoSuchAlgorithmException,
             CertificateException, OperatorCreationException, SignatureException, UnrecoverableEntryException,
-            IOException, InterruptedException, JavaToolException {
+            IOException, InterruptedException {
 
         setMedicalRecord(conn, medicalRecord, Queries.ADD_MEDICAL_RECORD_QUERY);
     }
@@ -377,7 +376,7 @@ public class DatabaseUtils {
     public static void updateMedicalRecord(Connection conn, MedicalRecord medicalRecord)
             throws SQLException, InvalidKeyException, KeyStoreException, NoSuchAlgorithmException,
             CertificateException, OperatorCreationException, SignatureException, UnrecoverableEntryException,
-            IOException, InterruptedException, JavaToolException {
+            IOException, InterruptedException {
 
         setMedicalRecord(conn, medicalRecord, Queries.UPDATE_MEDICAL_RECORD_QUERY);
     }
@@ -385,7 +384,7 @@ public class DatabaseUtils {
     private static void setMedicalRecord(Connection conn, MedicalRecord medicalRecord, String query)
             throws SQLException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
             OperatorCreationException, IOException, InvalidKeyException, SignatureException,
-            UnrecoverableEntryException, InterruptedException, JavaToolException {
+            UnrecoverableEntryException, InterruptedException {
 
         KeyUtils.createKeyPair(medicalRecord.getDoctorCitizenId());
         SignedMedicalRecord signedMedicalRecord = medicalRecord.getSignedMedicalRecord();

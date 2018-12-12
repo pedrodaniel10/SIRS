@@ -27,7 +27,7 @@ public class Citizen implements Serializable {
     private byte[] password;
     private String profilePic;
     private String superuserCitizenId;
-    private List<Role> roles = new ArrayList<Role>();
+    private List<Role> roles = new ArrayList<>();
 
     public Citizen() {}
 

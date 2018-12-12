@@ -1,10 +1,7 @@
 package pt.ulisboa.tecnico.sirs.controllers;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 import java.util.Map;
-
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -28,14 +25,10 @@ public class LoginRegisterController {
     private ApplicationContext context;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String getRequestLogin(HttpServletResponse response,
-                                  Map<String, Object> model,
-                                  @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+    public String getRequestLogin(Map<String, Object> model,
+                                  @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
     	log.info("Entering getRequestLogin function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
         Citizen subject = service.getSessionCitizen(authTokenCookie);
 
@@ -45,15 +38,11 @@ public class LoginRegisterController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String postRequestLogin(HttpServletResponse response,
-                                   Map<String, Object> model,
+    public String postRequestLogin(Map<String, Object> model,
                                    @ModelAttribute("login") Login login,
-                                   @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+                                   @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
 
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
         Citizen subject = service.getSessionCitizen(authTokenCookie);
         Citizen result;
@@ -64,6 +53,17 @@ public class LoginRegisterController {
         	return "login";
         }
         return result==null? "login": "redirect:/citizens/" + result.getCitizenId() + "/profile";
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String postRequestLogout(Map<String, Object> model,
+                                   @ModelAttribute("login") Login login,
+                                   @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
+
+        MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
+
+        service.postLogoutPage(authTokenCookie);
+        return "redirect:/";
     }
 
 }

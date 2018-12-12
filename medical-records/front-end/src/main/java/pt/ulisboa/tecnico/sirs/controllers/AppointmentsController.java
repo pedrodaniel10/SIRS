@@ -2,9 +2,6 @@ package pt.ulisboa.tecnico.sirs.controllers;
 
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +25,12 @@ public class AppointmentsController {
     private ApplicationContext context;
 
     @RequestMapping(value = "/appointments", method = RequestMethod.GET)
-    public String getRequestAppointments(HttpServletResponse response,
-                                         Map<String, Object> model,
-                                         @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+    public String getRequestAppointments(Map<String, Object> model,
+                                         @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering getAppointments function");
+
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
-
         Citizen subject = service.getSessionCitizen(authTokenCookie);
-
         model.put("citizen", subject);
         List<DocPatRelation> appointments = service.getAppointments(subject);
         model.put("appointments", appointments);
@@ -46,34 +38,24 @@ public class AppointmentsController {
     }
 
     @RequestMapping(value = "/appointments/add", method = RequestMethod.GET)
-    public String getRequestAddAppointment(HttpServletResponse response,
-                                           Map<String, Object> model,
-                                           @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+    public String getRequestAddAppointment(Map<String, Object> model,
+                                           @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering addAppointments function");
+
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
-
         Citizen subject = service.getSessionCitizen(authTokenCookie);
-
         model.put("citizen", subject);
         boolean result = service.getAddAppointmentsPage(subject);
         return result? "addAppointment": "404";
     }
 
     @RequestMapping(value = "/appointments/add", method = RequestMethod.POST)
-    public String postRequestAddAppointment(HttpServletResponse response,
-                                            Map<String, Object> model,
-                                            @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+    public String postRequestAddAppointment(Map<String, Object> model,
+                                            @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering addAppointments function");
+
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
-
         Citizen subject = service.getSessionCitizen(authTokenCookie);
-
         model.put("citizen", subject);
         List<DocPatRelation> appointments = service.addAppointment(subject, null);
         model.put("appointments", appointments);
@@ -81,17 +63,12 @@ public class AppointmentsController {
     }
 
     @RequestMapping(value = "/appointments/{appointmentId}/delete", method = RequestMethod.GET)
-    public String getRequestDeleteAppointment(HttpServletResponse response,
-                                              Map<String, Object> model, @PathVariable String appointmentId,
-                                              @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+    public String getRequestDeleteAppointment(Map<String, Object> model, @PathVariable String appointmentId,
+                                              @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering deleteAppointments function");
+
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
-
         Citizen subject = service.getSessionCitizen(authTokenCookie);
-
         model.put("citizen", subject);
         List<DocPatRelation> appointments = service.deleteAppointment(subject, NumberUtils.toInt(appointmentId));
         model.put("appointments", appointments);

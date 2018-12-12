@@ -22,7 +22,7 @@
                             </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="/login">Logout</a></li>
+                            <li><a href="/logout">Logout</a></li>
                         </ul>
                     </div>
                     <div class="logo-element">
@@ -92,7 +92,7 @@
                         <span class="m-r-sm text-muted welcome-message">Welcome to MedRec.</span>
                     </li>
                     <li>
-                        <a href="/login">
+                        <a href="/logout">
                             <i class="fa fa-sign-out"></i> Log out
                         </a>
                     </li>

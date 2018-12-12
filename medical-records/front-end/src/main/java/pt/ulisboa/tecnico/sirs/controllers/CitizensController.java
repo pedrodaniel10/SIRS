@@ -2,8 +2,7 @@ package pt.ulisboa.tecnico.sirs.controllers;
 
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -29,14 +28,10 @@ public class CitizensController {
     private ApplicationContext context;
 
     @RequestMapping(value = "/citizens", method = RequestMethod.GET)
-    public String getRequestCitizens(HttpServletResponse response,
-                                     Map<String, Object> model,
-                                     @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+    public String getRequestCitizens(Map<String, Object> model,
+                                     @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering getCitizens function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
         Citizen subject = service.getSessionCitizen(authTokenCookie);
 
@@ -47,14 +42,10 @@ public class CitizensController {
     }
 
     @RequestMapping(value = "/citizens/add", method = RequestMethod.GET)
-    public String getRequestAddCitizen(HttpServletResponse response,
-                                       Map<String, Object> model,
-                                       @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+    public String getRequestAddCitizen(Map<String, Object> model,
+                                       @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering addCitizens function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
         Citizen subject = service.getSessionCitizen(authTokenCookie);
 
@@ -65,14 +56,10 @@ public class CitizensController {
     }
 
     @RequestMapping(value = "/citizens/add", method = RequestMethod.POST)
-    public String postRequestAddCitizen(HttpServletResponse response,
-                                        @ModelAttribute("newCitizen")Citizen newCitizen, Map<String, Object> model,
-                                        @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+    public String postRequestAddCitizen(@ModelAttribute("newCitizen")Citizen newCitizen, Map<String, Object> model,
+                                        @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering addCitizens function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
         Citizen subject = service.getSessionCitizen(authTokenCookie);
 
@@ -91,14 +78,10 @@ public class CitizensController {
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/edit", method = RequestMethod.GET)
-    public String getRequestEditProfile(HttpServletResponse response,
-                                        Map<String, Object> model, @PathVariable String citizenId,
-                                        @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+    public String getRequestEditProfile(Map<String, Object> model, @PathVariable String citizenId,
+                                        @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering editCitizens function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
         Citizen subject = service.getSessionCitizen(authTokenCookie);
 
@@ -109,14 +92,10 @@ public class CitizensController {
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/edit", method = RequestMethod.POST)
-    public String postRequestEditProfile(HttpServletResponse response,
-                                         @ModelAttribute("citizenToEdit")Citizen citizenToEdit, Map<String, Object> model, @PathVariable String citizenId,
-                                         @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+    public String postRequestEditProfile(@ModelAttribute("citizenToEdit")Citizen citizenToEdit, Map<String, Object> model, @PathVariable String citizenId,
+                                         @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering editCitizens function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
         Citizen subject = service.getSessionCitizen(authTokenCookie);
 
@@ -127,20 +106,16 @@ public class CitizensController {
     }
 
     @RequestMapping(value = "/citizens/{citizenId}/profile", method = RequestMethod.GET)
-    public String getRequestPatientProfile(HttpServletResponse response,
-                                           Map<String, Object> model, @PathVariable String citizenId,
-                                           @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+    public String getRequestPatientProfile(Map<String, Object> model, @PathVariable String citizenId,
+                                           @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering profileCitizens function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
         Citizen subject = service.getSessionCitizen(authTokenCookie);
 
         model.put("citizen", subject);
         if (subject != null) {
-            if(subject.getCitizenId().equals(citizenId)) {
+            if(StringUtils.equals(subject.getCitizenId(), citizenId)) {
                 model.put("profile", subject);
                 List<SignedMedicalRecord> records = service.getMedicalRecordsByCitizenId(subject, subject.getCitizenId());
                 model.put("records", records);

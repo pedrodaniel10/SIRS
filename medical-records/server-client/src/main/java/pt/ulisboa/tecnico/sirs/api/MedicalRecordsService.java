@@ -13,6 +13,7 @@ public interface MedicalRecordsService {
     Citizen getLoginPage(Citizen citizen);
     Citizen postLoginPage(String authToken, Login login) throws LoginFailedException;
     Citizen getSessionCitizen(String authToken);
+    void postLogoutPage(String authTokenCookie);
 
     Citizen getCitizen(Citizen subject, String citizenId);
     List<Citizen> getCitizens(Citizen subject);

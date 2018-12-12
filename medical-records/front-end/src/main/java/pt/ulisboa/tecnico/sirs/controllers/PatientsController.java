@@ -25,14 +25,10 @@ public class PatientsController {
     private ApplicationContext context;
 
     @RequestMapping(value = "/patients", method = RequestMethod.GET)
-    public String getRequestAppointments(HttpServletResponse response,
-                                         Map<String, Object> model,
+    public String getRequestAppointments(Map<String, Object> model,
                                          @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
         log.info("Entering getPatients function");
         MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-        authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-        response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
         Citizen subject = service.getSessionCitizen(authTokenCookie);
 

@@ -1,10 +1,7 @@
 package pt.ulisboa.tecnico.sirs.controllers;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 import java.util.Map;
-
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -24,14 +21,10 @@ public class IndexPageController {
     private static Logger log = Logger.getLogger(IndexPageController.class);
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String getRequest(HttpServletResponse response,
-							 Map<String, Object> model,
-							 @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME, defaultValue = "") String authTokenCookie) {
+	public String getRequest(Map<String, Object> model,
+							 @CookieValue(value = AuthenticationTokenUtils.AUTH_COOKIE_NAME) String authTokenCookie) {
         log.info("Entering getRequest function");
 		MedicalRecordsService service = context.getBean(MedicalRecordsService.class);
-
-		authTokenCookie = AuthenticationTokenUtils.checkTokenString(authTokenCookie);
-		response.addCookie(new Cookie(AuthenticationTokenUtils.AUTH_COOKIE_NAME, authTokenCookie));
 
 		Citizen subject = service.getSessionCitizen(authTokenCookie);
 

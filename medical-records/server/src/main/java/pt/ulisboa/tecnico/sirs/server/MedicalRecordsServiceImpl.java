@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import javax.xml.crypto.Data;
 import org.apache.log4j.Logger;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
@@ -104,12 +105,32 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     }
 
     @Override
+    public void postLogoutPage(String authTokenCookie) {
+        try {
+            Connection connection = (new DatabaseConnector()).getConnection();
+
+            Session session = DatabaseUtils.getSessionBySessionId(connection, authTokenCookie);
+
+            if (session!= null){
+                DatabaseUtils.removeSessionsByCitizenId(connection, session.getCitizenId());
+            }
+        } catch (DatabaseConnectionException | SQLException e ) {
+            log.error(e.getMessage());
+        }
+    }
+
+    @Override
     public Citizen getSessionCitizen(String authToken) {
         try {
             Connection connection = (new DatabaseConnector()).getConnection();
             Session session = DatabaseUtils.getSessionBySessionId(connection, authToken);
 
-            if (session == null || session.getEndTime().getTime() < new Date().getTime()) {
+            if (session == null) {
+                return new Citizen();
+            }
+
+            if (session.getEndTime().getTime() < new Date().getTime()) {
+                DatabaseUtils.removeSessionsByCitizenId(connection, session.getCitizenId());
                 return new Citizen();
             }
 
@@ -120,6 +141,7 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         }
         return new Citizen();
     }
+
 
 
     /* --------------------------------------------------------------------------------------------------------------*/
