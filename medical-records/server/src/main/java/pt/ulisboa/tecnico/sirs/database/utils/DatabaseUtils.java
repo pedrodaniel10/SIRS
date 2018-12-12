@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.maven.shared.utils.cli.javatool.JavaToolException;
 import org.bouncycastle.operator.OperatorCreationException;
 
 import pt.ulisboa.tecnico.sirs.database.queries.Queries;
@@ -368,7 +369,7 @@ public class DatabaseUtils {
     public static void addMedicalRecord(Connection conn, MedicalRecord medicalRecord)
             throws SQLException, InvalidKeyException, KeyStoreException, NoSuchAlgorithmException,
             CertificateException, OperatorCreationException, SignatureException, UnrecoverableEntryException,
-            IOException, InterruptedException {
+            IOException, InterruptedException, JavaToolException {
 
         setMedicalRecord(conn, medicalRecord, Queries.ADD_MEDICAL_RECORD_QUERY);
     }
@@ -376,7 +377,7 @@ public class DatabaseUtils {
     public static void updateMedicalRecord(Connection conn, MedicalRecord medicalRecord)
             throws SQLException, InvalidKeyException, KeyStoreException, NoSuchAlgorithmException,
             CertificateException, OperatorCreationException, SignatureException, UnrecoverableEntryException,
-            IOException, InterruptedException {
+            IOException, InterruptedException, JavaToolException {
 
         setMedicalRecord(conn, medicalRecord, Queries.UPDATE_MEDICAL_RECORD_QUERY);
     }
@@ -384,7 +385,7 @@ public class DatabaseUtils {
     private static void setMedicalRecord(Connection conn, MedicalRecord medicalRecord, String query)
             throws SQLException, KeyStoreException, NoSuchAlgorithmException, CertificateException,
             OperatorCreationException, IOException, InvalidKeyException, SignatureException,
-            UnrecoverableEntryException, InterruptedException {
+            UnrecoverableEntryException, InterruptedException, JavaToolException {
 
         KeyUtils.createKeyPair(medicalRecord.getDoctorCitizenId());
         SignedMedicalRecord signedMedicalRecord = medicalRecord.getSignedMedicalRecord();
@@ -652,6 +653,22 @@ public class DatabaseUtils {
             statement.setTimestamp(2, session.getCreationTime());
             statement.setTimestamp(3, session.getEndTime());
             statement.setString(4, session.getSessionId());
+
+            statement.executeUpdate();
+        }
+    }
+    
+    public static void removeSessionBySessionId(Connection conn, String sessionId) throws SQLException {
+    	removeSessions(conn, Queries.REMOVE_SESSION_BY_SESSION_ID_QUERY, sessionId);
+    }
+    
+    public static void removeSessionsByCitizenId(Connection conn, String citizenId) throws SQLException {
+    	removeSessions(conn, Queries.REMOVE_SESSIONS_BY_CITIZEN_ID_QUERY, citizenId);
+    }
+    
+    private static void removeSessions(Connection conn, String query, String id) throws SQLException {
+    	try (PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setString(1, id);
 
             statement.executeUpdate();
         }

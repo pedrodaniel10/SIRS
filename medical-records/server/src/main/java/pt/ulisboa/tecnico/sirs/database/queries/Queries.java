@@ -126,5 +126,9 @@ public class Queries {
 	public static final String GET_ADMIN_ID_BY_INSTITUTION_ID_QUERY = "SELECT citizen_id FROM admins WHERE institution_id=?";
 
 	public static final String GET_CITIZEN_BY_EMAIL_QUERY = "SELECT * FROM citizens WHERE email=?";
+
+	public static final String REMOVE_SESSION_BY_SESSION_ID_QUERY = "DELETE FROM sessions WHERE session_id=?";
+	
+	public static final String REMOVE_SESSIONS_BY_CITIZEN_ID_QUERY = "DELETE FROM sessions WHERE citizen_id=?";
 	
 }
