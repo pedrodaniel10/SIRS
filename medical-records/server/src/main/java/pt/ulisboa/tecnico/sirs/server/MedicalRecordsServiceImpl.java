@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import javax.xml.crypto.Data;
 import org.apache.log4j.Logger;
 import org.bouncycastle.operator.OperatorCreationException;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
@@ -310,11 +309,8 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                if (institutionToEdit != null) {
-                    institutionToEdit.setInstitutionId(institutionId);
-                    DatabaseUtils.updateInstitution(connection, institutionToEdit);
-
-                }
+                institutionToEdit.setInstitutionId(institutionId);
+                DatabaseUtils.updateInstitution(connection, institutionToEdit);
                 return DatabaseUtils.getAllInstitutions(connection);
             } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());
@@ -421,11 +417,17 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     @Override
     public List<DocPatRelation> addAppointment(Citizen subject, DocPatRelation appointmentToAdd) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "create", "appointmentsPage", ""/*appointmentToAdd.getAdminCitizenId()*/);
+                ServiceUtils.parseRoleList(subject.getRoles()), "create", "appointmentsPage", subject.getCitizenId());
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                if (appointmentToAdd != null) DatabaseUtils.addDocPatRelation(connection, appointmentToAdd);
+                Citizen patient = DatabaseUtils.getCitizenById(connection, appointmentToAdd.getPatientCitizenId());
+                Citizen doctor = DatabaseUtils.getCitizenById(connection, appointmentToAdd.getDoctorCitizenId());
+                appointmentToAdd.setPatient(patient);
+                appointmentToAdd.setDoctor(doctor);
+                appointmentToAdd.setAdminCitizenId(subject.getCitizenId());
+                appointmentToAdd.setBeginDate(new java.sql.Date(new java.util.Date().getTime()));
+                DatabaseUtils.addDocPatRelation(connection, appointmentToAdd);
                 return DatabaseUtils.getDocPatRelationsByAdminId(connection, subject.getCitizenId());
             } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());
@@ -541,25 +543,4 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         }
         return null;
     }
-
-    /* --------------------------------------------------------------------------------------------------------------*/
-    /* ---------------------------------------------- UTILS SERVICES ------------------------------------------------*/
-    /* --------------------------------------------------------------------------------------------------------------*/
-
-    // This code only serves to simulate a session citizen because session is not implemented.
-    private Citizen getSessionCitizenTest() {
-        try {
-            Connection connection = (new DatabaseConnector()).getConnection();
-            return DatabaseUtils.getCitizenById(connection, "4");
-        } catch (DatabaseConnectionException | SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    // This code only serves to simulate a doctor because there's no database connection yet.
-    private Doctor getADoctor() {
-        return new Doctor(12345, "12345d", 11111, "12345s", "12345a");
-    }
-
 }

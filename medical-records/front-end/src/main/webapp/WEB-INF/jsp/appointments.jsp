@@ -55,16 +55,16 @@
                                 <tbody>
                                 <c:forEach var="appointment" items="${appointments}">
                                 <tr>
-                                    <td class="center"><img src="/img/david_williams.jpg" class="img-circle" style="width:50px;height:50px;"\></td>
+                                    <td class="center"><img src="${appointment.patient.profilePic}" class="img-circle" style="width:50px;height:50px;"\></td>
                                     <td class="center">${appointment.patientCitizenId}</td>
-                                    <td class="center">David Edward Williams</td>
-                                    <td class="center">20/08/1971</td>
-                                    <td class="center">Male</td>
-                                    <td class="center">John Terry</td>
+                                    <td class="center">${appointment.patient.citizenName}</td>
+                                    <td class="center">${appointment.patient.dateOfBirth}</td>
+                                    <td class="center">${appointment.patient.gender}</td>
+                                    <td class="center">${appointment.doctor.citizenName}</td>
                                     <td class="center">${appointment.beginDate}</td>
                                     <td class="center">${appointment.endDate}</td>
                                     <td class="center">
-                                        <a href="/appointments/1/delete" class="btn btn-danger btn-circle" type="button">
+                                        <a href="/appointments/${appointment.docPatRelationId}/delete" class="btn btn-danger btn-circle" type="button">
                                             <i class="fa fa-trash-o"></i>
                                         </a>
                                     </td>

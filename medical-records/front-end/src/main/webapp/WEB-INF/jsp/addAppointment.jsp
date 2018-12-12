@@ -1,4 +1,6 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -36,20 +38,26 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <form method="post" class="form-horizontal">
+                        <form:form method="post" class="form-horizontal" modelAttribute="newAppointment">
 
                             <div class="form-group"><label class="col-sm-2 control-label">Patient's Citizen ID:</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                                <div class="col-sm-10">
+                                    <form:input path="patientCitizenId" type="text" class="form-control"/>
+                                </div>
                             </div>
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group"><label class="col-sm-2 control-label">Doctor's Citizen ID:</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                                <div class="col-sm-10">
+                                    <form:input path="doctorCitizenId" type="text" class="form-control"/>
+                                </div>
                             </div>
                             <div class="hr-line-dashed"></div>
 
                             <div class="form-group"><label class="col-sm-2 control-label">End Date:</label>
-                                <div class="col-sm-10"><input type="date" class="form-control"></div>
+                                <div class="col-sm-10">
+                                    <form:input path="endDate" type="date" class="form-control"/>
+                                </div>
                             </div>
                             <div class="hr-line-dashed"></div>
 
@@ -58,7 +66,7 @@
                                     <button class="btn btn-primary" type="submit">Book Appointment</button>
                                 </div>
                             </div>
-                        </form>
+                        </form:form>
                     </div>
                 </div>
             </div>

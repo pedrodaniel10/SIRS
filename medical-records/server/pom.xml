@@ -107,7 +107,7 @@
                 <configuration>
                     <debug>false</debug>
                     <strict>false</strict>
-                    <verbose>true</verbose>
+                    <verbose>false</verbose>
                     <removeOldOutput>true</removeOldOutput>
                     <extension>true</extension>
                     <useDependenciesAsEpisodes>true</useDependenciesAsEpisodes>

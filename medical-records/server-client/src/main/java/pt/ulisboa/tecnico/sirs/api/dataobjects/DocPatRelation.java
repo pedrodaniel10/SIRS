@@ -25,6 +25,15 @@ public class DocPatRelation implements Serializable {
 		this.adminCitizenId = adminCitizenId;
 	}
 
+	public DocPatRelation(boolean dataobject) {
+		this.docPatRelationId = 0;
+		this.beginDate = new Date(new java.util.Date().getTime());
+		this.endDate = new Date(new java.util.Date().getTime());
+		this.doctorCitizenId = "";
+		this.patientCitizenId = "";
+		this.adminCitizenId = "";
+	}
+
 	public int getDocPatRelationId() {
 		return docPatRelationId;
 	}
