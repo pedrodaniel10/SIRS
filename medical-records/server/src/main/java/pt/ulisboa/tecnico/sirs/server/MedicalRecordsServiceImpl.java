@@ -536,7 +536,14 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
         if (authorization) {
             try {
                 Connection connection = (new DatabaseConnector()).getConnection();
-                return DatabaseUtils.getPatientsByDoctorCitizenId(connection, subject.getCitizenId());
+                List<Patient> patients = DatabaseUtils.getPatientsByDoctorCitizenId(connection, subject.getCitizenId());
+                List<Patient> validPatients = new ArrayList<>();
+                for(Patient patient : patients) {
+                    Citizen citPatient = getCitizen(subject, patient.getCitizenId());
+                    if (citPatient != null)
+                        validPatients.add(patient);
+                }
+                return validPatients;
             } catch (DatabaseConnectionException | SQLException e ) {
                 log.error(e.getMessage());
             }
