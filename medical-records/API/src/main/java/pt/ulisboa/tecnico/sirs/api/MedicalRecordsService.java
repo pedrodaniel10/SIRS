@@ -20,14 +20,12 @@ public interface MedicalRecordsService {
     Citizen getEditCitizensPage(Citizen subject, String citizenToEdit);
     List<Citizen> editCitizen(Citizen subject, String citizenId, Citizen citizenToEdit);
 
-    Institution getInstitution(Citizen subject, int institutionId);
     List<Institution> getInstitutions(Citizen subject);
     Boolean getAddInstitutionsPage(Citizen subject);
     List<Institution> addInstitution(Citizen subject, Institution institutionToAdd) throws AdminException;
     Institution getEditInstitutionPage(Citizen subject, int institutionToEdit);
     List<Institution> editInstitution(Citizen subject, int institutionId, Institution institutionToEdit);
 
-    Doctor getDoctor(Citizen subject, String doctorCitizenId);
     List<Doctor> getDoctors(Citizen subject);
     List<Doctor> getAddDoctorPage(Citizen subject);
     List<Doctor> addDoctor(Citizen subject, String doctorToAdd);
@@ -42,5 +40,7 @@ public interface MedicalRecordsService {
     SignedMedicalRecord getMedicalRecord(Citizen subject, String citizenId, int idMedRec);
     Boolean getAddMedicalRecordPage(Citizen subject, String citizenId);
     List<SignedMedicalRecord> getMedicalRecordsByCitizenId(Citizen subject, String citizenId);
-
+    Citizen getMedicalRecordCitizen(Citizen subject, String citizenId);
+    Institution getMedicalRecordInstitution(Citizen subject, String citizenId);
+    MedicalRecord addMedicalRecord(Citizen subject, MedicalRecord record);
 }

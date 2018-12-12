@@ -56,7 +56,7 @@
                                     <td class="center">${patient.citizen.citizenName}</td>
                                     <td class="center">${patient.citizen.dateOfBirth}</td>
                                     <td class="center">${patient.citizen.gender.name()}</td>
-                                    <td class="center">${patient.citizen.email}"</td>
+                                    <td class="center">${patient.citizen.email}</td>
                                     <td class="center">
                                         <a href="/citizens/${patient.citizen.citizenId}/profile" class="btn btn-success btn-circle" type="button">
                                             <i class="fa fa-chevron-right"></i>

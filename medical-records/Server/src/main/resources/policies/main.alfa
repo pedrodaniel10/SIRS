@@ -323,24 +323,6 @@ import Attributes.*
 			policyset ActionsMedicalRecords {
 				apply firstApplicable
 				
-				/* Patients actions */
-				policy PatientActions {
-					target clause Attributes.subjectRole == "PATIENT"
-					apply firstApplicable
-				
-					/* RULE: Patients can view their medical records */
-					rule PatientsCanViewTheirMedicalRecords {
-						target clause Attributes.actionId == "view"
-							and attributes.medicalRecordPatient == true
-						permit
-					}
-	
-					/* RULE: Patients cannot perform other actions in their medical records */
-	                rule PatientsCannotPerformOtherActions {
-	                    deny
-	                }
-				}
-				
 				/* Doctors actions */
 				policy DoctorsActions {
 					target clause Attributes.subjectRole == "DOCTOR"
@@ -364,6 +346,25 @@ import Attributes.*
 	                    deny
 	                }
 				}
+				
+				/* Patients actions */
+				policy PatientActions {
+					target clause Attributes.subjectRole == "PATIENT"
+					apply firstApplicable
+				
+					/* RULE: Patients can view their medical records */
+					rule PatientsCanViewTheirMedicalRecords {
+						target clause Attributes.actionId == "view"
+							and attributes.medicalRecordPatient == true
+						permit
+					}
+	
+					/* RULE: Patients cannot perform other actions in their medical records */
+	                rule PatientsCannotPerformOtherActions {
+	                    deny
+	                }
+				}
+				
 				
 				/* Others actions */
 				policy OthersActions {

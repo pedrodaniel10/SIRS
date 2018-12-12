@@ -1,6 +1,7 @@
 package pt.ulisboa.tecnico.sirs.server;
 
 import org.apache.log4j.Logger;
+import org.bouncycastle.operator.OperatorCreationException;
 import pt.ulisboa.tecnico.sirs.api.MedicalRecordsService;
 import pt.ulisboa.tecnico.sirs.api.dataobjects.*;
 import pt.ulisboa.tecnico.sirs.api.exceptions.AdminException;
@@ -166,21 +167,6 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     /* --------------------------------------------------------------------------------------------------------------*/
 
     @Override
-    public Institution getInstitution(Citizen subject, int institutionId) {
-        Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "view", "institutionsPage", Integer.toString(institutionId));
-        if (authorization) {
-            try {
-                Connection connection = (new DatabaseConnector()).getConnection();
-                return DatabaseUtils.getInstitutionById(connection, institutionId);
-            } catch (DatabaseConnectionException | SQLException e ) {
-                log.error(e.getMessage());
-            }
-        }
-        return null;
-    }
-
-    @Override
     public List<Institution> getInstitutions(Citizen subject) {
         Boolean authorization = requestEvaluation(subject.getCitizenId(),
                 ServiceUtils.parseRoleList(subject.getRoles()), "view", "institutionsPage", "");
@@ -259,22 +245,6 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
     /* --------------------------------------------------------------------------------------------------------------*/
     /* -------------------------------------------- DOCTORS SERVICES ------------------------------------------------*/
     /* --------------------------------------------------------------------------------------------------------------*/
-
-    @Override
-    public Doctor getDoctor(Citizen subject, String doctorCitizenId) {
-        Boolean authorization = requestEvaluation(subject.getCitizenId(),
-                ServiceUtils.parseRoleList(subject.getRoles()), "view", "doctorsPage", doctorCitizenId);
-        if (authorization) {
-            try {
-                Connection connection = (new DatabaseConnector()).getConnection();
-                //return DatabaseUtils.getDoctorByCitizenId(connection, doctorCitizenId);
-                return getADoctor();
-            } catch (DatabaseConnectionException /*| SQLException*/ e) {
-                log.error(e.getMessage());
-            }
-        }
-        return null;
-    }
 
     @Override
     public List<Doctor> getDoctors(Citizen subject) {
@@ -435,6 +405,39 @@ public class MedicalRecordsServiceImpl implements MedicalRecordsService {
             } catch (DatabaseConnectionException | SQLException | InvalidKeyException | SignatureException | NoSuchAlgorithmException | KeyStoreException | CertificateException | UnrecoverableEntryException | IOException e ) {
                 log.error(e.getMessage());
             }
+        }
+        return null;
+    }
+
+    @Override
+    public Citizen getMedicalRecordCitizen(Citizen subject, String citizenId) {
+        try {
+            Connection connection = (new DatabaseConnector()).getConnection();
+            return DatabaseUtils.getCitizenById(connection, citizenId);
+        } catch (DatabaseConnectionException | SQLException e ) {
+            log.error(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public Institution getMedicalRecordInstitution(Citizen subject, String citizenId) {
+        try {
+            Connection connection = (new DatabaseConnector()).getConnection();
+            return DatabaseUtils.getInstitutionByDoctorId(connection, citizenId);
+        } catch (DatabaseConnectionException | SQLException e ) {
+            log.error(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public MedicalRecord addMedicalRecord(Citizen subject, MedicalRecord record) {
+        try {
+            Connection connection = (new DatabaseConnector()).getConnection();
+            DatabaseUtils.addMedicalRecord(connection, record);
+        } catch (DatabaseConnectionException | SQLException | InvalidKeyException | KeyStoreException | NoSuchAlgorithmException | CertificateException | OperatorCreationException | SignatureException | UnrecoverableEntryException | IOException | InterruptedException e ) {
+            log.error(e.getMessage());
         }
         return null;
     }

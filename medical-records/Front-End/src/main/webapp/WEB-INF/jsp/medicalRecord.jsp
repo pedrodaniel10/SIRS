@@ -15,7 +15,7 @@
             <h2>Medical Record</h2>
             <ol class="breadcrumb">
                 <li>
-                    <a href="/patients">Citizens</a>
+                    <a href="/patients">Patients</a>
                 </li>
                 <li>
                     <a href="/citizens/${record.medicalRecord.patient.citizenId}/profile">${record.medicalRecord.patient.citizenName}</a>

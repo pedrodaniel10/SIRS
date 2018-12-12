@@ -40,7 +40,11 @@ public class MedicalRecord implements Serializable {
 		this.institutionId = institutionId;
 		this.reportInfo = reportInfo;
 	}
-	
+
+	public MedicalRecord(boolean dataobject) {
+		this.reportInfo = new ReportInfo();
+	}
+
 	public int getRecordId() {
 		return recordId;
 	}
