@@ -7,6 +7,7 @@ You must have installed the following tools:
 - Maven 3.x.x 
 - Java Development Kit 8 (JDK 8)
 - MariaDB 10.x
+- Java Keytool (you must have a command alias for Java Keytool "keytool") in order to generate keys.
 
 Also check if JAVA_HOME and M2_HOME are set properly.
 
@@ -85,13 +86,22 @@ The first time you want to run the project you need to run the following command
 mvn clean install
 ```
 
+If there are tests failing, something is not well configured. Check section Debugging.
+
 ### Server
-Run the following command in the directory **/medical-records/server/**
+Run the following command in the directory **/medical-records/server/** 
+#### Server 1:
 
 ```
-mvn clean spring-boot:run -Dspring-boot.run.arguments="PORT"
+mvn clean spring-boot:run -Dspring-boot.run.arguments="1099"  -Dserver.port="8081"
 ```
-Where PORT is the port of the server. (e.g. PORT=1099)
+
+#### Server 2:
+
+```
+mvn clean spring-boot:run -Dspring-boot.run.arguments="1098"  -Dserver.port="8082"
+```
+
 
 ### Front-end
 Run the following command in the directory **/medical-records/front-end/**
