@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bouncycastle.operator.OperatorCreationException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,8 +40,15 @@ public class DatabaseCitizenOperationsTest {
 		this.conn = dbConnector.getConnection();
 		this.c1 = new Citizen("test_id", "paulo", Citizen.Gender.MALE, LocalDate.of(2000, 1, 1), "paulo1@paulos.pt",
 				"jálhedigo", "path", "super", new ArrayList<>());
+		Citizen superUser = new Citizen("super","super",Citizen.Gender.MALE, LocalDate.of(2000, 1, 1),"superguy","aaaa","agaga",null, new ArrayList<>());
+		superUser.addRole(Citizen.Role.PATIENT);
+		superUser.addRole(Citizen.Role.SUPERUSER);
+		DatabaseUtils.addCitizen(conn, superUser);
+
+		Institution institution = new Institution(0, "santa maria","blabla","bleble","super");
+		DatabaseUtils.addInstitution(conn, institution);
 	}
-	
+
 	@Test
 	public void noRoles() throws DatabaseConnectionException, SQLException {
 		DatabaseUtils.addCitizen(this.conn, this.c1);
@@ -133,9 +141,10 @@ public class DatabaseCitizenOperationsTest {
 		ReportInfo ri = new ReportInfo(-1,-1,-1,-1,"heh","hah");
 		MedicalRecord mr = new MedicalRecord(0,
 				c1.getCitizenId(), c1.getCitizenId(), 1, ri);
-		
+
 		DatabaseUtils.addMedicalRecord(conn, mr);
-		List<SignedMedicalRecord> records = DatabaseUtils.getMedicalRecordsByPatientCitizenId(conn, mr.getPatientCitizenId());
+		SignedMedicalRecord record = DatabaseUtils.getMedicalRecordsByPatientCitizenId(conn, c1.getCitizenId()).get(0);
+		List<SignedMedicalRecord> records = DatabaseUtils.getMedicalRecordsByPatientCitizenId(conn, record.getMedicalRecord().getPatientCitizenId());
 		assertTrue(records.get(0).isVerified());
 		
 		mr.getReportInfo().setHaemoglobin(10);
@@ -163,6 +172,12 @@ public class DatabaseCitizenOperationsTest {
 			IOException, UnrecoverableEntryException, InterruptedException {
 		KeyUtils.createKeyPair("hola");
 		KeyUtils.getKeyPair("hola");
+	}
+
+	@After
+	public void clear() throws DatabaseConnectionException, IOException, SQLException, NoSuchAlgorithmException {
+		DatabaseConnector dbConnector = new DatabaseConnector();
+		dbConnector.setupTables();
 	}
 	
 }

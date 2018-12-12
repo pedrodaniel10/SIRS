@@ -76,15 +76,12 @@ public class MedicalRecordController {
         model.put("citizen", subject);
         Citizen patient = service.getMedicalRecordCitizen(subject, citizenId);
         Institution institution = service.getMedicalRecordInstitution(subject, subject.getCitizenId());
-        MedicalRecord record = new MedicalRecord(true);
-        record.setDoctor(subject);
-        record.setPatient(patient);
-        record.setInstitution(institution);
+        MedicalRecord record = new MedicalRecord(0, subject.getCitizenId(), patient.getCitizenId(), institution.getInstitutionId());
         record.setReportInfo(info);
         service.addMedicalRecord(subject, record);
         model.put("record", record);
 
-        return "medicalRecord";
+        return "redirect:/citizens/"+citizenId+"/profile";
     }
 
 }

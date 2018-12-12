@@ -45,6 +45,17 @@ public class MedicalRecord implements Serializable {
 		this.reportInfo = new ReportInfo();
 	}
 
+	public MedicalRecord(int recordId, String doctorCitizenId, String patientCitizenId,
+						 int institutionId) {
+		this.creationDate = new Timestamp(System.currentTimeMillis());
+		this.creationDate.setNanos(0);
+		this.recordId = recordId;
+		this.doctorCitizenId = doctorCitizenId;
+		this.patientCitizenId = patientCitizenId;
+		this.institutionId = institutionId;
+		this.reportInfo = new ReportInfo();
+	}
+
 	public int getRecordId() {
 		return recordId;
 	}

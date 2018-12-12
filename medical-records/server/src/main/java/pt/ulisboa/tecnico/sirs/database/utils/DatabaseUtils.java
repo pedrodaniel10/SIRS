@@ -113,6 +113,16 @@ public class DatabaseUtils {
 			if (citizen.getRoles().contains(Role.SUPERUSER)) {
 				addRole(conn, citizen, Role.SUPERUSER, Queries.ADD_SUPERUSER_ROLE_QUERY);
 			}
+
+			try {
+				KeyUtils.createKeyPair(citizen.getCitizenId());
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+
 		}
 	}
 
@@ -408,7 +418,6 @@ public class DatabaseUtils {
 			OperatorCreationException, IOException, InvalidKeyException, SignatureException,
 			UnrecoverableEntryException, InterruptedException {
 
-		KeyUtils.createKeyPair(medicalRecord.getDoctorCitizenId());
 		SignedMedicalRecord signedMedicalRecord = medicalRecord.getSignedMedicalRecord();
 
 		try (PreparedStatement statement = conn.prepareStatement(query)) {

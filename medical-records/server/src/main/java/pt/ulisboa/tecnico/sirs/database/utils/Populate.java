@@ -29,9 +29,13 @@ public class Populate {
         Citizen superUser = new Citizen("1", "Antonio Filipe", Citizen.Gender.MALE, LocalDate.of(1975, 7, 30),
                 "antonio.filipe@gmail.com", "supersecret", "/img/superuser.png", null, roleSuperUser);
 
+        Citizen superUser2 = new Citizen("11", "Magda Pedrosa", Citizen.Gender.FEMALE, LocalDate.of(1981, 8, 2),
+                "magda.pedrosa@gmail.com", "supersecret", "/img/superuser2.png", null, roleSuperUser);
+
         Institution i1 = new Institution(1, "Hospital Santa Maria", "Av. Prof. Egas Moniz, 1649-035 Lisboa", "/img/hospital1.png", "1");
         Institution i2 = new Institution(2, "CUF Descobertas", "R. Mario Botas, 1998-018 Lisboa", "/img/hospital2.png", "1");
-
+        Institution i3 = new Institution(3, "Hospital da Luz", "Av. Lusíada 100, 1500-650 Lisboa", "/img/hospital3.png", "1");
+        Institution i4 = new Institution(4, "Centro de Saúde Alameda", "R. Carvalho Araújo 103, 1900-181 Lisboa", "/img/hospital4.png", "11");
 
         ArrayList<Citizen.Role> roleAdmin = new ArrayList<>();
         roleAdmin.add(Citizen.Role.ADMIN);
@@ -40,6 +44,10 @@ public class Populate {
                 "margarida.marques@gmail.com", "marquinhes", "/img/admin1.png", "1", roleAdmin);
         Citizen admin2 = new Citizen("3", "Pedro Lopes", Citizen.Gender.MALE, LocalDate.of(1990, 11, 4),
                 "pedro.lopes@gmail.com", "pedrinho", "/img/admin2.png", "1", roleAdmin);
+        Citizen admin3 = new Citizen("12", "Joana Marques", Citizen.Gender.FEMALE, LocalDate.of(1989, 8, 3),
+                "joana.marques@gmail.com", "joaninha", "/img/admin3.png", "11", roleAdmin);
+        Citizen admin4 = new Citizen("13", "Marco Lopes", Citizen.Gender.MALE, LocalDate.of(1990, 11, 4),
+                "marco.lopes@gmail.com", "marquinho", "/img/admin4.png", "11", roleAdmin);
 
         ArrayList<Citizen.Role> roleDoctor = new ArrayList<>();
         roleDoctor.add(Citizen.Role.DOCTOR);
@@ -50,6 +58,12 @@ public class Populate {
                 "maria.eduarda@gmail.com", "eduardinha", "/img/doctor2.png", "1", roleDoctor);
         Citizen doctor3 = new Citizen("6", "Miguel Matos", Citizen.Gender.MALE, LocalDate.of(1985, 6, 25),
                 "miguel.matos@gmail.com", "matinhos", "/img/doctor3.png", "1", roleDoctor);
+        Citizen doctor4 = new Citizen("14", "Manuel Maria", Citizen.Gender.MALE, LocalDate.of(1955, 5, 3),
+                "manuel.maria@gmail.com", "manuelinho", "/img/doctor4.png", "1", roleDoctor);
+        Citizen doctor5 = new Citizen("15", "Marta Ramos", Citizen.Gender.FEMALE, LocalDate.of(1979, 12, 4),
+                "marta.ramos@gmail.com", "martinha", "/img/doctor5.png", "11", roleDoctor);
+        Citizen doctor6 = new Citizen("16", "Joao Martins", Citizen.Gender.MALE, LocalDate.of(1985, 6, 25),
+                "joao.martins@gmail.com", "martinhos", "/img/doctor6.png", "11", roleDoctor);
 
         ArrayList<Citizen.Role> rolePatient = new ArrayList<>();
         rolePatient.add(Citizen.Role.PATIENT);
@@ -66,19 +80,43 @@ public class Populate {
         DocPatRelation dpr2 = new DocPatRelation(2, Date.valueOf("2018-12-5"), Date.valueOf("2018-12-6"), doctor1.getCitizenId(), patient2.getCitizenId(), admin1.getCitizenId());
         DocPatRelation dpr3 = new DocPatRelation(3, Date.valueOf("2018-12-12"), Date.valueOf("2018-12-14"), doctor2.getCitizenId(), patient3.getCitizenId(), admin2.getCitizenId());
         DocPatRelation dpr4 = new DocPatRelation(4, Date.valueOf("2018-12-12"), Date.valueOf("2018-12-14"), doctor2.getCitizenId(), patient4.getCitizenId(), admin2.getCitizenId());
+        /*DocPatRelation dpr5 = new DocPatRelation(4, Date.valueOf("2018-12-12"), Date.valueOf("2018-12-14"), doctor2.getCitizenId(), doctor1.getCitizenId(), admin2.getCitizenId());
+        DocPatRelation dpr6 = new DocPatRelation(4, Date.valueOf("2018-12-12"), Date.valueOf("2018-12-14"), doctor2.getCitizenId(), superUser.getCitizenId(), admin2.getCitizenId());
+        DocPatRelation dpr7 = new DocPatRelation(4, Date.valueOf("2018-12-12"), Date.valueOf("2018-12-14"), doctor4.getCitizenId(), patient4.getCitizenId(), admin3.getCitizenId());
+        DocPatRelation dpr8 = new DocPatRelation(4, Date.valueOf("2018-12-12"), Date.valueOf("2018-12-14"), doctor4.getCitizenId(), patient4.getCitizenId(), admin3.getCitizenId());
+        DocPatRelation dpr9 = new DocPatRelation(4, Date.valueOf("2018-12-12"), Date.valueOf("2018-12-14"), doctor4.getCitizenId(), patient4.getCitizenId(), admin3.getCitizenId());
+        DocPatRelation dpr10 = new DocPatRelation(4, Date.valueOf("2018-12-12"), Date.valueOf("2018-12-14"), doctor5.getCitizenId(), patient4.getCitizenId(), admin4.getCitizenId());
+        DocPatRelation dpr11 = new DocPatRelation(4, Date.valueOf("2018-12-12"), Date.valueOf("2018-12-14"), doctor5.getCitizenId(), patient4.getCitizenId(), admin4.getCitizenId());
+        DocPatRelation dpr12 = new DocPatRelation(4, Date.valueOf("2018-12-12"), Date.valueOf("2018-12-14"), doctor5.getCitizenId(), patient4.getCitizenId(), admin4.getCitizenId());
+*/
 
         DatabaseUtils.addCitizen(connection, superUser);
+        DatabaseUtils.addCitizen(connection, superUser2);
+
         DatabaseUtils.addInstitution(connection, i1);
         DatabaseUtils.addInstitution(connection, i2);
+        DatabaseUtils.addInstitution(connection, i3);
+        DatabaseUtils.addInstitution(connection, i4);
+
         DatabaseUtils.addCitizen(connection, admin1);
         DatabaseUtils.setAdminInstitutionId(connection, admin1.getCitizenId(), 1);
         DatabaseUtils.addCitizen(connection, admin2);
         DatabaseUtils.setAdminInstitutionId(connection, admin2.getCitizenId(), 2);
+        DatabaseUtils.addCitizen(connection, admin3);
+        DatabaseUtils.setAdminInstitutionId(connection, admin3.getCitizenId(), 3);
+        DatabaseUtils.addCitizen(connection, admin4);
+        DatabaseUtils.setAdminInstitutionId(connection, admin4.getCitizenId(), 4);
+
         DatabaseUtils.addCitizen(connection, doctor1);
         DatabaseUtils.setDoctorInstitutionId(connection, doctor1.getCitizenId(), 1, admin2.getCitizenId());
         DatabaseUtils.addCitizen(connection, doctor2);
         DatabaseUtils.setDoctorInstitutionId(connection, doctor2.getCitizenId(), 2, admin1.getCitizenId());
         DatabaseUtils.addCitizen(connection, doctor3);
+        DatabaseUtils.addCitizen(connection, doctor4);
+        DatabaseUtils.setDoctorInstitutionId(connection, doctor4.getCitizenId(), 3, admin3.getCitizenId());
+        DatabaseUtils.addCitizen(connection, doctor5);
+        DatabaseUtils.setDoctorInstitutionId(connection, doctor5.getCitizenId(), 3, admin3.getCitizenId());
+        DatabaseUtils.addCitizen(connection, doctor6);
         DatabaseUtils.addCitizen(connection, patient1);
         DatabaseUtils.addDocPatRelation(connection, dpr1);
         DatabaseUtils.addCitizen(connection, patient2);
@@ -87,6 +125,15 @@ public class Populate {
         DatabaseUtils.addDocPatRelation(connection, dpr3);
         DatabaseUtils.addCitizen(connection, patient4);
         DatabaseUtils.addDocPatRelation(connection, dpr4);
+
+        /*DatabaseUtils.addDocPatRelation(connection, dpr5);
+        DatabaseUtils.addDocPatRelation(connection, dpr6);
+        DatabaseUtils.addDocPatRelation(connection, dpr7);
+        DatabaseUtils.addDocPatRelation(connection, dpr8);
+        DatabaseUtils.addDocPatRelation(connection, dpr9);
+        DatabaseUtils.addDocPatRelation(connection, dpr10);
+        DatabaseUtils.addDocPatRelation(connection, dpr11);
+        DatabaseUtils.addDocPatRelation(connection, dpr12);*/
 
         //Add Medical Records
         ReportInfo report1 = new ReportInfo(50,40,10,10,"Blood Test","The results of the first" +
