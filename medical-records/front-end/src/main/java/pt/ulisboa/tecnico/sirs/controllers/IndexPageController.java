@@ -35,7 +35,7 @@ public class IndexPageController {
 				Citizen subject = service.getSessionCitizen(authTokenCookie);
 
 				Citizen result = service.getWelcomePage(subject);
-				return result==null? "welcome": "404";
+				return result==null? "welcome": "redirect:/citizens/" + result.getCitizenId() + "/profile";
 			} catch (RuntimeException e) {
 				service = (MedicalRecordsService) context.getBean("server2");
 			}

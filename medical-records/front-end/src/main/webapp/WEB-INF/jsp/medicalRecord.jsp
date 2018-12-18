@@ -131,19 +131,19 @@
                                         <hr>
                                         <h5>Heart Beat <span class="pull-right"><c:out value="${record.medicalRecord.reportInfo.heartBeat}"/></span></h5>
                                         <div class="progress">
-                                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow=<c:out value="${record.medicalRecord.reportInfo.heartBeat}"/> aria-valuemin="0" aria-valuemax="100" style="width: 40%"> <span class="sr-only">40% Complete (success)</span> </div>
+                                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow=<c:out value="${record.medicalRecord.reportInfo.heartBeat}"/> aria-valuemin="0" aria-valuemax="100" style="width: ${record.medicalRecord.reportInfo.heartBeat}%"> <span class="sr-only">40% Complete (success)</span> </div>
                                         </div>
                                         <h5>Blood Pressure<span class="pull-right"><c:out value="${record.medicalRecord.reportInfo.bloodPressure}"/></span></h5>
                                         <div class="progress">
-                                            <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow=<c:out value="${record.medicalRecord.reportInfo.bloodPressure}"/> aria-valuemin="0" aria-valuemax="100" style="width:90%;"> <span class="sr-only">50% Complete</span> </div>
+                                            <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow=<c:out value="${record.medicalRecord.reportInfo.bloodPressure}"/> aria-valuemin="0" aria-valuemax="100" style="width: ${record.medicalRecord.reportInfo.bloodPressure}%;"> <span class="sr-only">50% Complete</span> </div>
                                         </div>
                                         <h5>Sugar<span class="pull-right"><c:out value="${record.medicalRecord.reportInfo.sugar}"/></span></h5>
                                         <div class="progress">
-                                            <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow=<c:out value="${record.medicalRecord.reportInfo.sugar}"/> aria-valuemin="0" aria-valuemax="100" style="width:50%;"> <span class="sr-only">50% Complete</span> </div>
+                                            <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow=<c:out value="${record.medicalRecord.reportInfo.sugar}"/> aria-valuemin="0" aria-valuemax="100" style="width: ${record.medicalRecord.reportInfo.sugar}%;"> <span class="sr-only">50% Complete</span> </div>
                                         </div>
                                         <h5>Haemoglobin<span class="pull-right"><c:out value="${record.medicalRecord.reportInfo.haemoglobin}"/></span></h5>
                                         <div class="progress">
-                                            <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow=<c:out value="${record.medicalRecord.reportInfo.haemoglobin}"/> aria-valuemin="0" aria-valuemax="100" style="width:70%;"> <span class="sr-only">50% Complete</span> </div>
+                                            <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow=<c:out value="${record.medicalRecord.reportInfo.haemoglobin}"/> aria-valuemin="0" aria-valuemax="100" style="width: ${record.medicalRecord.reportInfo.haemoglobin}%;"> <span class="sr-only">50% Complete</span> </div>
                                         </div>
                                     </div>
                                 </div>

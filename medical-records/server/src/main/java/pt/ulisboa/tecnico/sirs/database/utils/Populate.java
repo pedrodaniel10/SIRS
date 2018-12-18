@@ -91,14 +91,37 @@ public class Populate {
         //Add Medical Records
         ReportInfo report1 = new ReportInfo(50,40,10,10,"Blood Test","The results of the first" +
                 "tests were inconclusive. Requested more blood tests.");
-        MedicalRecord record1 = new MedicalRecord(0, doctor1.getCitizenId(), patient1.getCitizenId(), 1, report1);
-        MedicalRecord record2 = new MedicalRecord(0, doctor1.getCitizenId(), patient2.getCitizenId(), 1, report1);
-        MedicalRecord record3 = new MedicalRecord(0, doctor1.getCitizenId(), patient1.getCitizenId(), 1, report1);
+        ReportInfo report2 = new ReportInfo(50,40,10,10,"X-Ray","Back Xray. Patient complained" +
+                "about back pain. Found some nodules. Requested X-Ray for more detailed information.");
+        ReportInfo report3 = new ReportInfo(50,40,10,10,"Surgery","Carotid endarterectomy. " +
+                "Removal of blockage from carotid arteries. Went well");
+        ReportInfo report4 = new ReportInfo(50,40,10,10,"Appointment","Check-up.");
+        MedicalRecord record1 = new MedicalRecord(0, doctor1.getCitizenId(), patient4.getCitizenId(), 1, report1);
+        MedicalRecord record2 = new MedicalRecord(0, doctor1.getCitizenId(), patient4.getCitizenId(), 1, report2);
+        MedicalRecord record3 = new MedicalRecord(0, doctor1.getCitizenId(), patient4.getCitizenId(), 1, report3);
+        MedicalRecord record4 = new MedicalRecord(0, doctor2.getCitizenId(), patient4.getCitizenId(), 1, report4);
+        MedicalRecord record11 = new MedicalRecord(0, doctor1.getCitizenId(), superUser.getCitizenId(), 1, report1);
+        MedicalRecord record12 = new MedicalRecord(0, doctor1.getCitizenId(), superUser.getCitizenId(), 1, report2);
+        MedicalRecord record13 = new MedicalRecord(0, doctor1.getCitizenId(), superUser.getCitizenId(), 1, report3);
+        MedicalRecord record14 = new MedicalRecord(0, doctor2.getCitizenId(), superUser.getCitizenId(), 1, report4);
+        MedicalRecord record21 = new MedicalRecord(0, doctor1.getCitizenId(), admin2.getCitizenId(), 1, report1);
+        MedicalRecord record22 = new MedicalRecord(0, doctor1.getCitizenId(), admin2.getCitizenId(), 1, report2);
+        MedicalRecord record23 = new MedicalRecord(0, doctor1.getCitizenId(), admin2.getCitizenId(), 1, report3);
+        MedicalRecord record24 = new MedicalRecord(0, doctor2.getCitizenId(), admin2.getCitizenId(), 1, report4);
 
         try {
             DatabaseUtils.addMedicalRecord(connection, record1);
             DatabaseUtils.addMedicalRecord(connection, record2);
             DatabaseUtils.addMedicalRecord(connection, record3);
+            DatabaseUtils.addMedicalRecord(connection, record4);
+            DatabaseUtils.addMedicalRecord(connection, record11);
+            DatabaseUtils.addMedicalRecord(connection, record12);
+            DatabaseUtils.addMedicalRecord(connection, record13);
+            DatabaseUtils.addMedicalRecord(connection, record14);
+            DatabaseUtils.addMedicalRecord(connection, record21);
+            DatabaseUtils.addMedicalRecord(connection, record22);
+            DatabaseUtils.addMedicalRecord(connection, record23);
+            DatabaseUtils.addMedicalRecord(connection, record24);
         } catch (Exception e) {
             e.printStackTrace();
         }

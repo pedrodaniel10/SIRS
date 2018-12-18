@@ -1,5 +1,7 @@
 package pt.ulisboa.tecnico.sirs.api.dataobjects;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ public class Citizen implements Serializable {
     private String citizenId;
     private String citizenName;
     private Gender gender;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
     private String email;
     private byte[] password;

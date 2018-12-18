@@ -1,6 +1,8 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+
 
 <!DOCTYPE html>
 
@@ -115,7 +117,8 @@
 
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Password:</label>
-                                <div class="col-sm-10"><form:input path="password" type="password" class="form-control"/></div>
+                                <div class="col-sm-10">
+                                    <form:input path="password" type="password" class="form-control"/></div>
                             </div>
 
                             <div class="hr-line-dashed"></div>
@@ -129,7 +132,7 @@
 
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-primary" type="submit">Add Citizen</button>
+                                    <button class="btn btn-primary" type="submit">Edit Citizen</button>
                                 </div>
                             </div>
                         </form:form>
