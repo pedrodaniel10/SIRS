@@ -1,0 +1,14 @@
+[mysqld]
+# File Key Management
+plugin-load-add = file_key_management
+file-key-management
+file-key-management-filename = C:/Program Files/MariaDB 10.3/data/keys.enc
+file_key_management_filekey = FILE:C:/Program Files/MariaDB 10.3/data/.key
+file-key-management-encryption-algorithm = aes_cbc
+
+## InnoDB/XtraDB Encryption
+innodb-encrypt-tables = ON
+innodb-encrypt-log = ON
+innodb-encryption-threads = 8
+innodb-encryption-rotate-key-age = 5
+innodb-encryption-rotation-iops = 100

@@ -1,0 +1,14 @@
+namespace hospital.attributes {
+	
+	attribute validRelation{
+		id = "pt.ulisboa.tecnico.sirs.validRelation"
+		type = boolean
+		category = actionCat
+	}
+	
+	attribute medicalRecordPatient{
+		id = "pt.ulisboa.tecnico.sirs.medicalRecordPatient"
+		type = boolean
+		category = actionCat
+	}
+}
