@@ -2,6 +2,26 @@
 
 Network and Computer Security Project - Medical Records
 
+## Introduction
+Health care institutions gather and store sensitive information from patients with the goal of 
+providing the best care possible. The medical history of a patient is essential to allow correct 
+diagnostic and help the clinical staff act in the shortest time possible. This information is 
+highly sensitive and must be kept private for the responsible staff only. At the same time, the 
+medical records should be accessible by any health care institution to ensure that a patient 
+can be assisted anywhere. 
+
+To guarantee data availability, health care institutions in the future might rely on data 
+repositories accessible through the Internet. This poses a threat, since patient data can be 
+accessed by unauthorized personnel. It is also extremely difficult to manage access to data 
+using standard access control mechanisms due to the vast amounts of user, groups and 
+patients and the constant adjustment in privileges that must be done to maintain patient’s 
+confidentiality. 
+
+In this topic we define a cloud-based system to store medical records. The records 
+are available for a wide range of users, so the system provides a web interface to manage 
+access privileges to the records. We use Atribute Based Access Control (ABAC) and the standard 
+architecture XACML was implemented using [AuthzForce](https://github.com/authzforce/core). More information can be found in the report under **/docs**.
+
 ## Requirements
 You must have installed the following tools:
 - Maven 3.x.x 
