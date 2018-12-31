@@ -46,4 +46,3 @@ medical-records/front-end/target
 
 medical-records/Server/src/main/resources/database\.properties
 medical-records/server-client/target
-medical-records/server/src/main/resources/citizens\.jks
